@@ -81,10 +81,6 @@ const FormularioLogin: FC<FormularioLoginProps> = ({
           </Box>
 
           <Button
-            sx={{
-              background:
-                'linear-gradient(310deg, rgb(33, 82, 255), rgb(33, 212, 253));',
-            }}
             fullWidth
             type="submit"
           >

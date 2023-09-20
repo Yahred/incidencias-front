@@ -43,25 +43,44 @@ const Table: FC<TableProps> = ({ cabeceros, rows }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {isLoading && [1,2,3,4,5,6,7,8].map((_, index) => <TableRow>
-            {cabeceros.map((_, index) => <TableCell>
-              <Skeleton  />
-            </TableCell>)}
-          </TableRow>)}
-          {!isLoading && rows.map((row, index) => (
-            <TableRow
-              key={index}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              {cabeceros.map((cabecero, index) => (
-                <TableCell key={index} component="th" scope="row" align={index === 0 ? 'left' : 'right'}>
-                  {cabecero.transform
-                    ? cabecero.transform(row)
-                    : row[cabecero.key!]}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
+          {isLoading &&
+            [1, 2, 3, 4, 5, 6, 7, 8].map((_, index) => (
+              <TableRow
+                key={index}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                {cabeceros.map((_, index) => (
+                  <TableCell
+                    key={index}
+                    component="th"
+                    scope="row"
+                    align={index === 0 ? 'left' : 'right'}
+                  >
+                    <Skeleton width='100%' height={30} />
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          {!isLoading &&
+            rows.map((row, index) => (
+              <TableRow
+                key={index}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                {cabeceros.map((cabecero, index) => (
+                  <TableCell
+                    key={index}
+                    component="th"
+                    scope="row"
+                    align={index === 0 ? 'left' : 'right'}
+                  >
+                    {cabecero.transform
+                      ? cabecero.transform(row)
+                      : row[cabecero.key!]}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
         </TableBody>
       </MuiTable>
     </TableContainer>

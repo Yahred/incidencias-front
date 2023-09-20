@@ -4,8 +4,6 @@ import { Outlet } from 'react-router-dom';
 import Box from '@mui/material/Box';
 
 import Sidebar from '../../components/Sidebar';
-import { Container } from '@mui/material';
-import Grid from '@mui/material/Grid';
 
 const Catalogos: FC = () => {
   return (

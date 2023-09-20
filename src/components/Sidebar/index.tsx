@@ -16,6 +16,7 @@ import Appbar from '../../layout/components/Appbar';
 import { useCallback, useMemo, useState } from 'react';
 import { Button, Icon } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { APPBAR_MENU_ITEMS } from '../../constants/menu';
 
 const drawerWidth = 240;
 
@@ -65,6 +66,13 @@ const Sidebar: React.FC = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
+  const submodulos = useMemo(() => {
+    const modulo = pathname.split('/')[1];
+    const itemSeleccionado = APPBAR_MENU_ITEMS.find(({ ruta }) => ruta === `/${modulo}`);
+    if (!itemSeleccionado) return [];
+    return itemSeleccionado.submodulos || [];
+  }, [pathname])
+
   const menuItems = useMemo(
     () => [
       {
@@ -109,13 +117,12 @@ const Sidebar: React.FC = () => {
     setOpen(false);
   };
 
-  const handleItemClick = useCallback(
-    (item) => {
-      const { ruta } = item;
-      navigate(ruta);
-    },
-    [navigate]
-  );
+  const handleItemClick = useCallback((ruta: string) => {
+    console.log(ruta);
+    if (ruta === '/') return navigate('/catalogos');
+
+    navigate(`.${ruta}`);
+  }, [navigate]);
 
   return (
     <Box
@@ -130,9 +137,9 @@ const Sidebar: React.FC = () => {
       }}
     >
       <List>
-        {menuItems.map((item, index) => (
+        {submodulos.map((item, index) => (
           <ListItem disablePadding key={index}>
-            <ListItemButton>
+            <ListItemButton onClick={() => handleItemClick(item.ruta)}>
               <ListItemIcon>
                 <Icon color={pathname === item.ruta ? 'secondary' : 'inherit'}>
                   {item.icono}
