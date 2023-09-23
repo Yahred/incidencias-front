@@ -1,7 +1,7 @@
-import { SxProps, styled } from "@mui/material";
-import { FC, ReactNode } from "react";
+import { SxProps, styled } from '@mui/material';
+import { FC, ReactNode } from 'react';
 
-import { FormProvider, UseFormReturn } from "react-hook-form";
+import { FormProvider, UseFormReturn } from 'react-hook-form';
 
 export interface FormProps {
   methods: UseFormReturn;
@@ -10,7 +10,7 @@ export interface FormProps {
   sx?: SxProps;
 }
 
-const StyledForm = styled("form")();
+const StyledForm = styled('form')();
 
 const Form: FC<FormProps> = ({ methods, children, onSubmit, sx }) => {
   return (

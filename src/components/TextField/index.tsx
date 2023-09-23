@@ -8,6 +8,7 @@ interface TextFieldProps {
   onTextChange?: (text: string) => void
   size?: 'medium' | 'small'
   placeholder?: string
+  value: string
   InputProps?: Partial<FilledInputProps> | Partial<OutlinedInputProps> | Partial<InputProps>
 }
 
@@ -17,6 +18,7 @@ const TextField: FC<TextFieldProps> = ({
   size,
   placeholder,
   InputProps,
+  value
 }) => {
   const onChange = useCallback((event: any) => {
     const { target: { value } } = event;
@@ -26,6 +28,7 @@ const TextField: FC<TextFieldProps> = ({
 
   return <MuiTextField
     sx={sx}
+    value={value}
     onChange={onChange}
     size={size}
     placeholder={placeholder}

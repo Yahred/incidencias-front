@@ -19,6 +19,7 @@ let theme = createTheme({
       color: '#595959',
       fontSize: 14,
     },
+    fontFamily: ['Avenir', 'sans-serif'].join(',')
   },
   components: {
     MuiButton: {

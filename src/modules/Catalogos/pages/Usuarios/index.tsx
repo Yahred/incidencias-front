@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useState } from 'react';
 
 import Grid from '@mui/material/Grid';
 import { Button, InputAdornment, Typography } from '@mui/material';
@@ -6,6 +6,11 @@ import { Search } from '@mui/icons-material';
 
 import Table, { Cabeceros } from '../../../../components/Table';
 import TextField from '../../../../components/TextField';
+import { useQuery } from 'react-query';
+import { obtenerUsuarios } from '../../services';
+import { Usuario } from '../../../../interfaces/Usuario';
+import useDebounce from '../../../../utils/hooks/useDebounce';
+import { DEBOUNCE_TIME } from '../../../../constants/general';
 
 const rows = [
   {
@@ -20,21 +25,32 @@ const rows = [
   }
 ]
 
+const cabeceros: Cabeceros<Usuario>[] = [
+  {
+    label: 'Usuario',
+    key: 'username'
+  },
+  {
+    label: 'Nombre',
+    key: 'nombres'
+  },
+  {
+    label: 'Tipo',
+    transform: ({ tipoUsuario }) => tipoUsuario.nombre!,
+  },
+];
+
+
 const Usuarios: FC = () => {
-  const cabeceros = useMemo<Cabeceros<any>[]>(() => [
-    {
-      label: 'Usuario',
-      key: 'username'
-    },
-    {
-      label: 'Nombre',
-      key: 'nombreCompleto'
-    },
-    {
-      label: 'Tipo',
-      transform: ({ tipoUsuario }) => tipoUsuario?.nombre,
-    },
-  ], []);
+  const [q, setQ] = useState<string>('');
+  const debounceQ = useDebounce<string>(q, DEBOUNCE_TIME);
+
+  const { data } = useQuery({
+    queryFn: () => obtenerUsuarios(debounceQ),
+    queryKey: [debounceQ],
+    keepPreviousData: true,
+    staleTime: 1000,
+  });
 
   return (
     <Grid container rowSpacing={4}>
@@ -51,6 +67,8 @@ const Usuarios: FC = () => {
         <Grid item xs={6}>
           <TextField
             placeholder="Buscar usuario"
+            onTextChange={setQ}
+            value={q}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -65,7 +83,7 @@ const Usuarios: FC = () => {
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        <Table cabeceros={cabeceros} rows={rows} />
+        <Table cabeceros={cabeceros} rows={data?.docs} />
       </Grid>
     </Grid>
   );
