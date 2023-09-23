@@ -1,47 +1,39 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 
 import Grid from '@mui/material/Grid';
 import { Button, InputAdornment, Typography } from '@mui/material';
 import { Search } from '@mui/icons-material';
 
+import { useQuery } from 'react-query';
+
 import Table, { Cabeceros } from '../../../../components/Table';
 import TextField from '../../../../components/TextField';
-import { useQuery } from 'react-query';
-import { obtenerUsuarios } from '../../services';
-import { Usuario } from '../../../../interfaces/Usuario';
-import useDebounce from '../../../../utils/hooks/useDebounce';
-import { DEBOUNCE_TIME } from '../../../../constants/general';
 
-const rows = [
-  {
-    username: 'Yahred',
-    nombreCompleto: 'Yahred Gastelum',
-    tipoUsuario: { nombre: 'Acádemico' },
-  },
-  {
-    username: 'Jesus',
-    nombreCompleto: 'Jesus Manjarrez',
-    tipoUsuario: { nombre: 'Técnico' },
-  }
-]
+import useDebounce from '../../../../utils/hooks/useDebounce';
+import { Usuario } from '../../../../interfaces/Usuario';
+import { obtenerUsuarios } from '../../services';
+import { DEBOUNCE_TIME } from '../../../../constants/general';
+import { TipoUsuario } from '../../../../interfaces/TipoUsuario';
+import { useNavigate } from 'react-router-dom';
 
 const cabeceros: Cabeceros<Usuario>[] = [
   {
     label: 'Usuario',
-    key: 'username'
+    key: 'username',
   },
   {
     label: 'Nombre',
-    key: 'nombres'
+    transform: ({ nombres, apellidoMat, apellidoPat }) => `${nombres} ${apellidoPat} ${apellidoMat}`
   },
   {
     label: 'Tipo',
-    transform: ({ tipoUsuario }) => tipoUsuario.nombre!,
+    transform: ({ tipoUsuario }) => (tipoUsuario as TipoUsuario).nombre!,
   },
 ];
 
-
 const Usuarios: FC = () => {
+  const navigate = useNavigate();
+
   const [q, setQ] = useState<string>('');
   const debounceQ = useDebounce<string>(q, DEBOUNCE_TIME);
 
@@ -51,6 +43,10 @@ const Usuarios: FC = () => {
     keepPreviousData: true,
     staleTime: 1000,
   });
+
+  const handleAgregarClick = useCallback(() => {
+    navigate('./formulario');
+  }, [navigate]);
 
   return (
     <Grid container rowSpacing={4}>
@@ -79,7 +75,7 @@ const Usuarios: FC = () => {
           />
         </Grid>
         <Grid item xs={6} display="flex" justifyContent="flex-end">
-          <Button>Agregar usuario</Button>
+          <Button onClick={handleAgregarClick}>Agregar usuario</Button>
         </Grid>
       </Grid>
       <Grid item xs={12}>

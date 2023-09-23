@@ -19,7 +19,7 @@ let theme = createTheme({
       color: '#595959',
       fontSize: 14,
     },
-    fontFamily: ['Avenir', 'sans-serif'].join(',')
+    fontFamily: ['Avenir', 'sans-serif'].join(','),
   },
   components: {
     MuiButton: {
@@ -49,9 +49,27 @@ let theme = createTheme({
         fullWidth: true,
         InputProps: {
           style: {
-            borderRadius: '0.5em',
+            borderRadius: 4,
             fontWeight: 500,
           },
+        },
+      },
+    },
+    MuiSelect: {
+      defaultProps: {
+        fullWidth: true,
+        size: 'medium',
+      },
+      styleOverrides: {
+        root: {
+          height: 45,
+        },
+      },
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          color: '#D32F2F',
         },
       },
     },

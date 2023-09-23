@@ -1,4 +1,5 @@
 import ax from 'axios';
+import { toast } from 'react-toastify';
 
 import store from '../stores/store';
 
@@ -11,6 +12,7 @@ const axios = ax.create({
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
   },
 })
 
@@ -21,10 +23,13 @@ axios.interceptors.request.use((req) => {
   return req;
 });
 
-axios.interceptors.response.use(({ data }) => {
+axios.interceptors.response.use(({ data, status }) => {
+  if (status === 201) {
+    toast('Recursos creados correctamente')
+  }
   store.getState().setLoadingOff();
   return data;
-}, ({ resp: { status }, ...error }) => {
+}, (error) => {
   store.getState().setLoadingOff();
   throw new Error(error);
 });

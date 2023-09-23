@@ -68,10 +68,26 @@ const Sidebar: React.FC = () => {
 
   const submodulos = useMemo(() => {
     const modulo = pathname.split('/')[1];
-    const itemSeleccionado = APPBAR_MENU_ITEMS.find(({ ruta }) => ruta === `/${modulo}`);
+    const itemSeleccionado = APPBAR_MENU_ITEMS.find(
+      ({ ruta }) => ruta === `/${modulo}`
+    );
     if (!itemSeleccionado) return [];
     return itemSeleccionado.submodulos || [];
-  }, [pathname])
+  }, [pathname]);
+
+  const submoduloSeleccionado = useMemo<string>(() => {
+    const submodulo = pathname
+      .split('/')
+      .filter((r) => r !== 'formulario')
+      .at(-1);
+
+    const seleccionado = submodulos.find(
+      ({ ruta }) =>
+        ruta === `/${submodulo}` || (submodulo === 'catalogos' && ruta === '/')
+    );
+
+    return seleccionado?.ruta || '';
+  }, [submodulos, pathname]);
 
   const menuItems = useMemo(
     () => [
@@ -117,12 +133,15 @@ const Sidebar: React.FC = () => {
     setOpen(false);
   };
 
-  const handleItemClick = useCallback((ruta: string) => {
-    console.log(ruta);
-    if (ruta === '/') return navigate('/catalogos');
+  const handleItemClick = useCallback(
+    (ruta: string) => {
+      console.log(ruta);
+      if (ruta === '/') return navigate('/catalogos');
 
-    navigate(`.${ruta}`);
-  }, [navigate]);
+      navigate(`.${ruta}`);
+    },
+    [navigate]
+  );
 
   return (
     <Box
@@ -141,13 +160,22 @@ const Sidebar: React.FC = () => {
           <ListItem disablePadding key={index}>
             <ListItemButton onClick={() => handleItemClick(item.ruta)}>
               <ListItemIcon>
-                <Icon color={pathname === item.ruta ? 'secondary' : 'inherit'}>
+                <Icon
+                  color={
+                    submoduloSeleccionado === item.ruta
+                      ? 'secondary'
+                      : 'inherit'
+                  }
+                >
                   {item.icono}
                 </Icon>
               </ListItemIcon>
               <ListItemText
                 sx={{
-                  color: pathname === item.ruta ? 'secondary.main' : 'inherit',
+                  color:
+                    submoduloSeleccionado === item.ruta
+                      ? 'secondary.main'
+                      : 'inherit',
                   fontSize: 12,
                 }}
                 primary={
@@ -155,7 +183,9 @@ const Sidebar: React.FC = () => {
                     variant="caption"
                     sx={{
                       color:
-                        pathname === item.ruta ? 'secondary.main' : 'inherit',
+                        submoduloSeleccionado === item.ruta
+                          ? 'secondary.main'
+                          : 'inherit',
                     }}
                   >
                     {item.nombre}

@@ -1,14 +1,14 @@
 import { FC } from 'react';
 
+import Alert from '@mui/material/Alert';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 
-import IconTecNM from '../../../../components/IconTecNM';
 import Form from '../../../../components/Form';
 import FormField from '../../../../components/FormField';
 import Checkbox from '../../../../components/Checkbox';
+import SubmitButton from '../../../../components/SubmitButton';
 
 import { CAMPO_REQUERIDO } from '../../../../constants/validaciones';
 import { UseFormReturn } from 'react-hook-form';
@@ -18,6 +18,7 @@ interface FormularioLoginProps {
   methods: UseFormReturn<any>;
   recordar: boolean;
   onRecordarChange: (value: boolean) => void;
+  errorLogin: boolean;
 }
 
 const FormularioLogin: FC<FormularioLoginProps> = ({
@@ -25,6 +26,7 @@ const FormularioLogin: FC<FormularioLoginProps> = ({
   methods,
   recordar,
   onRecordarChange,
+  errorLogin,
 }) => {
   return (
     <Paper elevation={2}>
@@ -33,14 +35,9 @@ const FormularioLogin: FC<FormularioLoginProps> = ({
         display="flex"
         flexDirection="column"
         alignItems="center"
-        gap={6}
+        gap={4}
       >
-        <IconTecNM
-          sx={{
-            width: 170,
-          }}
-        />
-        <Box display="flex" flexDirection="column" alignItems="center">
+        <Box display="flex" flexDirection="column" alignItems="center" py={4}>
           <Typography variant="h5" fontWeight="bold">
             Hola, bienvenido de vuelta!
           </Typography>
@@ -61,13 +58,15 @@ const FormularioLogin: FC<FormularioLoginProps> = ({
         >
           <Box display="flex" flexDirection="column" rowGap={2}>
             <FormField
-              name="usuario"
-              placeholder="Usuario"
+              name="username"
+              title='Nombre de usuario'
+              placeholder="Introduce tu nombre de usuario"
               rules={{ required: CAMPO_REQUERIDO }}
             />
             <FormField
               name="password"
-              placeholder="Contraseña"
+              title='Contraseña'
+              placeholder="Introduce tu contraseña"
               type="password"
               rules={{ required: CAMPO_REQUERIDO }}
             />
@@ -80,12 +79,13 @@ const FormularioLogin: FC<FormularioLoginProps> = ({
             </Box>
           </Box>
 
-          <Button
-            fullWidth
-            type="submit"
-          >
+          {errorLogin && <Alert severity='error'>
+            La contraseña o el usuario son incorrectos
+          </Alert>}
+
+          <SubmitButton>
             Iniciar sesión
-          </Button>
+          </SubmitButton>
         </Form>
       </Box>
     </Paper>

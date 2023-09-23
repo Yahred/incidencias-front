@@ -1,27 +1,29 @@
-import { FC } from "react";
+import { FC } from 'react';
 
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, TextField, Typography } from '@mui/material';
 import {
   Controller,
   FieldValues,
   RegisterOptions,
   useFormContext,
-} from "react-hook-form";
+} from 'react-hook-form';
+import useCommonControlRules from '../../utils/hooks/useControlRules';
 
 interface FormFieldProps {
   name: string;
   rules?: Omit<
     RegisterOptions<FieldValues, string>,
-    "disabled" | "setValueAs" | "valueAsNumber" | "valueAsDate"
+    'disabled' | 'setValueAs' | 'valueAsNumber' | 'valueAsDate'
   >;
   defaultValue?: number | string;
   label?: string;
   title?: string;
   subtitle?: string;
   placeholder?: string;
-  size?: "small" | "medium";
+  size?: 'small' | 'medium';
   fullWidth?: boolean;
-  type?: "text" | "password" | "number" | "date";
+  type?: 'text' | 'password' | 'number' | 'date';
+  required?: boolean;
 }
 
 const FormField: FC<FormFieldProps> = ({
@@ -35,22 +37,27 @@ const FormField: FC<FormFieldProps> = ({
   size,
   fullWidth,
   type,
+  required,
 }) => {
   const {
     control,
     formState: { errors },
   } = useFormContext();
 
+  const computedRules = useCommonControlRules({ rules, required });
+
   return (
     <Controller
       name={name}
       defaultValue={defaultValue}
-      rules={rules}
+      rules={computedRules}
       control={control}
       render={({ field }) => (
         <Box display="flex" flexDirection="column" gap="4px">
           <Box display="flex" flexDirection="column">
-            <Typography variant="body1">{title}</Typography>
+            <Typography variant="body1">
+              {`${title} ${required ? '*' : ''}`}{' '}
+            </Typography>
             <Typography variant="caption">{subtitle}</Typography>
           </Box>
           <TextField
@@ -71,8 +78,9 @@ const FormField: FC<FormFieldProps> = ({
 
 FormField.defaultProps = {
   rules: {},
-  defaultValue: "",
-  type: "text",
+  defaultValue: '',
+  type: 'text',
+  required: false,
 };
 
 export default FormField;

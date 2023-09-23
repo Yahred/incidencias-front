@@ -10,18 +10,36 @@ import Landscape from './components/Landscape';
 
 import { LoginForm } from './interfaces';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
+import { iniciarSesion } from './services';
 
 function Login() {
   const navigate = useNavigate();
   const methods = useForm<LoginForm>();
-  const [recordar, setRecordar] = useState<boolean>(false);
 
-  const login = useCallback(
-    (data: LoginForm) => {
+  const { mutateAsync } = useMutation({
+    mutationKey: 'login',
+    mutationFn: iniciarSesion
+  })
+
+  const [recordar, setRecordar] = useState<boolean>(false);
+  const [errorLogin, setErrorLogin] = useState<boolean>(false);
+
+  const login = useCallback(async (data: LoginForm) => {
+    try {
+      const { token } = await mutateAsync(data);
+
+      if (recordar) {
+        localStorage.setItem('token', JSON.stringify(token!));
+      } else {
+        sessionStorage.setItem('token', token);
+      }
+
       navigate('/');
-    },
-    [navigate]
-  );
+    } catch (error) {
+      setErrorLogin(true);
+    }
+  },[recordar, navigate, mutateAsync]);
 
   return (
     <Box
@@ -45,6 +63,7 @@ function Login() {
             onSubmit={login}
             recordar={recordar}
             onRecordarChange={setRecordar}
+            errorLogin={errorLogin}
           />
         </Grid>
 
