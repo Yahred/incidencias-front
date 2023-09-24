@@ -44,7 +44,7 @@ const Catalogo: FC<CatalogoProps> = ({
 
   const { data } = useQuery({
     queryFn: () => queryFn(debounceQ, searchParams.get('pagina')!),
-    queryKey: [debounceQ, searchParams.get('pagina')],
+    queryKey: [title, debounceQ, searchParams.get('pagina')],
     keepPreviousData: true,
     staleTime: 1000,
   });
@@ -62,7 +62,7 @@ const Catalogo: FC<CatalogoProps> = ({
 
   const handlePaginaChange = useCallback(
     (_, page: number) => {
-      setSearchParams({ q: searchParams.get('q')! , pagina: page.toString() });
+      setSearchParams({ q: searchParams.get('q') || '' , pagina: page.toString() });
     },
     [setSearchParams, searchParams]
   );
