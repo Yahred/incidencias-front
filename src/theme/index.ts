@@ -73,6 +73,11 @@ let theme = createTheme({
         },
       },
     },
+    MuiPagination: {
+      defaultProps: {
+        color: 'primary',
+      },
+    },
   },
 });
 

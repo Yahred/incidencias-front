@@ -7,7 +7,6 @@ import {
   RegisterOptions,
   useFormContext,
 } from 'react-hook-form';
-import useCommonControlRules from '../../utils/hooks/useControlRules';
 
 interface FormFieldProps {
   name: string;
@@ -30,7 +29,6 @@ const FormField: FC<FormFieldProps> = ({
   defaultValue,
   name,
   label,
-  rules,
   title,
   subtitle,
   placeholder,
@@ -44,13 +42,10 @@ const FormField: FC<FormFieldProps> = ({
     formState: { errors },
   } = useFormContext();
 
-  const computedRules = useCommonControlRules({ rules, required });
-
   return (
     <Controller
       name={name}
       defaultValue={defaultValue}
-      rules={computedRules}
       control={control}
       render={({ field }) => (
         <Box display="flex" flexDirection="column" gap="4px">

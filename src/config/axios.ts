@@ -2,6 +2,7 @@ import ax from 'axios';
 import { toast } from 'react-toastify';
 
 import store from '../stores/store';
+import obtenerMensajeError from '../utils/functions/obtenerMensajesError';
 
 const { VITE_API_BASE_URL } = import.meta.env;
 
@@ -12,9 +13,9 @@ const axios = ax.create({
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
+    Accept: 'application/json',
   },
-})
+});
 
 axios.interceptors.request.use((req) => {
   const token = localStorage.getItem('token');
@@ -23,15 +24,20 @@ axios.interceptors.request.use((req) => {
   return req;
 });
 
-axios.interceptors.response.use(({ data, status }) => {
-  if (status === 201) {
-    toast('Recursos creados correctamente')
+axios.interceptors.response.use(
+  ({ data, status }) => {
+    if (status === 201) {
+      toast.success('Recursos creados correctamente');
+    }
+    store.getState().setLoadingOff();
+    return data;
+  },
+  (error) => {
+    store.getState().setLoadingOff();
+    const mensaje = obtenerMensajeError(error);
+    if (mensaje) toast.error(mensaje);
+    throw new Error(error);
   }
-  store.getState().setLoadingOff();
-  return data;
-}, (error) => {
-  store.getState().setLoadingOff();
-  throw new Error(error);
-});
+);
 
 export default axios;

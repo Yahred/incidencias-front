@@ -1,2 +1,10 @@
 export const DEBOUNCE_TIME = 400;
 export const ITEMS_POR_PAGINA = 8;
+
+export const MensajesToast = {
+  ERROR: 'Ocurrió un error inesperado',
+  EXITO: 'Recursos creados correctamente',
+  EXITO_ACTUALIZACION: 'Recursos actualizados correctamente',
+  EXITO_ELIMINACION: 'Recursos eliminados correctamente',
+  CAMPO_DUPLICADO: (campo: string) => `El ${campo} ya existe`,
+}

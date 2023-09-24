@@ -1,5 +1,5 @@
 export interface Paginado<T> {
   docs: T[],
-  totalDocs: number,
+  count: number,
   totalPages: number,
 }
