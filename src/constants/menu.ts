@@ -10,9 +10,9 @@ export const SIDEBAR_CATALOGOS = [
     icono: 'devices'
   },
   {
-    nombre: '',
-    ruta: '',
-    icono: ''
+    nombre: 'Edificios',
+    ruta: '/edificios',
+    icono: 'domain_add'
   },
   {
     nombre: '',

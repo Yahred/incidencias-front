@@ -6,7 +6,9 @@ import { Outlet } from 'react-router-dom';
 const Usuarios = lazy(() => import('./pages/Usuarios'));
 const Recursos = lazy(() => import('./pages/Recursos'));
 const Modelos = lazy(() => import('./pages/Modelos'));
+const Edificios = lazy(() => import('./pages/Edificios'));
 
+const EdificioFormulario = lazy(() => import('./pages/EdificiosFormulario'))
 const UsuarioFormulario = lazy(() => import('./pages/UsuarioFormulario'));
 
 const router = {
@@ -35,6 +37,20 @@ const router = {
       path: 'modelos',
       Component: Modelos,
     },
+    {
+      path: 'edificios',
+      Component: Outlet,
+      children: [
+        {
+          path: '',
+          Component: Edificios,
+        },
+        {
+          path: 'formulario',
+          Component: EdificioFormulario
+        }
+      ]
+    }
   ],
 };
 
