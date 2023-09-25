@@ -45,6 +45,7 @@ axios.interceptors.response.use(
   },
   (error) => {
     store.getState().setLoadingOff();
+    store.getState().setMutatingOff();
     const mensaje = obtenerMensajeError(error);
     if (mensaje) toast.error(mensaje);
     throw new Error(error);

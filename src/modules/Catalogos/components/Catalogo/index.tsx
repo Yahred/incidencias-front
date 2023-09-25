@@ -145,7 +145,7 @@ const Catalogo: FC<CatalogoProps> = ({
             <Button onClick={handleAgregarClick}>{agregarText}</Button>
           </Grid>
         </Grid>
-        <Grid item xs={12} minHeight={590}>
+        <Grid item xs={12} minHeight='50svh'>
           <Table cabeceros={cabecerosCatalogo} rows={data?.docs} />
         </Grid>
         <Grid item xs={12}>
@@ -154,7 +154,8 @@ const Catalogo: FC<CatalogoProps> = ({
               onChange={handlePaginaChange}
               pagina={Number(searchParams.get('pagina')) || 1}
               itemsPorPagina={ITEMS_POR_PAGINA}
-              totalPaginas={data?.totalPages || 1} />
+              totalPaginas={data?.totalPages || 1}
+            />
           </FadeIn>
         </Grid>
       </Grid>

@@ -87,7 +87,7 @@ const Table: FC<TableProps> = ({ cabeceros, rows }) => {
             sx={{
               display: 'grid',
               placeItems: 'center',
-              height: 420,
+              minHeight: '50svh',
               overflow: 'hidden',
             }}
           >

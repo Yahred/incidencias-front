@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useForm } from 'react-hook-form';
 import { useMutation, useQuery } from 'react-query';
@@ -17,7 +17,9 @@ import Table, { Cabeceros } from '../../../../../components/Table';
 import { CAMPO_REQUERIDO, CARACTERISTICA_REPETIDA } from '../../../../../constants/validaciones';
 import { obtenerAreas } from '../../../services/areas';
 import { Caracteristica, Categoria } from '../../../../../interfaces/Categoria';
-import { registrarCategoria } from '../../../services/categorias';
+import { obtenerCategoriaPorId, registrarCategoria } from '../../../services/categorias';
+import { useParams } from 'react-router-dom';
+import useFormSetEffect from '../../../../../utils/hooks/useSetForm';
 
 const areaSchema = yup.object({
   nombre: yup.string().required(CAMPO_REQUERIDO),
@@ -52,6 +54,8 @@ const cabeceros: Cabeceros<Caracteristica>[] = [
 ];
 
 const CategoriaFormulario: FC = () => {
+  const { id } = useParams();
+
   const [caracteristicas, setCaracteristicas] = useState<Caracteristica[]>([]);
 
   const methods = useForm({
@@ -59,6 +63,13 @@ const CategoriaFormulario: FC = () => {
   });
 
   const methodsCaracteristicas = useForm();
+
+  const { data: categoria } = useQuery({
+    queryKey: [id],
+    queryFn: () => obtenerCategoriaPorId(id!),
+    enabled: !!id,
+    initialData: {},
+  });
 
   const { data: areas } = useQuery({
     queryKey: 'areas',
@@ -68,7 +79,7 @@ const CategoriaFormulario: FC = () => {
 
   const { mutateAsync } = useMutation({
     mutationKey: 'categoria',
-    mutationFn: registrarCategoria,
+    mutationFn: (categoria: Categoria) => registrarCategoria(categoria, id),
   });
 
   const agregarCaracteristica = useCallback((caracteristica: Caracteristica) => {
@@ -84,6 +95,12 @@ const CategoriaFormulario: FC = () => {
   const guardar = useCallback(async (categoria: Categoria) => {
     await mutateAsync({ ...categoria, caracteristicas });
   },[mutateAsync, caracteristicas]);
+
+  useFormSetEffect(categoria, methods.setValue);
+
+  useEffect(() => {
+    if (categoria.caracteristicas) setCaracteristicas(categoria.caracteristicas);
+  }, [categoria])
 
   return (
     <>

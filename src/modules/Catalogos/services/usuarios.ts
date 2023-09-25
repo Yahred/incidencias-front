@@ -20,7 +20,7 @@ export const obtenerUsuariosPaginado = (q: string, pagina?: string) =>
 export const obtenerUsuarioPorId = (id: string) =>
   axios.get<unknown, Usuario>(param(USUARIOS, id));
 
-export const registrarUsuario = (usuario: Usuario, id?: string) =>
+export const registrarUsuario = (usuario: FormData, id?: string) =>
   id ? axios.put(param(USUARIOS, id), usuario) : axios.post(USUARIOS, usuario);
 
 export const obtenerTiposUsuario = () =>

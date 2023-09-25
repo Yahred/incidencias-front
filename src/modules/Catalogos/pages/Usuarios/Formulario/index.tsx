@@ -3,17 +3,19 @@ import { FC, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation, useQuery } from 'react-query';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
 
 import ContenedorFormulario from '../../../components/ContenedorFormulario';
 import FormField from '../../../../../components/FormField';
 import FormSelect from '../../../../../components/FormSelect';
 
+import useFormSetEffect from '../../../../../utils/hooks/useSetForm';
+import FormFile from '../../../../../components/FormFile';
+import objectToFormData from '../../../../../utils/functions/objectToFormData';
 import { obtenerTiposUsuario, obtenerUsuarioPorId, registrarUsuario } from '../../../services';
 import { Usuario } from '../../../../../interfaces/Usuario';
 import { CAMPO_REQUERIDO, EMAIL_INVALIDO } from '../../../../../constants/validaciones';
-import { useParams } from 'react-router-dom';
-import useFormSetEffect from '../../../../../utils/hooks/useSetForm';
 
 const usuarioSchema = yup.object({
   username: yup.string().required(CAMPO_REQUERIDO),
@@ -22,7 +24,7 @@ const usuarioSchema = yup.object({
   apellidoPat: yup.string().required(CAMPO_REQUERIDO),
   apellidoMat: yup.string().required(CAMPO_REQUERIDO),
   email: yup.string().email(EMAIL_INVALIDO).required(CAMPO_REQUERIDO),
-  avatar: yup.string(),
+  avatar: yup.mixed(),
   tipoUsuario: yup.string().required(CAMPO_REQUERIDO),
 })
 
@@ -50,11 +52,12 @@ const UsuarioFormulario: FC = () => {
 
   const { mutateAsync } = useMutation({
     mutationKey: 'usuario',
-    mutationFn: (usuario: Usuario) => registrarUsuario(usuario, id)
+    mutationFn: (usuario: FormData) => registrarUsuario(usuario, id)
   });
 
   const guardar = useCallback(async (usuario: Usuario) => {
-    await mutateAsync(usuario)
+    const formData = objectToFormData(usuario);
+    await mutateAsync(formData)
   }, [mutateAsync]);
 
   useFormSetEffect(usuario, methods.setValue);
@@ -102,10 +105,10 @@ const UsuarioFormulario: FC = () => {
         subtitle="Correo electrónico del usuario"
         required
       />
-      <FormField
-        name="avatar"
-        title="Avatar"
-        subtitle="Apellido materno del usuario"
+      <FormFile
+        name='avatar'
+        title='Avatar'
+        subtitle='Fotografía del usuario'
       />
       <FormSelect
         name='tipoUsuario'
