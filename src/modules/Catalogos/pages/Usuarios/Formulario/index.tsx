@@ -9,9 +9,11 @@ import ContenedorFormulario from '../../../components/ContenedorFormulario';
 import FormField from '../../../../../components/FormField';
 import FormSelect from '../../../../../components/FormSelect';
 
-import { obtenerTiposUsuario, registrarUsuario } from '../../../services';
+import { obtenerTiposUsuario, obtenerUsuarioPorId, registrarUsuario } from '../../../services';
 import { Usuario } from '../../../../../interfaces/Usuario';
 import { CAMPO_REQUERIDO, EMAIL_INVALIDO } from '../../../../../constants/validaciones';
+import { useParams } from 'react-router-dom';
+import useFormSetEffect from '../../../../../utils/hooks/useSetForm';
 
 const usuarioSchema = yup.object({
   username: yup.string().required(CAMPO_REQUERIDO),
@@ -25,6 +27,16 @@ const usuarioSchema = yup.object({
 })
 
 const UsuarioFormulario: FC = () => {
+  const { id } = useParams();
+
+  const { data: usuario } = useQuery({
+    queryKey: ['usuario', id],
+    queryFn: () => obtenerUsuarioPorId(id!),
+    enabled: !!id,
+    initialData: null,
+    staleTime: 0,
+  });
+
   const methods = useForm({
     resolver: yupResolver(usuarioSchema),
   });
@@ -38,12 +50,14 @@ const UsuarioFormulario: FC = () => {
 
   const { mutateAsync } = useMutation({
     mutationKey: 'usuario',
-    mutationFn: registrarUsuario
+    mutationFn: (usuario: Usuario) => registrarUsuario(usuario, id)
   });
 
   const guardar = useCallback(async (usuario: Usuario) => {
     await mutateAsync(usuario)
   }, [mutateAsync]);
+
+  useFormSetEffect(usuario, methods.setValue);
 
   return (
     <ContenedorFormulario
@@ -58,12 +72,12 @@ const UsuarioFormulario: FC = () => {
         subtitle="Nombre de usuario para acceder al sistema"
         required
       />
-      <FormField
+      {!id && <FormField
         name="password"
         title="Contraseña"
         subtitle="Contraseña para acceder al sistema"
         required
-      />
+      />}
       <FormField
         name="nombres"
         title="Nombres"

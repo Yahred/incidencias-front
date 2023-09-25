@@ -222,4 +222,5 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
     </AppBar>
   );
 };
+
 export default Appbar;

@@ -1,13 +1,13 @@
 import { FC, memo, JSX } from 'react';
 
 import MuiTable from '@mui/material/Table';
-import Skeleton from '@mui/material/Skeleton';
+import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 
 import useStore from '../../stores/store';
@@ -18,8 +18,8 @@ export interface Cabeceros<T> {
   key?: string;
   label: string;
   transform?: (row: T) => string | Element | JSX.Element;
-  sx?: SxProps,
-  align?: 'left' | 'right' | 'center' | 'inherit' | 'justify'
+  sx?: SxProps;
+  align?: 'left' | 'right' | 'center' | 'inherit' | 'justify';
 }
 
 interface TableProps {
@@ -31,7 +31,7 @@ const Table: FC<TableProps> = ({ cabeceros, rows }) => {
   const isLoading = useStore(({ isFetching: isLoading }) => isLoading);
 
   return (
-    <TableContainer>
+    <TableContainer sx={{ overflowY: 'hidden' }}>
       <MuiTable sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -47,47 +47,38 @@ const Table: FC<TableProps> = ({ cabeceros, rows }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {isLoading &&
-            [1, 2, 3, 4, 5, 6, 7, 8].map((_, index) => (
-              <TableRow key={index}>
-                {cabeceros!.map((_, index) => (
-                  <TableCell
-                    key={index}
-                    component="th"
-                    scope="row"
-                    sx={{ border: 0 }}
-                    align={index === 0 ? 'left' : 'right'}
-                  >
-                    <FadeIn delay={100}>
-                      <Skeleton width="100%" height={30} />
-                    </FadeIn>
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          {!isLoading &&
-            rows!.map((row, index) => (
-              <TableRow
-                key={index}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+          {isLoading && (
+            <TableRow>
+              <TableCell
+                colSpan={cabeceros?.length}
+                sx={{ border: 'none', paddingTop: 0 }}
               >
-                {cabeceros!.map((cabecero, index) => (
-                  <TableCell
-                    key={index}
-                    component="th"
-                    scope="row"
-                    align={cabecero.align || index === 0 ? 'left' : 'right'}
-                    sx={cabecero.sx}
-                  >
-                    <FadeIn>
-                      {cabecero.transform
-                        ? cabecero.transform(row)
-                        : row[cabecero.key!]}
-                    </FadeIn>
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
+                <LinearProgress />
+              </TableCell>
+            </TableRow>
+          )}
+          {!isLoading && rows!.map((row, index) => (
+            <TableRow
+              key={index}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              {cabeceros!.map((cabecero, index) => (
+                <TableCell
+                  key={index}
+                  component="th"
+                  scope="row"
+                  align={cabecero.align || index === 0 ? 'left' : 'right'}
+                  sx={cabecero.sx}
+                >
+                  <FadeIn translate>
+                    {cabecero.transform
+                      ? cabecero.transform(row)
+                      : (row[cabecero.key!] || 'N / A')}
+                  </FadeIn>
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
         </TableBody>
       </MuiTable>
       {!isLoading && !rows?.length && (

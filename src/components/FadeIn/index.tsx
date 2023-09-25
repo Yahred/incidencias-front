@@ -19,7 +19,7 @@ const FadeIn: FC<FadeInProps> = ({ children, translate, delay }) => {
         '@keyframes fadeIn': {
           '0%': {
             opacity: 0,
-            transform: translate ? 'translateY(10px)' : 'none',
+            transform: translate ? 'translateY(20px)' : 'none',
           },
           '100%': {
             opacity: 1,

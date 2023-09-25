@@ -43,8 +43,16 @@ const ContenedorFormulario: FC<ContenedorFormularioProps> = ({
   );
 
   const handleRegresar = useCallback(() => {
+    const { formState: { isDirty } } = methods;
+
+    if (!isDirty) {
+      navigate('../');
+      return;
+    }
+
     setIsDialogoOpen(true);
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate, methods, methods.formState.isDirty]);
 
   const handleDialogoClose = useCallback((confirmado: boolean) => {
     setIsDialogoOpen(false);

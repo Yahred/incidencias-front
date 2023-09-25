@@ -2,9 +2,8 @@ import { Area } from './Area';
 
 export interface Caracteristica {
   nombre: string;
-  descripcion?: string;
-  magnitud?: string;
-  tipo?: 'Number' | 'String' | 'ObjectId';
+  unidad?: string;
+  requerida: boolean;
 }
 
 export interface Categoria {

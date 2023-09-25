@@ -24,7 +24,7 @@ interface FormSelectProps {
     'disabled' | 'setValueAs' | 'valueAsNumber' | 'valueAsDate'
   >;
   label?: string;
-  defaultValue?: number | string;
+  defaultValue?: number | string | boolean;
   bindLabel?: string;
   bindValue?: string;
   title?: string;

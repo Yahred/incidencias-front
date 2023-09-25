@@ -36,6 +36,7 @@ const FormField: FC<FormFieldProps> = ({
   fullWidth,
   type,
   required,
+  rules,
 }) => {
   const {
     control,
@@ -47,6 +48,7 @@ const FormField: FC<FormFieldProps> = ({
       name={name}
       defaultValue={defaultValue}
       control={control}
+      rules={rules}
       render={({ field }) => (
         <Box display="flex" flexDirection="column" gap="4px">
           <Box display="flex" flexDirection="column">
