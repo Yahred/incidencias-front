@@ -1,13 +1,13 @@
-export const SIDEBAR_CATALOGOS = [
+import { ISidebarItem } from "../interfaces/SidebarItem";
+
+export const SIDEBAR_CATALOGOS: ISidebarItem[] = [
   {
     nombre: 'Usuarios',
     ruta: '/',
     icono: 'person'
   },
   {
-    nombre: 'Recursos',
-    ruta: '/recursos',
-    icono: 'devices'
+    divider: true,
   },
   {
     nombre: 'Edificios',
@@ -15,9 +15,32 @@ export const SIDEBAR_CATALOGOS = [
     icono: 'domain_add'
   },
   {
-    nombre: '',
-    ruta: '',
-    icono: ''
+    nombre: 'Salones',
+    ruta: '/salones',
+    icono: 'class'
+  },
+  {
+    divider: true,
+  },
+  {
+    nombre: 'Recursos',
+    ruta: '/recursos',
+    icono: 'devices'
+  },
+  {
+    nombre: 'Modelos',
+    ruta: '/modelos',
+    icono: 'settings'
+  },
+  {
+    nombre: 'Categorías',
+    ruta: '/categorias',
+    icono: 'subject'
+  },
+  {
+    nombre: 'Áreas',
+    ruta: '/areas',
+    icono: 'category'
   },
 ]
 

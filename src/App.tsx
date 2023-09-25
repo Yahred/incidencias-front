@@ -18,7 +18,7 @@ function App() {
 
   return (
     <Layout>
-      <ToastContainer />
+      <ToastContainer limit={1} />
       <Outlet />
     </Layout>
   );

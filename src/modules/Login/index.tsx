@@ -1,16 +1,17 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
 
 import FormularioLogin from './components/FormularioLogin';
 import Landscape from './components/Landscape';
 
+import autenticarUsuario from '../../utils/functions/autenticarUsuario';
 import { LoginForm } from './interfaces';
-import { useNavigate } from 'react-router-dom';
-import { useMutation } from 'react-query';
 import { iniciarSesion } from './services';
 
 function Login() {
@@ -32,7 +33,7 @@ function Login() {
       if (recordar) {
         localStorage.setItem('token', JSON.stringify(token!));
       } else {
-        sessionStorage.setItem('token', token);
+        sessionStorage.setItem('token', JSON.stringify(token!));
       }
 
       navigate('/');
@@ -40,6 +41,11 @@ function Login() {
       setErrorLogin(true);
     }
   },[recordar, navigate, mutateAsync]);
+
+  useEffect(() => {
+    const autenticado = autenticarUsuario();
+    if (autenticado) navigate('/');
+  }, [navigate]);
 
   return (
     <Box

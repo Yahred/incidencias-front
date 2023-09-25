@@ -1,11 +1,11 @@
 import { FC } from 'react';
 
-import { Cabeceros } from '../../../../components/Table';
+import { Cabeceros } from '../../../../../components/Table';
 
-import { Usuario } from '../../../../interfaces/Usuario';
-import { obtenerUsuarios } from '../../services';
-import { TipoUsuario } from '../../../../interfaces/TipoUsuario';
-import Catalogo from '../../components/Catalogo';
+import { Usuario } from '../../../../../interfaces/Usuario';
+import { eliminarUsuario, obtenerUsuariosPaginado } from '../../../services';
+import { TipoUsuario } from '../../../../../interfaces/TipoUsuario';
+import Catalogo from '../../../components/Catalogo';
 
 const cabeceros: Cabeceros<Usuario>[] = [
   {
@@ -27,7 +27,8 @@ const Usuarios: FC = () => {
   return (
     <Catalogo
       cabeceros={cabeceros}
-      queryFn={obtenerUsuarios}
+      queryFn={obtenerUsuariosPaginado}
+      deleteFn={eliminarUsuario}
       agregarText="Agregar usuario"
       title="Usuarios"
       placeholderBusqueda="Buscar usuario"

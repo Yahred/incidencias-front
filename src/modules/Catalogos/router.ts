@@ -1,15 +1,22 @@
 import { lazy } from 'react';
 
-import Catalogo from './';
 import { Outlet } from 'react-router-dom';
 
-const Usuarios = lazy(() => import('./pages/Usuarios'));
+import Catalogo from './';
+import Categorias from './pages/Categorias/Catalogo';
+import CategoriaFormulario from './pages/Categorias/Formulario';
+
+const Usuarios = lazy(() => import('./pages/Usuarios/Catalogo'));
 const Recursos = lazy(() => import('./pages/Recursos'));
 const Modelos = lazy(() => import('./pages/Modelos'));
-const Edificios = lazy(() => import('./pages/Edificios'));
+const Edificios = lazy(() => import('./pages/Edificios/Catalogo'));
+const Salones = lazy(() => import('./pages/Salones/Catalogo'));
+const Areas = lazy(() => import('./pages/Areas/Catalogo'));
 
-const EdificioFormulario = lazy(() => import('./pages/EdificiosFormulario'))
-const UsuarioFormulario = lazy(() => import('./pages/UsuarioFormulario'));
+const EdificioFormulario = lazy(() => import('./pages/Edificios/Formulario'));
+const UsuarioFormulario = lazy(() => import('./pages/Usuarios/Formulario'));
+const SalonFormulario = lazy(() => import('./pages/Salones/Formulario'));
+const AreaFormulario = lazy(() => import('./pages/Areas/Formulario'));
 
 const router = {
   path: 'catalogos',
@@ -25,6 +32,10 @@ const router = {
         },
         {
           path: 'formulario',
+          Component: UsuarioFormulario,
+        },
+        {
+          path: ':id',
           Component: UsuarioFormulario,
         },
       ],
@@ -47,10 +58,68 @@ const router = {
         },
         {
           path: 'formulario',
-          Component: EdificioFormulario
-        }
-      ]
-    }
+          Component: EdificioFormulario,
+        },
+        {
+          path: ':id',
+          Component: EdificioFormulario,
+        },
+      ],
+    },
+    {
+      path: 'salones',
+      Component: Outlet,
+      children: [
+        {
+          path: '',
+          Component: Salones,
+        },
+        {
+          path: 'formulario',
+          Component: SalonFormulario,
+        },
+        {
+          path: ':id',
+          Component: SalonFormulario,
+        },
+      ],
+    },
+    {
+      path: 'areas',
+      Component: Outlet,
+      children: [
+        {
+          path: '',
+          Component: Areas,
+        },
+        {
+          path: 'formulario',
+          Component: AreaFormulario,
+        },
+        {
+          path: ':id',
+          Component: AreaFormulario,
+        },
+      ],
+    },
+    {
+      path: 'categorias',
+      Component: Outlet,
+      children: [
+        {
+          path: '',
+          Component: Categorias,
+        },
+        {
+          path: 'formulario',
+          Component: CategoriaFormulario,
+        },
+        {
+          path: ':id',
+          Component: CategoriaFormulario,
+        },
+      ],
+    },
   ],
 };
 

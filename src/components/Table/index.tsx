@@ -1,4 +1,4 @@
-import { FC, ReactNode, memo } from 'react';
+import { FC, memo, JSX } from 'react';
 
 import MuiTable from '@mui/material/Table';
 import Skeleton from '@mui/material/Skeleton';
@@ -12,11 +12,14 @@ import Typography from '@mui/material/Typography';
 
 import useStore from '../../stores/store';
 import FadeIn from '../FadeIn';
+import { SxProps } from '@mui/material';
 
 export interface Cabeceros<T> {
   key?: string;
   label: string;
-  transform?: (row: T) => string | ReactNode;
+  transform?: (row: T) => string | Element | JSX.Element;
+  sx?: SxProps,
+  align?: 'left' | 'right' | 'center' | 'inherit' | 'justify'
 }
 
 interface TableProps {
@@ -25,7 +28,7 @@ interface TableProps {
 }
 
 const Table: FC<TableProps> = ({ cabeceros, rows }) => {
-  const isLoading = useStore(({ isLoading }) => isLoading);
+  const isLoading = useStore(({ isFetching: isLoading }) => isLoading);
 
   return (
     <TableContainer>
@@ -73,7 +76,8 @@ const Table: FC<TableProps> = ({ cabeceros, rows }) => {
                     key={index}
                     component="th"
                     scope="row"
-                    align={index === 0 ? 'left' : 'right'}
+                    align={cabecero.align || index === 0 ? 'left' : 'right'}
+                    sx={cabecero.sx}
                   >
                     <FadeIn>
                       {cabecero.transform

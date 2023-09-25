@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import { UseFormReturn } from 'react-hook-form';
+
 import Alert from '@mui/material/Alert';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -11,10 +13,10 @@ import Checkbox from '../../../../components/Checkbox';
 import SubmitButton from '../../../../components/SubmitButton';
 
 import { CAMPO_REQUERIDO } from '../../../../constants/validaciones';
-import { UseFormReturn } from 'react-hook-form';
+import { LoginForm } from '../../interfaces';
 
 interface FormularioLoginProps {
-  onSubmit: (data: { usuario: string; password: string }) => void;
+  onSubmit: (data: LoginForm) => void;
   methods: UseFormReturn<any>;
   recordar: boolean;
   onRecordarChange: (value: boolean) => void;

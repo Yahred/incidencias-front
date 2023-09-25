@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 
-import Sidebar from '../../components/Sidebar';
+import Sidebar from './components/Sidebar';
 
 const Catalogos: FC = () => {
   return (

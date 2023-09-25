@@ -147,6 +147,7 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
           {APPBAR_MENU_ITEMS.map((item) =>
             item.ruta === moduloSeleccionado ? (
               <Box
+                key={item.clave}
                 sx={{
                   height: '100%',
                   borderBottom: '3px solid',
@@ -167,6 +168,7 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
               </Box>
             ) : (
               <Box
+                key={item.clave}
                 sx={{
                   height: '100%',
                   display: 'grid',

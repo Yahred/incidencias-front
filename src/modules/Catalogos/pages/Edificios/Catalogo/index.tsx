@@ -1,10 +1,10 @@
 import { FC } from 'react';
 
-import Catalogo from '../../components/Catalogo';
-import { Cabeceros } from '../../../../components/Table';
+import Catalogo from '../../../components/Catalogo';
+import { Cabeceros } from '../../../../../components/Table';
 
-import { obtenerEdificios } from '../../services/edificios';
-import { Edificio } from '../../../../interfaces/Edificio';
+import { obtenerEdificiosPaginado } from '../../../services/edificios';
+import { Edificio } from '../../../../../interfaces/Edificio';
 
 const cabeceros: Cabeceros<Edificio>[] = [
   {
@@ -22,7 +22,7 @@ const Edificios: FC = () => {
   return (
     <Catalogo
       cabeceros={cabeceros}
-      queryFn={obtenerEdificios}
+      queryFn={obtenerEdificiosPaginado}
       agregarText="Agregar edificio"
       title="Edificios"
       placeholderBusqueda="Buscar edificio"

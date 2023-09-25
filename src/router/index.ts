@@ -6,7 +6,7 @@ import Login from '../modules/Login';
 import App from '../App';
 import Dashboard from '../modules/Dashboard';
 import Catalogos from '../modules/Catalogos';
-import Usuarios from '../modules/Catalogos/pages/Usuarios';
+import Usuarios from '../modules/Catalogos/pages/Usuarios/Catalogo';
 
 const router = createBrowserRouter([
   {

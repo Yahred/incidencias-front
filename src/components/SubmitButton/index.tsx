@@ -22,7 +22,7 @@ const SubmitButton: FC<SubmitButtonProps> = ({
   width,
   color,
 }) => {
-  const isLoading = useStore(({ isLoading }) => isLoading);
+  const isLoading = useStore(({ isMutating: isLoading }) => isLoading);
 
   return (
     <Button

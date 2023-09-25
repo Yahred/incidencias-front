@@ -5,13 +5,13 @@ import { useMutation, useQuery } from 'react-query';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import ContenedorFormulario from '../../components/ContenedorFormulario';
-import FormField from '../../../../components/FormField';
-import FormSelect from '../../../../components/FormSelect';
+import ContenedorFormulario from '../../../components/ContenedorFormulario';
+import FormField from '../../../../../components/FormField';
+import FormSelect from '../../../../../components/FormSelect';
 
-import { obtenerTiposUsuario, registrarUsuario } from '../../services';
-import { Usuario } from '../../../../interfaces/Usuario';
-import { CAMPO_REQUERIDO, EMAIL_INVALIDO } from '../../../../constants/validaciones';
+import { obtenerTiposUsuario, registrarUsuario } from '../../../services';
+import { Usuario } from '../../../../../interfaces/Usuario';
+import { CAMPO_REQUERIDO, EMAIL_INVALIDO } from '../../../../../constants/validaciones';
 
 const usuarioSchema = yup.object({
   username: yup.string().required(CAMPO_REQUERIDO),

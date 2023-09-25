@@ -1,13 +1,17 @@
 import axios from "../../../config/axios";
-import { EDIFICIOS, obtenerPaginado } from "../../../constants/uris";
+import { EDIFICIOS, obtenerPaginado, param } from "../../../constants/uris";
 import { Edificio } from "../../../interfaces/Edificio";
 import { Paginado } from "../../../interfaces/Paginado";
 
-export const obtenerEdificios = (q: string, pagina?: string) => axios.get<unknown, Paginado<Edificio>>(obtenerPaginado(EDIFICIOS), {
+export const obtenerEdificiosPaginado = (q: string, pagina?: string) => axios.get<unknown, Paginado<Edificio>>(obtenerPaginado(EDIFICIOS), {
   params: {
     q,
     pagina
   }
-})
+});
+
+export const obtenerEdicios = () => axios.get<unknown, Edificio[]>(EDIFICIOS)
 
 export const registrarEdificio = (edificio: Edificio) => axios.post(EDIFICIOS, edificio);
+
+export const eliminarEdificio = (id: string) => axios.delete(param(EDIFICIOS, id));

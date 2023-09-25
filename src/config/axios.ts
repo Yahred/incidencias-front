@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 
 import store from '../stores/store';
 import obtenerMensajeError from '../utils/functions/obtenerMensajesError';
+import { MAP_ESTATUS_MENSAJE } from '../constants/general';
 
 const { VITE_API_BASE_URL } = import.meta.env;
 
@@ -18,18 +19,28 @@ const axios = ax.create({
 });
 
 axios.interceptors.request.use((req) => {
-  const token = localStorage.getItem('token');
+  const token = JSON.parse(localStorage.getItem('token')! || sessionStorage.getItem('token')!);
   req.headers.set('token', token);
-  store.getState().setLoadingOn();
+  console.log(req.method)
+  if (req.method === 'get') {
+    store.getState().setLoadingOn();
+  }
+  else if (['post', 'put', 'delete'].includes(req.method!)) {
+    store.getState().setMutatingOn();
+  }
   return req;
 });
 
 axios.interceptors.response.use(
   ({ data, status }) => {
-    if (status === 201) {
-      toast.success('Recursos creados correctamente');
+    const mensaje = MAP_ESTATUS_MENSAJE[status];
+
+    if (mensaje) {
+      toast.success(mensaje);
     }
+
     store.getState().setLoadingOff();
+    store.getState().setMutatingOff();
     return data;
   },
   (error) => {

@@ -8,3 +8,9 @@ export const MensajesToast = {
   EXITO_ELIMINACION: 'Recursos eliminados correctamente',
   CAMPO_DUPLICADO: (campo: string) => `El ${campo} ya existe`,
 }
+
+export const MAP_ESTATUS_MENSAJE = {
+  201: MensajesToast.EXITO,
+  202: MensajesToast.EXITO_ACTUALIZACION,
+  204: MensajesToast.EXITO_ELIMINACION,
+}
