@@ -1,7 +1,7 @@
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 
 import { useForm } from 'react-hook-form';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQueries } from 'react-query';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
@@ -14,10 +14,16 @@ import FormField from '../../../../../components/FormField';
 import FormSelect from '../../../../../components/FormSelect';
 import Table, { Cabeceros } from '../../../../../components/Table';
 
-import { CAMPO_REQUERIDO, CARACTERISTICA_REPETIDA } from '../../../../../constants/validaciones';
+import {
+  CAMPO_REQUERIDO,
+  CARACTERISTICA_REPETIDA,
+} from '../../../../../constants/validaciones';
 import { obtenerAreas } from '../../../services/areas';
 import { Caracteristica, Categoria } from '../../../../../interfaces/Categoria';
-import { obtenerCategoriaPorId, registrarCategoria } from '../../../services/categorias';
+import {
+  obtenerCategoriaPorId,
+  registrarCategoria,
+} from '../../../services/categorias';
 import { useParams } from 'react-router-dom';
 import useFormSetEffect from '../../../../../utils/hooks/useSetForm';
 
@@ -49,7 +55,7 @@ const cabeceros: Cabeceros<Caracteristica>[] = [
   },
   {
     label: 'Obligatoria',
-    transform: ({ requerida }) => requerida ? 'OBLIGATORIA' : 'OPCIONAL'
+    transform: ({ requerida }) => (requerida ? 'OBLIGATORIA' : 'OPCIONAL'),
   },
 ];
 
@@ -64,43 +70,49 @@ const CategoriaFormulario: FC = () => {
 
   const methodsCaracteristicas = useForm();
 
-  const { data: categoria } = useQuery({
-    queryKey: [id],
-    queryFn: () => obtenerCategoriaPorId(id!),
-    enabled: !!id,
-    initialData: {},
-  });
-
-  const { data: areas } = useQuery({
-    queryKey: 'areas',
-    queryFn: obtenerAreas,
-    initialData: [],
-  });
+  const [{ data: areas }, { data: categoria }] = useQueries([
+    { queryKey: 'areas', queryFn: obtenerAreas, initialData: [] },
+    {
+      queryKey: [id],
+      queryFn: () => obtenerCategoriaPorId(id!),
+      enabled: !!id,
+    },
+  ]);
 
   const { mutateAsync } = useMutation({
     mutationKey: 'categoria',
     mutationFn: (categoria: Categoria) => registrarCategoria(categoria, id),
   });
 
-  const agregarCaracteristica = useCallback((caracteristica: Caracteristica) => {
-    setCaracteristicas((prev) => [...prev, caracteristica]);
-    methodsCaracteristicas.reset();
-  },[methodsCaracteristicas]);
+  const agregarCaracteristica = useCallback(
+    (caracteristica: Caracteristica) => {
+      setCaracteristicas((prev) => [...prev, caracteristica]);
+      methodsCaracteristicas.reset();
+    },
+    [methodsCaracteristicas]
+  );
 
-  const validarCaracteristicaRepetida = useCallback((nombre: string) => {
-    const repetida = caracteristicas.some(({ nombre: n }) => n === nombre);
-    if (repetida) return CARACTERISTICA_REPETIDA;
-  }, [caracteristicas]);
+  const validarCaracteristicaRepetida = useCallback(
+    (nombre: string) => {
+      const repetida = caracteristicas.some(({ nombre: n }) => n === nombre);
+      if (repetida) return CARACTERISTICA_REPETIDA;
+    },
+    [caracteristicas]
+  );
 
-  const guardar = useCallback(async (categoria: Categoria) => {
-    await mutateAsync({ ...categoria, caracteristicas });
-  },[mutateAsync, caracteristicas]);
+  const guardar = useCallback(
+    async (categoria: Categoria) => {
+      await mutateAsync({ ...categoria, caracteristicas });
+    },
+    [mutateAsync, caracteristicas]
+  );
 
   useFormSetEffect(categoria, methods.setValue);
 
   useEffect(() => {
-    if (categoria.caracteristicas) setCaracteristicas(categoria.caracteristicas);
-  }, [categoria])
+    if (categoria?.caracteristicas)
+      setCaracteristicas(categoria?.caracteristicas);
+  }, [categoria]);
 
   return (
     <>
@@ -136,7 +148,7 @@ const CategoriaFormulario: FC = () => {
           gap: 2,
           display: 'grid',
           gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-          py: 4
+          py: 4,
         }}
       >
         <FormField
@@ -145,7 +157,7 @@ const CategoriaFormulario: FC = () => {
           subtitle="Nombre de la característca"
           rules={{
             validate: validarCaracteristicaRepetida,
-            required: CAMPO_REQUERIDO
+            required: CAMPO_REQUERIDO,
           }}
           required
         />
@@ -161,7 +173,11 @@ const CategoriaFormulario: FC = () => {
           defaultValue={false}
           options={itemsSelectObligatorio}
         />
-        <Box display='flex' justifyContent='flex-end' gridColumn='span 3 / span 3'>
+        <Box
+          display="flex"
+          justifyContent="flex-end"
+          gridColumn="span 3 / span 3"
+        >
           <Button type="submit">Agregar característica</Button>
         </Box>
       </Form>

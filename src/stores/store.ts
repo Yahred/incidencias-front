@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 
+import { Usuario } from '../interfaces/Usuario';
+
 interface IStore {
   isFetching: boolean;
   setLoadingOn: () => void;
@@ -8,6 +10,8 @@ interface IStore {
   isMutating: boolean;
   setMutatingOn: () => void;
   setMutatingOff: () => void;
+  usuario: Usuario | null,
+  setUsuario: (usuario: Usuario) => void
 }
 
 const useStore = create(
@@ -18,6 +22,8 @@ const useStore = create(
     isMutating: false,
     setMutatingOn: () => set({ isMutating: true }),
     setMutatingOff: () => set({ isMutating: false }),
+    usuario: null,
+    setUsuario: (usuario: Usuario) => set({ usuario }),
   }))
 );
 

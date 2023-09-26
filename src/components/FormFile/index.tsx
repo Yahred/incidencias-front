@@ -3,6 +3,7 @@ import { FC, useCallback, useRef } from 'react';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import FormHelperText from '@mui/material/FormHelperText';
 import { styled } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -11,13 +12,14 @@ interface FormFile {
   title?: string;
   subtitle?: string;
   required?: boolean;
+  accept?: string;
 }
 
 const InputHidden = styled('input')({
   display: 'none',
 });
 
-const FormFile: FC<FormFile> = ({ name, title, subtitle, required }) => {
+const FormFile: FC<FormFile> = ({ name, title, subtitle, required, accept }) => {
   const {
     control,
     formState: { errors },
@@ -42,9 +44,11 @@ const FormFile: FC<FormFile> = ({ name, title, subtitle, required }) => {
             {...field}
             ref={fileRef}
             type="file"
+            accept={accept}
             value={value?.fileName}
             onChange={(event) => {
-              onChange(event?.target?.files[0]);
+              if (!event.target.files) return;
+              onChange(event.target.files[0]);
             }}
           />
           <Stack gap="4px">
@@ -55,6 +59,9 @@ const FormFile: FC<FormFile> = ({ name, title, subtitle, required }) => {
             <Button sx={{ backgroundColor: 'gray' }} onClick={handleClick}>
               Cargar
             </Button>
+            {!!errors[name] && (
+              <FormHelperText>{(errors[name] as any)?.message}</FormHelperText>
+            )}
           </Stack>
         </>
       )}

@@ -18,7 +18,7 @@ export const obtenerCategoriaPorId = (id: string) =>
   axios.get<unknown, Categoria>(param(CATEGORIAS, id));
 
 export const registrarCategoria = (categoria: Categoria, id?: string) =>
-  id ? axios.put(param(CATEGORIAS, id)) : axios.post(CATEGORIAS, categoria);
+  id ? axios.put(param(CATEGORIAS, id), categoria) : axios.post(CATEGORIAS, categoria);
 
 export const eliminarCategoria = (id: string) =>
   axios.delete(param(CATEGORIAS, id));

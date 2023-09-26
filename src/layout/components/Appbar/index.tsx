@@ -1,5 +1,7 @@
 import { FC, useCallback, useMemo, useState } from 'react';
 
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,17 +13,21 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
+import useStore from '../../../stores/store';
 import { Avatar, SxProps, Tooltip } from '@mui/material';
 import { APPBAR_MENU_ITEMS } from '../../../constants/menu';
-import { useLocation, useNavigate } from 'react-router-dom';
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Perfil', 'Dashboard', 'Cerrar sesión'];
 
 interface AppbarProps {
   sx?: SxProps;
 }
 
 const Appbar: FC<AppbarProps> = ({ sx }) => {
+  const usuario = useStore(({ usuario }) => usuario);
+
+  console.log('pq', usuario)
+
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -47,6 +53,21 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
       navigate(ruta);
     }
   }, [navigate]);
+
+  const cerrarSesion = useCallback(() => {
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
+    navigate('/login');
+  }, [navigate]);
+
+  const handleMenuClick = useCallback((opcion: string) => {
+    setAnchorElUser(null);
+    const opciones = {
+      'Cerrar sesión': cerrarSesion,
+    }
+    const accion = opciones[opcion]
+    if (accion) accion();
+  }, [cerrarSesion]);
 
   return (
     <AppBar
@@ -83,7 +104,6 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
-            onClick={() => setIsSidebarOpen(true)}
             color="inherit"
           >
             <MenuIcon />
@@ -192,7 +212,7 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
         <Box sx={{ flexGrow: 0 }}>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <Avatar alt="Remy Sharp" src={usuario?.avatar} />
             </IconButton>
           </Tooltip>
           <Menu
@@ -212,7 +232,7 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
             onClose={handleCloseUserMenu}
           >
             {settings.map((setting) => (
-              <MenuItem key={setting} onClick={handleCloseUserMenu}>
+              <MenuItem key={setting} onClick={() => handleMenuClick(setting)}>
                 <Typography textAlign="center">{setting}</Typography>
               </MenuItem>
             ))}

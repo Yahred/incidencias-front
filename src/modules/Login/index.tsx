@@ -13,9 +13,11 @@ import Landscape from './components/Landscape';
 import autenticarUsuario from '../../utils/functions/autenticarUsuario';
 import { LoginForm } from './interfaces';
 import { iniciarSesion } from './services';
+import useStore from '../../stores/store';
 
 function Login() {
   const navigate = useNavigate();
+  const setUsuario = useStore(({ setUsuario }) =>  setUsuario);
   const methods = useForm<LoginForm>();
 
   const { mutateAsync } = useMutation({
@@ -28,7 +30,7 @@ function Login() {
 
   const login = useCallback(async (data: LoginForm) => {
     try {
-      const { token } = await mutateAsync(data);
+      const { token, usuario } = await mutateAsync(data);
 
       if (recordar) {
         localStorage.setItem('token', JSON.stringify(token!));
@@ -36,11 +38,12 @@ function Login() {
         sessionStorage.setItem('token', JSON.stringify(token!));
       }
 
+      setUsuario(usuario);
       navigate('/');
     } catch (error) {
       setErrorLogin(true);
     }
-  },[recordar, navigate, mutateAsync]);
+  }, [recordar, navigate, mutateAsync, setUsuario]);
 
   useEffect(() => {
     const autenticado = autenticarUsuario();
