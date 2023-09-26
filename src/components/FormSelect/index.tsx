@@ -31,6 +31,7 @@ interface FormSelectProps {
   subtitle?: string;
   renderTitle?: ReactNode;
   required?: boolean;
+  disabled?: boolean;
 }
 
 const FormSelect: FC<FormSelectProps> = ({
@@ -44,6 +45,7 @@ const FormSelect: FC<FormSelectProps> = ({
   title,
   subtitle,
   required,
+  disabled,
 }) => {
   const {
     control,
@@ -72,6 +74,7 @@ const FormSelect: FC<FormSelectProps> = ({
               {...field}
               error={!!errors[name]}
               label={label}
+              disabled={disabled}
               size="small"
             >
               {options.map(
@@ -99,6 +102,7 @@ FormSelect.defaultProps = {
   bindValue: 'id',
   options: [],
   defaultValue: '',
+  disabled: false,
 };
 
 export default FormSelect;

@@ -11,8 +11,12 @@ export const obtenerCategoriasPaginado = (q: string, pagina?: string) =>
     },
   });
 
-export const obtenerCategorias = () =>
-  axios.get<unknown, Categoria[]>(CATEGORIAS);
+export const obtenerCategorias = (area?: string) =>
+  axios.get<unknown, Categoria[]>(CATEGORIAS, {
+    params: {
+      area,
+    }
+  });
 
 export const obtenerCategoriaPorId = (id: string) =>
   axios.get<unknown, Categoria>(param(CATEGORIAS, id));

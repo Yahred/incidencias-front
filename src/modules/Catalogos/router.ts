@@ -5,10 +5,11 @@ import { Outlet } from 'react-router-dom';
 import Catalogo from './';
 import Categorias from './pages/Categorias/Catalogo';
 import CategoriaFormulario from './pages/Categorias/Formulario';
+import ModeloFormulario from './pages/Modelos/Formulario';
 
 const Usuarios = lazy(() => import('./pages/Usuarios/Catalogo'));
 const Recursos = lazy(() => import('./pages/Recursos'));
-const Modelos = lazy(() => import('./pages/Modelos'));
+const Modelos = lazy(() => import('./pages/Modelos/Catalogo'));
 const Edificios = lazy(() => import('./pages/Edificios/Catalogo'));
 const Salones = lazy(() => import('./pages/Salones/Catalogo'));
 const Areas = lazy(() => import('./pages/Areas/Catalogo'));
@@ -46,7 +47,21 @@ const router = {
     },
     {
       path: 'modelos',
-      Component: Modelos,
+      Component: Outlet,
+      children: [
+        {
+          path: '',
+          Component: Modelos,
+        },
+        {
+          path: 'formulario',
+          Component: ModeloFormulario,
+        },
+        {
+          path: ':id',
+          Component: ModeloFormulario,
+        },
+      ],
     },
     {
       path: 'edificios',

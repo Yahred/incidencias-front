@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect } from 'react';
+import { FC, useCallback } from 'react';
 
 import { useForm } from 'react-hook-form';
 import { useMutation, useQueries } from 'react-query';
@@ -28,7 +28,7 @@ const usuarioSchema = yup.object({
   id: yup.string(),
   username: yup.string().required(CAMPO_REQUERIDO),
   password: yup.string().when('id', {
-    is: (id: string) => id === undefined,
+    is: (id: string) => !id,
     then: () => yup.string().required(CAMPO_REQUERIDO)
   }),
   nombres: yup.string().required(CAMPO_REQUERIDO),
@@ -74,10 +74,6 @@ const UsuarioFormulario: FC = () => {
     },
     [mutateAsync]
   );
-
-  useEffect(() => {
-    if (!id) return;
-  }, [id]);
 
   useFormSetEffect(usuario, methods.setValue);
 
