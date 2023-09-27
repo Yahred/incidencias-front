@@ -5,7 +5,7 @@ import { useMutation, useQuery } from 'react-query';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import ContenedorFormulario from '../../../components/ContenedorFormulario';
+import ContenedorFormularioC from '../../../components/ContenedorFormulario';
 import FormField from '../../../../../components/FormField';
 import FormSelect from '../../../../../components/FormSelect';
 
@@ -41,7 +41,7 @@ const SalonFormulario: FC = () => {
   }, [mutateAsync]);
 
   return (
-    <ContenedorFormulario
+    <ContenedorFormularioC
       title="Registro de salón"
       subtitle="Da de alta un nuevo salón en el sistema"
       methods={methods}
@@ -64,7 +64,7 @@ const SalonFormulario: FC = () => {
         subtitle='Selecciona el edificio al que pertenece el salón'
         options={edificios!}
       />
-    </ContenedorFormulario>
+    </ContenedorFormularioC>
   );
 };
 

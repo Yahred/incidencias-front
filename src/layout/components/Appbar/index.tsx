@@ -26,8 +26,6 @@ interface AppbarProps {
 const Appbar: FC<AppbarProps> = ({ sx }) => {
   const usuario = useStore(({ usuario }) => usuario);
 
-  console.log('pq', usuario)
-
   const navigate = useNavigate();
   const { pathname } = useLocation();
 

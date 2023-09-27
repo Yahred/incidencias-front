@@ -1,17 +1,19 @@
+import { Area } from "./Area";
 import { Categoria } from "./Categoria";
 
-export interface ICaracteristicaModelo {
+export interface CaracteristicaModelo {
   nombre: string;
   obligatoria: boolean;
   valor?: string;
   unidad?: string;
-  modelo?: IModelo
+  modelo?: Modelo
 }
 
-export interface IModelo {
+export interface Modelo {
   nombre: string;
   descripcion?: string;
-  categoria: Categoria,
-  caracteristicas?: ICaracteristicaModelo[]
+  categoria: Categoria | string,
+  area?: Area | string,
+  caracteristicas?: CaracteristicaModelo[]
   foto?: string;
 }

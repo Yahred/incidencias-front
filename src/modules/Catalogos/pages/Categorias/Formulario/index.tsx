@@ -8,7 +8,7 @@ import * as yup from 'yup';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
-import ContenedorFormulario from '../../../components/ContenedorFormulario';
+import ContenedorFormularioC from '../../../components/ContenedorFormulario';
 import Form from '../../../../../components/Form';
 import FormField from '../../../../../components/FormField';
 import FormSelect from '../../../../../components/FormSelect';
@@ -116,7 +116,7 @@ const CategoriaFormulario: FC = () => {
 
   return (
     <>
-      <ContenedorFormulario
+      <ContenedorFormularioC
         title="Registro de categoría"
         subtitle="Da de alta una nueva categoría en el sistema"
         methods={methods}
@@ -139,7 +139,7 @@ const CategoriaFormulario: FC = () => {
           subtitle="Selecciona el área al que pertenece la categoría"
           options={areas!}
         />
-      </ContenedorFormulario>
+      </ContenedorFormularioC>
       <Form
         methods={methodsCaracteristicas}
         onSubmit={agregarCaracteristica}

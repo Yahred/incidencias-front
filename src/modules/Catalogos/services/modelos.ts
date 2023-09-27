@@ -1,14 +1,10 @@
 import axios from '../../../config/axios';
-import {
-  MODELOS,
-  obtenerPaginado,
-  param,
-} from '../../../constants/uris';
+import { MODELOS, obtenerPaginado, param } from '../../../constants/uris';
+import { Modelo } from '../../../interfaces/Modelo';
 import { Paginado } from '../../../interfaces/Paginado';
-import { Usuario } from '../../../interfaces/Usuario';
 
 export const obtenerModelosPaginado = (q: string, pagina?: string) =>
-  axios.get<unknown, Paginado<Usuario>>(obtenerPaginado(MODELOS), {
+  axios.get<unknown, Paginado<Modelo>>(obtenerPaginado(MODELOS), {
     params: {
       q,
       pagina,
@@ -16,10 +12,15 @@ export const obtenerModelosPaginado = (q: string, pagina?: string) =>
   });
 
 export const obtenerModeloPorId = (id: string) =>
-  axios.get<unknown, Usuario>(param(MODELOS, id));
+  axios.get<unknown, Modelo>(param(MODELOS, id));
 
-export const registrarModelo = (usuario: FormData, id?: string) =>
-  id ? axios.put(param(MODELOS, id), usuario, { headers: { "Content-Type": "multipart/form-data" } }) : axios.post(MODELOS, usuario);
+export const registrarModelo = (modelo: FormData, id?: string) =>
+  id
+    ? axios.put(param(MODELOS, id), modelo, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+    : axios.post(MODELOS, modelo, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
 
-export const eliminarModelo = (id: string) =>
-  axios.delete(param(MODELOS, id));
+export const eliminarModelo = (id: string) => axios.delete(param(MODELOS, id));

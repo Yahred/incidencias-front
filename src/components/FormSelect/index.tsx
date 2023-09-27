@@ -15,6 +15,7 @@ import {
   useFormContext,
 } from 'react-hook-form';
 import useCommonControlRules from '../../utils/hooks/useControlRules';
+import { SxProps } from '@mui/material';
 
 interface FormSelectProps {
   name: string;
@@ -32,6 +33,8 @@ interface FormSelectProps {
   renderTitle?: ReactNode;
   required?: boolean;
   disabled?: boolean;
+  sx?: SxProps;
+  containerSx?: SxProps;
 }
 
 const FormSelect: FC<FormSelectProps> = ({
@@ -46,6 +49,8 @@ const FormSelect: FC<FormSelectProps> = ({
   subtitle,
   required,
   disabled,
+  sx,
+  containerSx,
 }) => {
   const {
     control,
@@ -61,7 +66,7 @@ const FormSelect: FC<FormSelectProps> = ({
       control={control}
       defaultValue={defaultValue}
       render={({ field }) => (
-        <Box display="flex" flexDirection="column" gap="4px">
+        <Box sx={containerSx} display="flex" flexDirection="column" gap="4px">
           <Box display="flex" flexDirection="column">
             <Typography variant="body1">
               {`${title} ${required ? '*' : ''}`}{' '}
@@ -72,6 +77,7 @@ const FormSelect: FC<FormSelectProps> = ({
             <InputLabel>{label}</InputLabel>
             <Select
               {...field}
+              sx={sx}
               error={!!errors[name]}
               label={label}
               disabled={disabled}

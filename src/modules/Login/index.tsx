@@ -62,7 +62,8 @@ function Login() {
       <Grid container height="100%">
         <Grid
           item
-          xs={4}
+          xs={12}
+          lg={4}
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -76,7 +77,7 @@ function Login() {
           />
         </Grid>
 
-        <Grid item xs={8} display="flex">
+        <Grid item md={8} display={{ xs: 'none', lg: 'flex' }}>
           <Landscape
             sx={{
               objectFit: 'cover',

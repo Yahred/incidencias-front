@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
 
-import ContenedorFormulario from '../../../components/ContenedorFormulario';
+import ContenedorFormularioC from '../../../components/ContenedorFormulario';
 import FormField from '../../../../../components/FormField';
 import FormSelect from '../../../../../components/FormSelect';
 
@@ -68,7 +68,6 @@ const UsuarioFormulario: FC = () => {
 
   const guardar = useCallback(
     async (usuario: Usuario) => {
-      console.log(usuario)
       const formData = objectToFormData(usuario);
       await mutateAsync(formData);
     },
@@ -78,7 +77,7 @@ const UsuarioFormulario: FC = () => {
   useFormSetEffect(usuario, methods.setValue);
 
   return (
-    <ContenedorFormulario
+    <ContenedorFormularioC
       title="Registro de usuario"
       subtitle="Da de alta un nuevo usuario en el sistema"
       methods={methods}
@@ -135,7 +134,7 @@ const UsuarioFormulario: FC = () => {
         subtitle="Seleccione el tipo de usuario"
         required
       />
-    </ContenedorFormulario>
+    </ContenedorFormularioC>
   );
 };
 

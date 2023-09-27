@@ -1,4 +1,4 @@
-import { FC, ReactNode, useCallback, useState } from 'react';
+import { FC, ReactNode, memo, useCallback, useState } from 'react';
 
 import { UseFormReturn } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -19,7 +19,7 @@ interface ContenedorFormularioProps {
   subtitle?: string;
 }
 
-const ContenedorFormulario: FC<ContenedorFormularioProps> = ({
+const ContenedorFormularioC: FC<ContenedorFormularioProps> = ({
   methods,
   children,
   onSubmit,
@@ -95,8 +95,10 @@ const ContenedorFormulario: FC<ContenedorFormularioProps> = ({
   );
 };
 
-ContenedorFormulario.defaultProps = {
+ContenedorFormularioC.defaultProps = {
   onSubmit: () => {},
 };
+
+const ContenedorFormulario = memo(ContenedorFormularioC);
 
 export default ContenedorFormulario;

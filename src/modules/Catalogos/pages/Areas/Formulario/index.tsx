@@ -5,7 +5,7 @@ import { useMutation } from 'react-query';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import ContenedorFormulario from '../../../components/ContenedorFormulario';
+import ContenedorFormularioC from '../../../components/ContenedorFormulario';
 import FormField from '../../../../../components/FormField';
 
 import { CAMPO_REQUERIDO } from '../../../../../constants/validaciones';
@@ -32,7 +32,7 @@ const AreaFormulario: FC = () => {
   }, [mutateAsync]);
 
   return (
-    <ContenedorFormulario
+    <ContenedorFormularioC
       title="Registro de área"
       subtitle="Da de alta una nueva área en el sistema"
       methods={methods}
@@ -49,7 +49,7 @@ const AreaFormulario: FC = () => {
         title="Descripcion"
         subtitle="Descripcion sobre el área"
       />
-    </ContenedorFormulario>
+    </ContenedorFormularioC>
   );
 };
 
