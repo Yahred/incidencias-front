@@ -11,6 +11,13 @@ export const obtenerModelosPaginado = (q: string, pagina?: string) =>
     },
   });
 
+export const obtenerModelos = (categoria?: string) =>
+  axios.get<unknown, Modelo[]>(MODELOS, {
+    params: {
+      categoria,
+    },
+  });
+
 export const obtenerModeloPorId = (id: string) =>
   axios.get<unknown, Modelo>(param(MODELOS, id));
 

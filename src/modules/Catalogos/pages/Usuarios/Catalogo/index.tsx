@@ -2,10 +2,10 @@ import { FC } from 'react';
 
 import { Cabeceros } from '../../../../../components/Table';
 
+import Catalogo from '../../../components/Catalogo';
 import { Usuario } from '../../../../../interfaces/Usuario';
 import { eliminarUsuario, obtenerUsuariosPaginado } from '../../../services';
 import { TipoUsuario } from '../../../../../interfaces/TipoUsuario';
-import Catalogo from '../../../components/Catalogo';
 
 const cabeceros: Cabeceros<Usuario>[] = [
   {

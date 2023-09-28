@@ -3,21 +3,22 @@ import { lazy } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import Catalogo from './';
-import Categorias from './pages/Categorias/Catalogo';
-import CategoriaFormulario from './pages/Categorias/Formulario';
-import ModeloFormulario from './pages/Modelos/Formulario';
 
 const Usuarios = lazy(() => import('./pages/Usuarios/Catalogo'));
-const Recursos = lazy(() => import('./pages/Recursos'));
+const Recursos = lazy(() => import('./pages/Recursos/Catalogo'));
 const Modelos = lazy(() => import('./pages/Modelos/Catalogo'));
 const Edificios = lazy(() => import('./pages/Edificios/Catalogo'));
 const Salones = lazy(() => import('./pages/Salones/Catalogo'));
 const Areas = lazy(() => import('./pages/Areas/Catalogo'));
+const Categorias = lazy(() => import('./pages/Categorias/Catalogo'));
 
+const AreaFormulario = lazy(() => import('./pages/Areas/Formulario'));
 const EdificioFormulario = lazy(() => import('./pages/Edificios/Formulario'));
 const UsuarioFormulario = lazy(() => import('./pages/Usuarios/Formulario'));
 const SalonFormulario = lazy(() => import('./pages/Salones/Formulario'));
-const AreaFormulario = lazy(() => import('./pages/Areas/Formulario'));
+const RecursoFormulario = lazy(() => import('./pages/Recursos/Formulario'));
+const ModeloFormulario = lazy(() => import('./pages/Modelos/Formulario'));
+const CategoriaFormulario = lazy(() => import('./pages/Categorias/Formulario'));
 
 const router = {
   path: 'catalogos',
@@ -43,7 +44,21 @@ const router = {
     },
     {
       path: 'recursos',
-      Component: Recursos,
+      Component: Outlet,
+      children: [
+        {
+          path: '',
+          Component: Recursos,
+        },
+        {
+          path: 'formulario',
+          Component: RecursoFormulario
+        },
+        {
+          path: ':id',
+          Component: RecursoFormulario,
+        },
+      ],
     },
     {
       path: 'modelos',

@@ -1,7 +1,7 @@
-import { FC, useCallback } from 'react';
+import { FC, useCallback, useEffect } from 'react';
 
 import { useForm } from 'react-hook-form';
-import { useMutation, useQueries } from 'react-query';
+import { useMutation, useQueries, useQuery } from 'react-query';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
@@ -9,11 +9,12 @@ import * as yup from 'yup';
 import ContenedorFormularioC from '../../../components/ContenedorFormulario';
 import FormField from '../../../../../components/FormField';
 import FormSelect from '../../../../../components/FormSelect';
+import FormFile from '../../../../../components/FormFile';
 
 import useFormSetEffect from '../../../../../utils/hooks/useSetForm';
-import FormFile from '../../../../../components/FormFile';
 import objectToFormData from '../../../../../utils/functions/objectToFormData';
 import {
+  obtenerAreas,
   obtenerTiposUsuario,
   obtenerUsuarioPorId,
   registrarUsuario,
@@ -23,6 +24,7 @@ import {
   CAMPO_REQUERIDO,
   EMAIL_INVALIDO,
 } from '../../../../../constants/validaciones';
+import { TiposUsuario } from '../../../../../constants/tiposUsuario';
 
 const usuarioSchema = yup.object({
   id: yup.string(),
@@ -37,6 +39,11 @@ const usuarioSchema = yup.object({
   email: yup.string().email(EMAIL_INVALIDO).required(CAMPO_REQUERIDO),
   avatar: yup.mixed(),
   tipoUsuario: yup.string().required(CAMPO_REQUERIDO),
+  areas: yup.array().when('tipoUsuario', {
+    is: (tipoUsuario: string) => tipoUsuario === TiposUsuario.Tecnico,
+    then: () => yup.array().min(1, CAMPO_REQUERIDO).required(CAMPO_REQUERIDO),
+  }),
+
 });
 
 const UsuarioFormulario: FC = () => {
@@ -45,6 +52,8 @@ const UsuarioFormulario: FC = () => {
   const methods = useForm({
     resolver: yupResolver(usuarioSchema),
   });
+
+  const tipoUsuarioSeleccionado = methods.watch('tipoUsuario');
 
   const [{ data: usuario }, { data: tiposUsuario }] = useQueries([
     {
@@ -61,18 +70,27 @@ const UsuarioFormulario: FC = () => {
     },
   ]);
 
+  const { data: areas } = useQuery({
+    queryFn: obtenerAreas,
+    queryKey: 'areas',
+    enabled: tipoUsuarioSeleccionado === TiposUsuario.Tecnico,
+    initialData: [],
+  });
+
   const { mutateAsync } = useMutation({
     mutationKey: 'usuario',
     mutationFn: (usuario: FormData) => registrarUsuario(usuario, id),
   });
 
-  const guardar = useCallback(
-    async (usuario: Usuario) => {
-      const formData = objectToFormData(usuario);
-      await mutateAsync(formData);
-    },
-    [mutateAsync]
-  );
+  const guardar = useCallback(async (usuario: Usuario) => {
+    const tipoUsuarioId = tiposUsuario?.find(({ clave }) => tipoUsuarioSeleccionado === clave)?.id;
+    const formData = objectToFormData({ ...usuario, tipoUsuario: tipoUsuarioId });
+    await mutateAsync(formData);
+  }, [mutateAsync, tipoUsuarioSeleccionado, tiposUsuario]);
+
+  useEffect(() => {
+    if (!id) methods.setValue('areas', []);
+  }, [id, tipoUsuarioSeleccionado, methods]);
 
   useFormSetEffect(usuario, methods.setValue);
 
@@ -132,8 +150,17 @@ const UsuarioFormulario: FC = () => {
         options={tiposUsuario!}
         title="Tipo de usuario"
         subtitle="Seleccione el tipo de usuario"
+        bindValue='clave'
         required
       />
+      {tipoUsuarioSeleccionado === TiposUsuario.Tecnico && <FormSelect
+        name='areas'
+        options={areas!}
+        title='Áreas'
+        subtitle='Áreas las cuales puede atender el técnico'
+        required
+        multi
+      />}
     </ContenedorFormularioC>
   );
 };

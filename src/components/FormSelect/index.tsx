@@ -35,6 +35,7 @@ interface FormSelectProps {
   disabled?: boolean;
   sx?: SxProps;
   containerSx?: SxProps;
+  multi?: boolean;
 }
 
 const FormSelect: FC<FormSelectProps> = ({
@@ -51,6 +52,7 @@ const FormSelect: FC<FormSelectProps> = ({
   disabled,
   sx,
   containerSx,
+  multi,
 }) => {
   const {
     control,
@@ -64,7 +66,7 @@ const FormSelect: FC<FormSelectProps> = ({
       name={name}
       rules={computedRules}
       control={control}
-      defaultValue={defaultValue}
+      defaultValue={multi ? [] : defaultValue}
       render={({ field }) => (
         <Box sx={containerSx} display="flex" flexDirection="column" gap="4px">
           <Box display="flex" flexDirection="column">
@@ -82,6 +84,7 @@ const FormSelect: FC<FormSelectProps> = ({
               label={label}
               disabled={disabled}
               size="small"
+              multiple={multi}
             >
               {options.map(
                 ({ [bindLabel!]: label, [bindValue!]: value }, index) => (

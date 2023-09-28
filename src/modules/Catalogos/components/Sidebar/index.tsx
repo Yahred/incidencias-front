@@ -23,15 +23,14 @@ const Sidebar: React.FC = () => {
   }, [pathname]);
 
   const submoduloSeleccionado = useMemo<string>(() => {
-    const submodulo = pathname
-      .split('/')
-      .filter((r) => r !== 'formulario')
-      .at(-1);
+    let seleccionado = submodulos.find(({ ruta }) => {
+      if (ruta === '/') return false;
+      return pathname.includes(ruta!)
+    });
 
-    const seleccionado = submodulos.find(
-      ({ ruta }) =>
-        ruta === `/${submodulo}` || (submodulo === 'catalogos' && ruta === '/')
-    );
+    if (!seleccionado) {
+      seleccionado = submodulos.find(({ ruta }) => ruta === '/');
+    }
 
     return seleccionado?.ruta || '';
   }, [submodulos, pathname]);
