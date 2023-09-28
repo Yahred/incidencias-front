@@ -1,3 +1,4 @@
+import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
 import CatalogosRouter from '../modules/Catalogos/router';
@@ -7,6 +8,8 @@ import App from '../App';
 import Dashboard from '../modules/Dashboard';
 import Catalogos from '../modules/Catalogos';
 import Usuarios from '../modules/Catalogos/pages/Usuarios/Catalogo';
+
+const Tablero = lazy(() => import('../modules/Tablero'));
 
 const router = createBrowserRouter([
   {
@@ -22,13 +25,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/tablero',
-        Component: Catalogos,
-        children: [
-          {
-            path: '',
-            Component: Usuarios,
-          },
-        ],
+        Component: Tablero,
       },
       {
         path: '/incidencias',
