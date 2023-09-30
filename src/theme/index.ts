@@ -14,7 +14,7 @@ let theme = createTheme({
       main: '#60A5D4',
     },
     grey: {
-      "300": '#eeeeee',
+      '300': '#eeeeee',
     },
   },
   typography: {
@@ -79,6 +79,15 @@ let theme = createTheme({
     MuiPagination: {
       defaultProps: {
         color: 'primary',
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          fontSize: 16,
+          textTransform: 'capitalize',
+          fontWeight: 'bold',
+        },
       },
     },
   },

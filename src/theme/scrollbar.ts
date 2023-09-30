@@ -1,7 +1,7 @@
 const scrollbarMixin = {
   '&::-webkit-scrollbar': {
     backgroundColor: '#fff',
-    width: '16px',
+    width: '12spx',
   },
   '&::-webkit-scrollbar-track': {
     backgroundColor: '#fff',
