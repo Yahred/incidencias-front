@@ -1,7 +1,11 @@
+import { Suspense } from 'react';
+
 const Tablero = () => {
-  return <h1>
-    Tablero works!
-  </h1>
-}
+  return (
+    <Suspense>
+      <h1>El monkar funciona</h1>
+    </Suspense>
+  );
+};
 
 export default Tablero;

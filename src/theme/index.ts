@@ -13,6 +13,9 @@ let theme = createTheme({
     info: {
       main: '#60A5D4',
     },
+    grey: {
+      "300": '#eeeeee',
+    },
   },
   typography: {
     caption: {

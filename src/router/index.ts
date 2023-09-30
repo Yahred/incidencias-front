@@ -1,15 +1,13 @@
-import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
 import CatalogosRouter from '../modules/Catalogos/router';
 
 import Login from '../modules/Login';
 import App from '../App';
-import Dashboard from '../modules/Dashboard';
 import Catalogos from '../modules/Catalogos';
 import Usuarios from '../modules/Catalogos/pages/Usuarios/Catalogo';
-
-const Tablero = lazy(() => import('../modules/Tablero'));
+import Tablero from '../modules/Tablero';
+import MiTrabajo from '../modules/MiTrabajo';
 
 const router = createBrowserRouter([
   {
@@ -18,7 +16,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        Component: Dashboard,
+        Component: MiTrabajo,
       },
       {
         ...CatalogosRouter,
@@ -43,10 +41,6 @@ const router = createBrowserRouter([
     path: 'login',
     Component: Login,
   },
-  {
-    path: '',
-    handle: ''
-  }
 ]);
 
 export default router;
