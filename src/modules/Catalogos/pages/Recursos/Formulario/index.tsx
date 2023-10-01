@@ -13,7 +13,7 @@ import FormSelect from '../../../../../components/FormSelect';
 
 import objectToFormData from '../../../../../utils/functions/objectToFormData';
 import { CAMPO_REQUERIDO } from '../../../../../constants/validaciones';
-import { obtenerRecursoPorId, registrarRecurso } from '../../../services/recursos';
+import { obtenerRecursoPorId, registrarRecurso } from '../../../../../services/recursos';
 import { Recurso } from '../../../../../interfaces/Recurso';
 import { obtenerAreas, obtenerCategorias, obtenerEdicios, obtenerSalones } from '../../../services';
 import { obtenerModelos } from '../../../services/modelos';

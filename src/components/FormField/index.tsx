@@ -1,12 +1,14 @@
-import { FC } from 'react';
+import { FC, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, SxProps, TextField, Typography } from '@mui/material';
 import {
   Controller,
   FieldValues,
   RegisterOptions,
   useFormContext,
 } from 'react-hook-form';
+
+import { ENTER } from '../../constants/keycodes';
 
 interface FormFieldProps {
   name: string;
@@ -23,6 +25,12 @@ interface FormFieldProps {
   fullWidth?: boolean;
   type?: 'text' | 'password' | 'number' | 'date';
   required?: boolean;
+  flat?: boolean;
+  flatPlaceholder?: (value: string, onDobleClick: () => void) => ReactNode;
+  sx?: SxProps;
+  maxRows?: number;
+  rows?: number;
+  multiline?: boolean;
 }
 
 const FormField: FC<FormFieldProps> = ({
@@ -37,11 +45,45 @@ const FormField: FC<FormFieldProps> = ({
   type,
   required,
   rules,
+  flat,
+  flatPlaceholder,
+  sx,
+  maxRows,
+  multiline,
+  rows,
 }) => {
   const {
     control,
     formState: { errors },
+    watch,
   } = useFormContext();
+  const watchValue = watch(name);
+
+  const [isTextFieldVisible, setIsTextFieldVisible] = useState<boolean>(!flat);
+
+  const textFieldRef = useRef<HTMLInputElement | null>(null);
+
+  const handleDoubleClick = useCallback(() => {
+    setIsTextFieldVisible(true);
+  }, []);
+
+  const handleKeyDown = useCallback((evt) => {
+    if (!flat) return;
+    const { keyCode } = evt;
+
+    if (keyCode === ENTER) {
+      setIsTextFieldVisible(false);
+    }
+  }, [flat]);
+
+  const handleOnBlur = useCallback(() => {
+    if (!flat) return;
+    setIsTextFieldVisible(false);
+  }, [flat]);
+
+  useEffect(() => {
+    if (isTextFieldVisible) textFieldRef.current?.focus();
+  }, [isTextFieldVisible]);
 
   return (
     <Controller
@@ -57,16 +99,29 @@ const FormField: FC<FormFieldProps> = ({
             </Typography>
             <Typography variant="caption">{subtitle}</Typography>
           </Box>
-          <TextField
-            {...field}
-            label={label}
-            placeholder={placeholder}
-            helperText={errors[name]?.message as string}
-            error={!!errors[name]}
-            size={size}
-            fullWidth={fullWidth}
-            type={type}
-          />
+          {flat &&
+            !isTextFieldVisible &&
+            flatPlaceholder &&
+            flatPlaceholder(watchValue, handleDoubleClick)}
+          {isTextFieldVisible && (
+            <TextField
+              {...field}
+              inputRef={textFieldRef}
+              label={label}
+              placeholder={placeholder}
+              helperText={errors[name]?.message as string}
+              error={!!errors[name]}
+              size={size}
+              fullWidth={fullWidth}
+              type={type}
+              onKeyDown={handleKeyDown}
+              onBlur={handleOnBlur}
+              sx={sx}
+              maxRows={maxRows}
+              rows={rows}
+              multiline={multiline}
+            />
+          )}
         </Box>
       )}
     />
@@ -76,8 +131,11 @@ const FormField: FC<FormFieldProps> = ({
 FormField.defaultProps = {
   rules: {},
   defaultValue: '',
+  subtitle: '',
+  title: '',
   type: 'text',
   required: false,
+  rows: 1,
 };
 
 export default FormField;

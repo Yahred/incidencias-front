@@ -4,7 +4,7 @@ import Catalogo from '../../../components/Catalogo';
 
 import { Cabeceros } from '../../../../../components/Table';
 
-import { eliminarRecurso, obtenerRecursosPaginado } from '../../../services/recursos';
+import { eliminarRecurso, obtenerRecursosPaginado } from '../../../../../services/recursos';
 import { Recurso } from '../../../../../interfaces/Recurso';
 import { Edificio } from '../../../../../interfaces/Edificio';
 import { Salon } from '../../../../../interfaces/Salon';

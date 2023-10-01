@@ -10,8 +10,8 @@ import FormField from '../../../../../components/FormField';
 import FormSelect from '../../../../../components/FormSelect';
 
 import { CAMPO_REQUERIDO } from '../../../../../constants/validaciones';
-import { registrarSalon } from '../../../services/salones';
-import { obtenerEdicios } from '../../../services/edificios';
+import { registrarSalon } from '../../../../../services/salones';
+import { obtenerEdicios } from '../../../../../services/edificios';
 import { Salon } from '../../../../../interfaces/Salon';
 
 const salonSchema = yup.object({

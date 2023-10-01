@@ -43,7 +43,7 @@ let theme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiInputBase-root': {
-            height: 45,
+            minHeight: 45,
           },
         },
       },
@@ -65,7 +65,7 @@ let theme = createTheme({
       },
       styleOverrides: {
         root: {
-          height: 45,
+          minHeight: 45,
         },
       },
     },

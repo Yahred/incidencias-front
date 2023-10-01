@@ -3,7 +3,7 @@ import { FC } from 'react';
 import Catalogo from '../../../components/Catalogo';
 import { Cabeceros } from '../../../../../components/Table';
 
-import { obtenerEdificiosPaginado } from '../../../services/edificios';
+import { obtenerEdificiosPaginado } from '../../../../../services/edificios';
 import { Edificio } from '../../../../../interfaces/Edificio';
 
 const cabeceros: Cabeceros<Edificio>[] = [

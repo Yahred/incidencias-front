@@ -9,7 +9,7 @@ import ContenedorFormularioC from '../../../components/ContenedorFormulario';
 import FormField from '../../../../../components/FormField';
 
 import { CAMPO_REQUERIDO } from '../../../../../constants/validaciones';
-import { registrarEdificio } from '../../../services/edificios';
+import { registrarEdificio } from '../../../../../services/edificios';
 import { Edificio } from '../../../../../interfaces/Edificio';
 
 const edificioSchema = yup.object({
