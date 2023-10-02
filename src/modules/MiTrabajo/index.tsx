@@ -1,5 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 
+import { useMutation } from 'react-query';
+
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -11,6 +13,10 @@ import scrollbarMixin from '../../theme/scrollbar';
 import TabsIncidencias from './components/TabsIncidencias';
 import ModalReportar from './components/ModalReportar';
 
+import objectToFormData from '../../utils/functions/objectToFormData';
+import { registrarIncidencia } from '../../services/incidencias';
+import { Incidencia } from '../../interfaces/Incidencia';
+
 const MiTrabajo: FC = () => {
   const [modalAbierto, setModalAbierto] = useState<boolean>(false);
 
@@ -20,7 +26,18 @@ const MiTrabajo: FC = () => {
 
   const handleCancelarRegistro = useCallback(() => {
     setModalAbierto(false);
-  }, [])
+  }, []);
+
+  const { mutateAsync } = useMutation({
+    mutationKey: 'incidencia',
+    mutationFn: (incidencia: FormData) => registrarIncidencia(incidencia),
+  });
+
+  const guardarIncidencia = useCallback(async (incidencia: Incidencia) => {
+    const formData = objectToFormData(incidencia);
+    await mutateAsync(formData);
+    setModalAbierto(false);
+  }, [mutateAsync]);
 
   return (
     <>
@@ -28,7 +45,11 @@ const MiTrabajo: FC = () => {
         <Grid container item xs={12} rowGap={2}>
           <Grid item xs={12} display="flex" justifyContent="space-between">
             <Typography variant="h5">Mis incidencias</Typography>
-            <Button onClick={handleAgregarClick} color="error" sx={{ color: 'white' }}>
+            <Button
+              onClick={handleAgregarClick}
+              color="error"
+              sx={{ color: 'white' }}
+            >
               Reportar
             </Button>
           </Grid>
@@ -50,7 +71,11 @@ const MiTrabajo: FC = () => {
           <TabsIncidencias />
         </Grid>
       </Grid>
-      <ModalReportar open={modalAbierto} onCancel={handleCancelarRegistro}/>
+      <ModalReportar
+        open={modalAbierto}
+        onCancel={handleCancelarRegistro}
+        onSave={guardarIncidencia}
+      />
     </>
   );
 };

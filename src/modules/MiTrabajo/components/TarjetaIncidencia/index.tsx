@@ -3,7 +3,9 @@ import { FC } from 'react';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Avatar from '@mui/material/Avatar';
-import { Typography, styled } from '@mui/material';
+import Typography from '@mui/material/Typography';
+
+import { styled } from '@mui/material';
 
 import IndicadorEstatus from '../IndicadorEstatus';
 

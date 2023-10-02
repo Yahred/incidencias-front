@@ -2,6 +2,8 @@ import { FC, useCallback, useState } from 'react';
 
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -13,22 +15,36 @@ import FormField from '../../../../components/FormField';
 import Form from '../../../../components/Form';
 import FormSelect from '../../../../components/FormSelect';
 import ListaImagenes from '../../../../components/ListaImagenes';
+import SubmitButton from '../../../../components/SubmitButton';
 
 import {
   obtenerEdicios,
   obtenerRecursos,
   obtenerSalones,
 } from '../../../Catalogos/services';
+import { Incidencia } from '../../../../interfaces/Incidencia';
+import { CAMPO_REQUERIDO } from '../../../../constants/validaciones';
 
 interface ModalReportarProps {
   open: boolean;
   onCancel: () => void;
+  onSave: (incidencia: Incidencia) => Promise<void> | void;
 }
 
 type ListaEvidencia = (File | string)[];
 
-const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel }) => {
-  const methods = useForm();
+const incidenciaSchema = yup.object({
+  titulo: yup.string().required(CAMPO_REQUERIDO),
+  descripcion: yup.string().required(CAMPO_REQUERIDO),
+  edificio: yup.string().required(CAMPO_REQUERIDO),
+  salon: yup.string().required(CAMPO_REQUERIDO),
+  recurso: yup.string().required(CAMPO_REQUERIDO),
+});
+
+const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
+  const methods = useForm({
+    resolver: yupResolver(incidenciaSchema),
+  });
 
   const [listaEvidencia, setListaEvidencia] = useState<ListaEvidencia>([]);
 
@@ -72,9 +88,15 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel }) => {
     })
   }, []);
 
+  const guardarIncidencia = useCallback(async (incidencia: Incidencia) => {
+    onSave({ ...incidencia, ...listaEvidencia  });
+    methods.reset();
+    setListaEvidencia([]);
+  }, [onSave, methods, listaEvidencia]);
+
   return (
     <Dialogo open={open} fullWidth maxWidth="xl">
-      <Form methods={methods} onSubmit={console.log}>
+      <Form methods={methods} onSubmit={guardarIncidencia}>
         <Box
           px={4}
           minHeight="60svh"
@@ -107,9 +129,9 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel }) => {
               <Button onClick={handleCancelar} sx={{ height: 40 }}>
                 Cancelar
               </Button>
-              <Button color="success" sx={{ height: 40 }}>
+              <SubmitButton color="success" sx={{ height: 40 }}>
                 Guardar
-              </Button>
+              </SubmitButton>
             </Box>
           </Box>
           <Grid container spacing={2}>

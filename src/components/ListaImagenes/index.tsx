@@ -5,6 +5,8 @@ import Card from '@mui/material/Card';
 import { IconButton, Typography, styled } from '@mui/material';
 import { Add, Delete } from '@mui/icons-material';
 
+import scrollbarMixin from '../../theme/scrollbar';
+
 interface ListaImagenesProps {
   images: (string | File)[];
   title?: string;
@@ -17,6 +19,8 @@ interface ListaImagenesProps {
 const HiddenFileInput = styled('input')({
   display: 'none',
 });
+
+
 
 const Image = styled('img')({
   objectFit: 'cover',
@@ -45,6 +49,7 @@ const ListaImagenes: FC<ListaImagenesProps> = ({
   const handleFileSelected = useCallback((event: any) => {
     if (!event.target.files) return;
     onChange(event.target.files[0]);
+    if (fileInputRef.current) fileInputRef.current.value = '';
   }, [onChange]);
 
   const readFiles = useCallback((images) => {
@@ -88,7 +93,7 @@ const ListaImagenes: FC<ListaImagenesProps> = ({
     }
   }, []);
 
-  const handleDeleteClick = useCallback((index) => {
+  const handleDeleteClick = useCallback((index: number) => {
     return () => {
       indexEliminado.current = index;
       onRemoved(index);
@@ -131,7 +136,7 @@ const ListaImagenes: FC<ListaImagenesProps> = ({
   return (
     <Box display="flex" flexDirection="column" gap={2}>
       <Typography>{title}</Typography>
-      <Box display="flex" gap={2} width="100%">
+      <Box display="flex" gap={2} py={2} width="100%" maxWidth="100%" overflow="auto" sx={{ ...scrollbarMixin }}>
         <HiddenFileInput
           ref={fileInputRef}
           onChange={handleFileSelected}
@@ -141,7 +146,7 @@ const ListaImagenes: FC<ListaImagenesProps> = ({
           <Card
             sx={{
               display: 'flex',
-              maxWidth: 260,
+              width: 250,
               height: 250,
               position: 'relative',
               cursor: onClick ? 'pointer' : 'auto',
