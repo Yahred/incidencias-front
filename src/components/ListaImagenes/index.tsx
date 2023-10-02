@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -8,8 +8,10 @@ import { Add, Delete } from '@mui/icons-material';
 interface ListaImagenesProps {
   images: (string | File)[];
   title?: string;
+  deleteAllowed?: boolean;
   onChange: (image: File | string) => void;
   onRemoved: (index: number) => void;
+  onClick?: (index: number) => void;
 }
 
 const HiddenFileInput = styled('input')({
@@ -19,24 +21,22 @@ const HiddenFileInput = styled('input')({
 const Image = styled('img')({
   objectFit: 'cover',
   width: '100%',
-  height: '100%'
+  height: '100%',
 });
 
-type ImageSrc = {
-  src: string;
-  index: number;
-}
+const ListaImagenes: FC<ListaImagenesProps> = ({
+  images,
+  onChange,
+  title,
+  onRemoved,
+  deleteAllowed,
+  onClick,
+}) => {
+  const [imagesSrc, setImagesSrc] = useState<string[]>([]);
 
-const ListaImagenes: FC<ListaImagenesProps> = ({ images, onChange, title, onRemoved }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const [imagesSrc, setImagesSrc] = useState<ImageSrc[]>([]);
-
-  const orderedImages = useMemo(() =>
-    [...imagesSrc].sort((a, b) => a.index - b.index).map(({ src }) => src),
-  [imagesSrc]);
-
   const longitudImagesSrc = useRef<number>(0);
+  const indexEliminado = useRef<number | null>(null);
 
   const handleClick = useCallback(() => {
     fileInputRef.current?.click();
@@ -50,6 +50,7 @@ const ListaImagenes: FC<ListaImagenesProps> = ({ images, onChange, title, onRemo
   const readFiles = useCallback((images) => {
     images.forEach((image, index) => {
       if (typeof image === 'string') {
+        setImagesSrc((prev) => [...prev, image]);
         return;
       }
       if (image instanceof File) {
@@ -59,9 +60,9 @@ const ListaImagenes: FC<ListaImagenesProps> = ({ images, onChange, title, onRemo
           setImagesSrc((prev) => {
             const newImagesSrc = Object.values({
               ...prev,
-              [index]: { src, index },
+              [index]: src,
             });
-            return newImagesSrc as ImageSrc[];
+            return newImagesSrc as string[];
           });
         };
         reader.readAsDataURL(image);
@@ -69,20 +70,63 @@ const ListaImagenes: FC<ListaImagenesProps> = ({ images, onChange, title, onRemo
     });
   }, []);
 
-  const removeImage = useCallback((index) => {
+  const addFile = useCallback((images) => {
+    const image = images.at(-1);
+
+    if (typeof image === 'string') {
+      setImagesSrc((prev) => [...prev, image]);
+      return;
+    }
+
+    if (image instanceof File) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const { result: src } = e.target as any;
+        setImagesSrc((prev) => [...prev, src]);
+      };
+      reader.readAsDataURL(image);
+    }
+  }, []);
+
+  const handleDeleteClick = useCallback((index) => {
     return () => {
-      setImagesSrc([]);
+      indexEliminado.current = index;
       onRemoved(index);
     };
   }, [onRemoved]);
+
+  const removeImage = useCallback(() => {
+    const eliminado = indexEliminado.current;
+    indexEliminado.current = null;
+    setImagesSrc((prev) => {
+      prev.splice(eliminado!, 1);
+      return [...prev];
+    });
+  }, []);
+
+  const handleImageClick = useCallback((index: number) => {
+    return () => {
+      if (onClick) onClick(index);
+    }
+  }, [onClick]);
 
   useEffect(() => {
     longitudImagesSrc.current = imagesSrc.length;
   }, [imagesSrc]);
 
   useEffect(() => {
-    readFiles(images);
-  }, [images, readFiles]);
+    if (!longitudImagesSrc.current) {
+      readFiles(images);
+      return;
+    }
+
+    if (longitudImagesSrc.current > images.length) {
+      removeImage();
+      return;
+    }
+
+    addFile(images);
+  }, [images, readFiles, addFile, removeImage]);
 
   return (
     <Box display="flex" flexDirection="column" gap={2}>
@@ -93,21 +137,33 @@ const ListaImagenes: FC<ListaImagenesProps> = ({ images, onChange, title, onRemo
           onChange={handleFileSelected}
           type="file"
         />
-        {orderedImages.map((src, index) => (
-          <Card sx={{ display: 'flex', maxWidth: 260, height: 250, position: 'relative' }}>
-            <IconButton sx={{
-              top: 10,
-              right: 10,
-              position: 'absolute'
+        {imagesSrc.map((src, index) => (
+          <Card
+            sx={{
+              display: 'flex',
+              maxWidth: 260,
+              height: 250,
+              position: 'relative',
+              cursor: onClick ? 'pointer' : 'auto',
             }}
-              onClick={removeImage(index)}
-            >
-              <Delete color='error' />
-            </IconButton>
+            onClick={handleImageClick(index)}
+          >
+            {deleteAllowed && (
+              <IconButton
+                sx={{
+                  top: 10,
+                  right: 10,
+                  position: 'absolute',
+                }}
+                onClick={handleDeleteClick(index)}
+              >
+                <Delete color="error" />
+              </IconButton>
+            )}
             <Image src={src} />
           </Card>
         ))}
-        <Box display="grid" alignItems="center" >
+        <Box display="grid" alignItems="center">
           <IconButton onClick={handleClick}>
             <Add />
           </IconButton>
@@ -120,6 +176,7 @@ const ListaImagenes: FC<ListaImagenesProps> = ({ images, onChange, title, onRemo
 ListaImagenes.defaultProps = {
   images: [],
   onChange: () => {},
+  deleteAllowed: true,
 };
 
 export default ListaImagenes;

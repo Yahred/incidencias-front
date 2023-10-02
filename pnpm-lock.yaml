@@ -44,6 +44,9 @@ dependencies:
   react-query:
     specifier: ^3.39.3
     version: 3.39.3(react-dom@18.2.0)(react@18.2.0)
+  react-responsive-carousel:
+    specifier: ^3.2.23
+    version: 3.2.23
   react-router-dom:
     specifier: ^6.15.0
     version: 6.16.0(react-dom@18.2.0)(react@18.2.0)
@@ -1302,6 +1305,10 @@ packages:
       supports-color: 7.2.0
     dev: true
 
+  /classnames@2.3.2:
+    resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
+    dev: false
+
   /clsx@1.2.1:
     resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
     engines: {node: '>=6'}
@@ -2135,6 +2142,13 @@ packages:
       scheduler: 0.23.0
     dev: false
 
+  /react-easy-swipe@0.0.21:
+    resolution: {integrity: sha512-OeR2jAxdoqUMHIn/nS9fgreI5hSpgGoL5ezdal4+oO7YSSgJR8ga+PkYGJrSrJ9MKlPcQjMQXnketrD7WNmNsg==}
+    engines: {node: '>= 6'}
+    dependencies:
+      prop-types: 15.8.1
+    dev: false
+
   /react-hook-form@7.46.1(react@18.2.0):
     resolution: {integrity: sha512-0GfI31LRTBd5tqbXMGXT1Rdsv3rnvy0FjEk8Gn9/4tp6+s77T7DPZuGEpBRXOauL+NhyGT5iaXzdIM2R6F/E+w==}
     engines: {node: '>=12.22.0'}
@@ -2175,6 +2189,14 @@ packages:
     resolution: {integrity: sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==}
     engines: {node: '>=0.10.0'}
     dev: true
+
+  /react-responsive-carousel@3.2.23:
+    resolution: {integrity: sha512-pqJLsBaKHWJhw/ItODgbVoziR2z4lpcJg+YwmRlSk4rKH32VE633mAtZZ9kDXjy4wFO+pgUZmDKPsPe1fPmHCg==}
+    dependencies:
+      classnames: 2.3.2
+      prop-types: 15.8.1
+      react-easy-swipe: 0.0.21
+    dev: false
 
   /react-router-dom@6.16.0(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-aTfBLv3mk/gaKLxgRDUPbPw+s4Y/O+ma3rEN1u8EgEpLpPe6gNjIsWt9rxushMHHMb7mSwxRGdGlGdvmFsyPIg==}
