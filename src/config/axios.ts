@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import store from '../stores/store';
 import obtenerMensajeError from '../utils/functions/obtenerMensajesError';
-import { MAP_ESTATUS_MENSAJE } from '../constants/general';
+import { MAP_ESTATUS_MENSAJE, MensajesToast } from '../constants/general';
 
 const { VITE_API_BASE_URL } = import.meta.env;
 
@@ -47,7 +47,7 @@ axios.interceptors.response.use(
     store.getState().setLoadingOff();
     store.getState().setMutatingOff();
     const mensaje = obtenerMensajeError(error);
-    if (mensaje) toast.error(mensaje);
+    toast.error(mensaje || MensajesToast.ERROR);
     throw new Error(error);
   }
 );

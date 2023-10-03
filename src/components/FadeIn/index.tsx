@@ -1,17 +1,18 @@
-import { styled } from '@mui/material';
+import { SxProps, styled } from '@mui/material';
 import { FC, ReactNode } from 'react';
 
 interface FadeInProps {
   children: ReactNode;
   translate?: boolean;
   delay?: number;
+  sx?: SxProps
 }
 
 const FadeInStyled = styled('div')({
   width: '100%'
 });
 
-const FadeIn: FC<FadeInProps> = ({ children, translate, delay }) => {
+const FadeIn: FC<FadeInProps> = ({ children, translate, delay, sx }) => {
   return (
     <FadeInStyled
       sx={{
@@ -26,6 +27,7 @@ const FadeIn: FC<FadeInProps> = ({ children, translate, delay }) => {
             transform: translate ? 'translateY(0)' : 'none',
           },
         },
+        ...sx
       }}
     >
       {children}

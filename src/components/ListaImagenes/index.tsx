@@ -20,8 +20,6 @@ const HiddenFileInput = styled('input')({
   display: 'none',
 });
 
-
-
 const Image = styled('img')({
   objectFit: 'cover',
   width: '100%',

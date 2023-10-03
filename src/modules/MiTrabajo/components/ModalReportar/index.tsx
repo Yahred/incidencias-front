@@ -24,6 +24,7 @@ import {
 } from '../../../Catalogos/services';
 import { Incidencia } from '../../../../interfaces/Incidencia';
 import { CAMPO_REQUERIDO } from '../../../../constants/validaciones';
+import DialogoConfirmacion from '../../../../components/DialogoConfirmacion';
 
 interface ModalReportarProps {
   open: boolean;
@@ -47,6 +48,7 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
   });
 
   const [listaEvidencia, setListaEvidencia] = useState<ListaEvidencia>([]);
+  const [confirmacion, setConfirmacionOpen] = useState<boolean>(false);
 
   const edificioSeleccionado = methods.watch('edificio');
   const salonSeleccionado = methods.watch('salon');
@@ -72,10 +74,19 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
   });
 
   const handleCancelar = useCallback(() => {
-    methods.reset();
-    onCancel();
-    setListaEvidencia([]);
-  }, [methods, onCancel]);
+    const {
+      formState: { isDirty },
+    } = methods;
+
+    if (isDirty) setConfirmacionOpen(true);
+    else {
+      methods.reset();
+      onCancel();
+      setListaEvidencia([]);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [methods.formState.isDirty]);
 
   const handleAgregarEvidencia = useCallback((image) => {
     setListaEvidencia((prev) => [...prev, image]);
@@ -83,107 +94,141 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
 
   const handleEvidenciaRemovida = useCallback((index: number) => {
     setListaEvidencia((prev) => {
-      const lista = Object.values({ ...prev, [index]: undefined }).filter((value) => !!value);
+      const lista = Object.values({ ...prev, [index]: undefined }).filter(
+        (value) => !!value
+      );
       return lista as ListaEvidencia;
-    })
+    });
   }, []);
 
-  const guardarIncidencia = useCallback(async (incidencia: Incidencia) => {
-    onSave({ ...incidencia, ...listaEvidencia  });
-    methods.reset();
-    setListaEvidencia([]);
-  }, [onSave, methods, listaEvidencia]);
+  const guardarIncidencia = useCallback(
+    async (incidencia: Incidencia) => {
+      console.log(listaEvidencia)
+      onSave({ ...incidencia, evidencias: listaEvidencia! });
+      methods.reset();
+      setListaEvidencia([]);
+    },
+    [onSave, methods, listaEvidencia]
+  );
+
+  const handleConfirmacionCancelar = useCallback(
+    (confirmado: boolean) => {
+      setConfirmacionOpen(false);
+      if (!confirmado) return;
+
+      methods.reset();
+      onCancel();
+      setListaEvidencia([]);
+    },
+    [methods, onCancel]
+  );
 
   return (
-    <Dialogo open={open} fullWidth maxWidth="xl">
-      <Form methods={methods} onSubmit={guardarIncidencia}>
-        <Box
-          px={4}
-          minHeight="60svh"
-          display="flex"
-          flexDirection="column"
-          rowGap={8}
-        >
+    <>
+      <Dialogo open={open} fullWidth maxWidth="xl">
+        <Form methods={methods} onSubmit={guardarIncidencia}>
           <Box
+            px={4}
+            minHeight="60svh"
             display="flex"
-            justifyContent="space-between"
-            gap={12}
-            alignItems="flex-end"
+            flexDirection="column"
+            rowGap={8}
           >
-            <Box flexGrow={1}>
-              <FormField
-                name="titulo"
-                flatPlaceholder={(value, onDoubleClick) => (
-                  <Typography
-                    variant="h4"
-                    fontWeight="bold"
-                    onDoubleClick={onDoubleClick}
-                  >
-                    {value || 'Escribe el título de la incidencia aquí...'}
-                  </Typography>
-                )}
-                flat
-              />
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              gap={12}
+              alignItems="flex-end"
+            >
+              <Box flexGrow={1}>
+                <FormField
+                  name="titulo"
+                  flatPlaceholder={(value, onDoubleClick) => (
+                    <Typography
+                      variant="h4"
+                      fontWeight="bold"
+                      onClick={onDoubleClick}
+                    >
+                      {value || 'Escribe el título de la incidencia aquí...'}
+                    </Typography>
+                  )}
+                  flat
+                />
+              </Box>
+              <Box display="flex" gap={2}>
+                <Button onClick={handleCancelar} sx={{ height: 40 }}>
+                  Cancelar
+                </Button>
+                <SubmitButton color="success" sx={{ height: 40 }}>
+                  Guardar
+                </SubmitButton>
+              </Box>
             </Box>
-            <Box display="flex" gap={2}>
-              <Button onClick={handleCancelar} sx={{ height: 40 }}>
-                Cancelar
-              </Button>
-              <SubmitButton color="success" sx={{ height: 40 }}>
-                Guardar
-              </SubmitButton>
-            </Box>
+            <Grid container spacing={2}>
+              <Grid
+                item
+                xs={8}
+                px={2}
+                display="flex"
+                flexDirection="column"
+                rowGap={4}
+              >
+                <FormField
+                  name="descripcion"
+                  multiline
+                  rows={3}
+                  flatPlaceholder={(value, onClick) => (
+                    <Typography variant="h6" onClick={onClick}>
+                      {value || 'Describe aquí lo que está ocurriendo...'}
+                    </Typography>
+                  )}
+                  flat
+                />
+                <ListaImagenes
+                  title="Adjuntar evidencia"
+                  images={listaEvidencia}
+                  onChange={handleAgregarEvidencia}
+                  onRemoved={handleEvidenciaRemovida}
+                />
+              </Grid>
+              <Grid
+                item
+                xs={4}
+                height="100%"
+                display="flex"
+                flexDirection="column"
+                rowGap={2}
+                px={4}
+                sx={{ borderLeft: 4, borderColor: 'primary.main' }}
+              >
+                <Typography variant="h6">Detalle de la incidencia</Typography>
+                <FormSelect
+                  name="edificio"
+                  title="Edificio"
+                  options={edificios!}
+                />
+                <FormSelect
+                  name="salon"
+                  title="Salón"
+                  options={salones!}
+                  disabled={!edificioSeleccionado}
+                />
+                <FormSelect
+                  name="recurso"
+                  title="Recurso"
+                  options={recursos!}
+                  disabled={!salonSeleccionado}
+                />
+              </Grid>
+            </Grid>
           </Box>
-          <Grid container spacing={2}>
-            <Grid
-              item
-              xs={8}
-              px={2}
-              display="flex"
-              flexDirection="column"
-              rowGap={4}
-            >
-              <FormField
-                name="descripcion"
-                multiline
-                rows={3}
-                flatPlaceholder={(value, onDoubleClick) => (
-                  <Typography variant="h6" onDoubleClick={onDoubleClick}>
-                    {value || 'Describe aquí lo que está ocurriendo...'}
-                  </Typography>
-                )}
-                flat
-              />
-              <ListaImagenes
-                title="Adjuntar evidencia"
-                images={listaEvidencia}
-                onChange={handleAgregarEvidencia}
-                onRemoved={handleEvidenciaRemovida}
-              />
-            </Grid>
-            <Grid
-              item
-              xs={4}
-              height="100%"
-              display="flex"
-              flexDirection="column"
-              rowGap={2}
-              px={4}
-              sx={{ borderLeft: 4, borderColor: 'primary.main' }}
-            >
-              <Typography variant="h6">Detalle de la incidencia</Typography>
-              <FormSelect
-                name="edificio"
-                title="Edificio"
-                options={edificios!}
-              />
-              <FormSelect name="salon" title="Salón" options={salones!} />
-              <FormSelect name="recurso" title="Recurso" options={recursos!} />
-            </Grid>
-          </Grid>
-        </Box>
-      </Form>
-    </Dialogo>
+        </Form>
+      </Dialogo>
+      <DialogoConfirmacion
+        open={confirmacion}
+        onClose={handleConfirmacionCancelar}
+      />
+    </>
   );
 };
 

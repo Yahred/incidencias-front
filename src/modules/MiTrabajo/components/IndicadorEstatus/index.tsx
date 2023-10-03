@@ -1,11 +1,11 @@
 import Box from '@mui/material/Box';
 
-const IndicadorEstatus = () => {
+const IndicadorEstatus = ({ color }) => {
   return (
     <Box
       sx={{
         width: 16,
-        backgroundColor: '#35baf6',
+        backgroundColor: color,
         position: 'absolute',
         left: 0,
         height: '100%',

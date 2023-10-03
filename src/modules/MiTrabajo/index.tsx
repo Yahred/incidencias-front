@@ -1,6 +1,7 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
+import sub from 'date-fns/sub';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -14,11 +15,15 @@ import TabsIncidencias from './components/TabsIncidencias';
 import ModalReportar from './components/ModalReportar';
 
 import objectToFormData from '../../utils/functions/objectToFormData';
-import { registrarIncidencia } from '../../services/incidencias';
+import { obtenerIncidenciasDelUsuario, registrarIncidencia } from '../../services/incidencias';
 import { Incidencia } from '../../interfaces/Incidencia';
+import useStore from '../../stores/store';
 
 const MiTrabajo: FC = () => {
+  const isFetching = useStore(({ isFetching }) => isFetching);
+
   const [modalAbierto, setModalAbierto] = useState<boolean>(false);
+  const fechaInicio = useMemo(() => sub(new Date(), { days: 30 }), []);
 
   const handleAgregarClick = useCallback(() => {
     setModalAbierto(true);
@@ -33,11 +38,21 @@ const MiTrabajo: FC = () => {
     mutationFn: (incidencia: FormData) => registrarIncidencia(incidencia),
   });
 
-  const guardarIncidencia = useCallback(async (incidencia: Incidencia) => {
+  const { data: incidencias, refetch } = useQuery({
+    queryKey: ['incidencias' ],
+    queryFn: () => obtenerIncidenciasDelUsuario(fechaInicio),
+    initialData: [],
+    staleTime: 0,
+  });
+
+  const guardarIncidencia = useCallback(async (form: Incidencia) => {
+    const { evidencias, ...incidencia } = form;
     const formData = objectToFormData(incidencia);
+    evidencias?.forEach((evidencia) => formData.append('evidencias', evidencia));
     await mutateAsync(formData);
+    refetch();
     setModalAbierto(false);
-  }, [mutateAsync]);
+  }, [mutateAsync, refetch]);
 
   return (
     <>
@@ -61,9 +76,12 @@ const MiTrabajo: FC = () => {
               py={4}
               sx={{ overflowX: 'auto', ...scrollbarMixin }}
             >
-              {[1, 2, 3, 4, 5].map(() => (
-                <TarjetaIncidencia />
+              {incidencias?.map((incidencia) => (
+                <TarjetaIncidencia incidencia={incidencia} isLoading={isFetching} />
               ))}
+              {!isFetching && !incidencias?.length && <Box display="flex" alignItems="center" justifyContent="center" width='100%'>
+                <Typography variant='h4'>Aún no has levantado ninguna incidencia</Typography>
+              </Box>}
             </Box>
           </Grid>
         </Grid>
