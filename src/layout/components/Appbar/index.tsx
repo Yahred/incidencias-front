@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useMemo, useState, useRef, useEffect } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
 import useStore from '../../../stores/store';
-import { Avatar, SxProps, Tooltip } from '@mui/material';
+import { Avatar, SxProps, Tooltip, styled } from '@mui/material';
 import { APPBAR_MENU_ITEMS } from '../../../constants/menu';
 
 const settings = ['Perfil', 'Dashboard', 'Cerrar sesión'];
@@ -23,16 +23,31 @@ interface AppbarProps {
   sx?: SxProps;
 }
 
+const AnimatedBar = styled('div')(({ theme: { palette } }) => ({
+  position: 'absolute',
+  bottom: 0,
+  transition: 'all .2s ease-in-out',
+  height: 3,
+  backgroundColor: palette.primary.main,
+  width: '200px',
+}));
+
 const Appbar: FC<AppbarProps> = ({ sx }) => {
   const usuario = useStore(({ usuario }) => usuario);
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const moduloSeleccionado = useMemo(() => `/${pathname.split('/')[1]}`, [pathname]);
+  const moduloSeleccionado = useMemo(
+    () => `/${pathname.split('/')[1]}`,
+    [pathname]
+  );
 
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+  const barRef = useRef<HTMLDivElement | null>(null);
+  const selectedRef = useRef<HTMLDivElement | null>(null);
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
@@ -46,11 +61,12 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
     setAnchorElUser(null);
   };
 
-  const handleButtonClick = useCallback((ruta: string) => {
-    return () => {
+  const handleButtonClick = useCallback(
+    (ruta: string) => () => {
       navigate(ruta);
-    }
-  }, [navigate]);
+    },
+    [navigate]
+  );
 
   const cerrarSesion = useCallback(() => {
     localStorage.removeItem('token');
@@ -58,14 +74,27 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
     navigate('/login');
   }, [navigate]);
 
-  const handleMenuClick = useCallback((opcion: string) => {
-    setAnchorElUser(null);
-    const opciones = {
-      'Cerrar sesión': cerrarSesion,
+  const handleMenuClick = useCallback(
+    (opcion: string) => {
+      setAnchorElUser(null);
+      const opciones = {
+        'Cerrar sesión': cerrarSesion,
+      };
+      const accion = opciones[opcion];
+      if (accion) accion();
+    },
+    [cerrarSesion]
+  );
+
+  useEffect(() => {
+    const target = selectedRef.current as HTMLDivElement;
+    const bar = barRef.current as HTMLDivElement;
+    if (bar && target) {
+      const { left, right } = target.getBoundingClientRect();
+      bar.style.left = `${Math.floor(left)}px`;
+      bar.style.width = `${Math.floor(right - left)}px`;
     }
-    const accion = opciones[opcion]
-    if (accion) accion();
-  }, [cerrarSesion]);
+  }, [moduloSeleccionado]);
 
   return (
     <AppBar
@@ -73,7 +102,8 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
       sx={{ backgroundColor: 'common.white', top: 0, ...sx }}
       position="sticky"
     >
-      <Toolbar sx={{ px: 4 }}>
+      <Toolbar sx={{ px: 4, position: 'relative' }}>
+        <AnimatedBar ref={barRef} />
         <AdbIcon
           color="primary"
           sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
@@ -165,13 +195,12 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
           {APPBAR_MENU_ITEMS.map((item) =>
             item.ruta === moduloSeleccionado ? (
               <Box
+                ref={selectedRef}
                 key={item.clave}
                 sx={{
                   height: '100%',
-                  borderBottom: '3px solid',
-                  borderColor: 'primary.main',
                   display: 'grid',
-                  placeItems: 'center'
+                  placeItems: 'center',
                 }}
               >
                 <Button
@@ -190,7 +219,7 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
                 sx={{
                   height: '100%',
                   display: 'grid',
-                  placeItems: 'center'
+                  placeItems: 'center',
                 }}
               >
                 <Button

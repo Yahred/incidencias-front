@@ -19,11 +19,13 @@ const Bold = styled('span')({
 interface TarjetaIncidenciaProps {
   incidencia: Incidencia;
   isLoading: boolean;
+  onClick: (incidencia: Incidencia) => void
 }
 
 const TarjetaIncidencia: FC<TarjetaIncidenciaProps> = ({
   incidencia,
   isLoading,
+  onClick,
 }) => {
   if (isLoading) {
     return (
@@ -56,6 +58,7 @@ const TarjetaIncidencia: FC<TarjetaIncidenciaProps> = ({
   return (
     <FadeIn sx={{ width: 380 }}>
       <Paper
+        onClick={() => onClick(incidencia)}
         elevation={2}
         sx={{
           position: 'relative',

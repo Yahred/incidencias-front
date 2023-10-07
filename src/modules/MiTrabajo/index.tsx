@@ -9,20 +9,22 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import TarjetaIncidencia from './components/TarjetaIncidencia';
-
-import scrollbarMixin from '../../theme/scrollbar';
 import TabsIncidencias from './components/TabsIncidencias';
 import ModalReportar from './components/ModalReportar';
+import ModalIncidencia from '../../components/ModalIncidencia';
 
+import scrollbarMixin from '../../theme/scrollbar';
 import objectToFormData from '../../utils/functions/objectToFormData';
-import { obtenerIncidenciasDelUsuario, registrarIncidencia } from '../../services/incidencias';
+import {
+  obtenerIncidenciasDelUsuario,
+  registrarIncidencia,
+} from '../../services/incidencias';
 import { Incidencia } from '../../interfaces/Incidencia';
-import useStore from '../../stores/store';
 
 const MiTrabajo: FC = () => {
-  const isFetching = useStore(({ isFetching }) => isFetching);
-
   const [modalAbierto, setModalAbierto] = useState<boolean>(false);
+  const [modalIncidenciaAbierto, setModalIncidenciaAbierto] = useState<boolean>(false);
+  const [incidencia, setIncidencia] = useState<Incidencia | null>(null);
   const fechaInicio = useMemo(() => sub(new Date(), { days: 30 }), []);
 
   const handleAgregarClick = useCallback(() => {
@@ -38,21 +40,35 @@ const MiTrabajo: FC = () => {
     mutationFn: (incidencia: FormData) => registrarIncidencia(incidencia),
   });
 
-  const { data: incidencias, refetch } = useQuery({
-    queryKey: ['incidencias' ],
+  const {
+    data: incidencias,
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryKey: ['incidencias'],
     queryFn: () => obtenerIncidenciasDelUsuario(fechaInicio),
     initialData: [],
     staleTime: 0,
   });
 
-  const guardarIncidencia = useCallback(async (form: Incidencia) => {
-    const { evidencias, ...incidencia } = form;
-    const formData = objectToFormData(incidencia);
-    evidencias?.forEach((evidencia) => formData.append('evidencias', evidencia));
-    await mutateAsync(formData);
-    refetch();
-    setModalAbierto(false);
-  }, [mutateAsync, refetch]);
+  const guardarIncidencia = useCallback(
+    async (form: Incidencia) => {
+      const { evidencias, ...incidencia } = form;
+      const formData = objectToFormData(incidencia);
+      evidencias?.forEach((evidencia) =>
+        formData.append('evidencias', evidencia)
+      );
+      await mutateAsync(formData);
+      refetch();
+      setModalAbierto(false);
+    },
+    [mutateAsync, refetch]
+  );
+
+  const handleIncidenciaClick = useCallback((incidencia: Incidencia) => {
+    setIncidencia(incidencia);
+    setModalIncidenciaAbierto(true);
+  }, []);
 
   return (
     <>
@@ -77,11 +93,24 @@ const MiTrabajo: FC = () => {
               sx={{ overflowX: 'auto', ...scrollbarMixin }}
             >
               {incidencias?.map((incidencia) => (
-                <TarjetaIncidencia incidencia={incidencia} isLoading={isFetching} />
+                <TarjetaIncidencia
+                  onClick={handleIncidenciaClick}
+                  incidencia={incidencia}
+                  isLoading={isLoading}
+                />
               ))}
-              {!isFetching && !incidencias?.length && <Box display="flex" alignItems="center" justifyContent="center" width='100%'>
-                <Typography variant='h4'>Aún no has levantado ninguna incidencia</Typography>
-              </Box>}
+              {!isLoading && !incidencias?.length && (
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  width="100%"
+                >
+                  <Typography variant="h4">
+                    Aún no has levantado ninguna incidencia
+                  </Typography>
+                </Box>
+              )}
             </Box>
           </Grid>
         </Grid>
@@ -93,6 +122,10 @@ const MiTrabajo: FC = () => {
         open={modalAbierto}
         onCancel={handleCancelarRegistro}
         onSave={guardarIncidencia}
+      />
+      <ModalIncidencia
+        incidencia={incidencia}
+        isOpen={modalIncidenciaAbierto}
       />
     </>
   );

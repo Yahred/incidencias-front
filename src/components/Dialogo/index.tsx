@@ -2,6 +2,7 @@ import { FC, ReactNode } from 'react';
 
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
+
 import { SxProps } from '@mui/material';
 
 interface DialogoProps {

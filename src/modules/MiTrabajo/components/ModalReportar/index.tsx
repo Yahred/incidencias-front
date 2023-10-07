@@ -103,7 +103,6 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
 
   const guardarIncidencia = useCallback(
     async (incidencia: Incidencia) => {
-      console.log(listaEvidencia)
       onSave({ ...incidencia, evidencias: listaEvidencia! });
       methods.reset();
       setListaEvidencia([]);
@@ -111,17 +110,13 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
     [onSave, methods, listaEvidencia]
   );
 
-  const handleConfirmacionCancelar = useCallback(
-    (confirmado: boolean) => {
-      setConfirmacionOpen(false);
-      if (!confirmado) return;
-
-      methods.reset();
-      onCancel();
-      setListaEvidencia([]);
-    },
-    [methods, onCancel]
-  );
+  const handleConfirmacionCancelar = useCallback((confirmado: boolean) => {
+    setConfirmacionOpen(false);
+    if (!confirmado) return;
+    methods.reset();
+    onCancel();
+    setListaEvidencia([]);
+  }, [methods, onCancel]);
 
   return (
     <>
