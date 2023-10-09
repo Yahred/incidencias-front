@@ -14,23 +14,15 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
 import useStore from '../../../stores/store';
-import { Avatar, SxProps, Tooltip, styled } from '@mui/material';
+import { Avatar, SxProps, Tooltip } from '@mui/material';
 import { APPBAR_MENU_ITEMS } from '../../../constants/menu';
+import AnimatedBar from '../../../components/AnimatedBar';
 
 const settings = ['Perfil', 'Dashboard', 'Cerrar sesión'];
 
 interface AppbarProps {
   sx?: SxProps;
 }
-
-const AnimatedBar = styled('div')(({ theme: { palette } }) => ({
-  position: 'absolute',
-  bottom: 0,
-  transition: 'all .2s ease-in-out',
-  height: 3,
-  backgroundColor: palette.primary.main,
-  width: '200px',
-}));
 
 const Appbar: FC<AppbarProps> = ({ sx }) => {
   const usuario = useStore(({ usuario }) => usuario);

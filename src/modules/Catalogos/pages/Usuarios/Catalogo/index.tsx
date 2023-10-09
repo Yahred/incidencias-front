@@ -18,6 +18,10 @@ const cabeceros: Cabeceros<Usuario>[] = [
       `${nombres} ${apellidoPat} ${apellidoMat}`,
   },
   {
+    label: 'Departamento',
+    transform: ({ departamento }) => departamento?.nombre,
+  },
+  {
     label: 'Tipo',
     transform: ({ tipoUsuario }) => (tipoUsuario as TipoUsuario).nombre!,
   },

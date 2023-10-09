@@ -20,6 +20,12 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": false,
+
+    /* Path */
+    "baseUrl": ".",
+    "paths": {
+      "@catalogos/*": ["modules/catalogos/pages/*"]
+    }
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

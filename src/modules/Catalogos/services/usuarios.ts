@@ -21,7 +21,13 @@ export const obtenerUsuarioPorId = (id: string) =>
   axios.get<unknown, Usuario>(param(USUARIOS, id));
 
 export const registrarUsuario = (usuario: FormData, id?: string) =>
-  id ? axios.put(param(USUARIOS, id), usuario, { headers: { "Content-Type": "multipart/form-data" } }) : axios.post(USUARIOS, usuario);
+  id
+    ? axios.put(param(USUARIOS, id), usuario, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+    : axios.post(USUARIOS, usuario, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
 
 export const obtenerTiposUsuario = () =>
   axios.get<unknown, TipoUsuario[]>(TIPOS_USUARIO);

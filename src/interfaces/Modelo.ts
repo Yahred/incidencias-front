@@ -15,5 +15,5 @@ export interface Modelo {
   categoria: Categoria | string,
   area?: Area | string,
   caracteristicas?: CaracteristicaModelo[]
-  foto?: string;
+  imagen?: string;
 }

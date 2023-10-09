@@ -25,19 +25,24 @@ import {
   EMAIL_INVALIDO,
 } from '../../../../../constants/validaciones';
 import { TiposUsuario } from '../../../../../constants/tiposUsuario';
+import { obtenerDepartamentos } from '../../../services/departamentos';
 
 const usuarioSchema = yup.object({
   id: yup.string(),
   username: yup.string().required(CAMPO_REQUERIDO),
   password: yup.string().when('id', {
     is: (id: string) => !id,
-    then: () => yup.string().required(CAMPO_REQUERIDO)
+    then: () => yup.string().required(CAMPO_REQUERIDO),
   }),
   nombres: yup.string().required(CAMPO_REQUERIDO),
   apellidoPat: yup.string().required(CAMPO_REQUERIDO),
   apellidoMat: yup.string().required(CAMPO_REQUERIDO),
   email: yup.string().email(EMAIL_INVALIDO).required(CAMPO_REQUERIDO),
   avatar: yup.mixed(),
+  departamento: yup.string().when('tipoUsuario', {
+    is: (tipoUsuario: string) => tipoUsuario === TiposUsuario.Academico,
+    then: () => yup.string().required(CAMPO_REQUERIDO),
+  }),
   tipoUsuario: yup.string().required(CAMPO_REQUERIDO),
   areas: yup.array().when('tipoUsuario', {
     is: (tipoUsuario: string) => tipoUsuario === TiposUsuario.Tecnico,
@@ -55,7 +60,7 @@ const UsuarioFormulario: FC = () => {
 
   const tipoUsuarioSeleccionado = methods.watch('tipoUsuario');
 
-  const [{ data: usuario }, { data: tiposUsuario }] = useQueries([
+  const [{ data: usuario }, { data: tiposUsuario }, { data: departamentos }] = useQueries([
     {
       queryKey: ['usuario', id],
       queryFn: () => obtenerUsuarioPorId(id!),
@@ -68,6 +73,11 @@ const UsuarioFormulario: FC = () => {
       cacheTime: Infinity,
       initialData: [],
     },
+    {
+      queryKey: 'departamentos',
+      queryFn: obtenerDepartamentos,
+      initialData: []
+    }
   ]);
 
   const { data: areas } = useQuery({
@@ -139,12 +149,6 @@ const UsuarioFormulario: FC = () => {
         subtitle="Correo electrónico del usuario"
         required
       />
-      <FormFile
-        name="avatar"
-        title="Avatar"
-        subtitle="Fotografía del usuario"
-        accept="image/png, image/gif, image/jpeg"
-      />
       <FormSelect
         name="tipoUsuario"
         options={tiposUsuario!}
@@ -153,6 +157,14 @@ const UsuarioFormulario: FC = () => {
         bindValue='clave'
         required
       />
+      <FormFile
+        name="avatar"
+        title="Avatar"
+        subtitle="Fotografía del usuario"
+        accept="image/png, image/gif, image/jpeg"
+        previewSrc={usuario?.avatar}
+        showPreview
+      />
       {tipoUsuarioSeleccionado === TiposUsuario.Tecnico && <FormSelect
         name='areas'
         options={areas!}
@@ -160,6 +172,13 @@ const UsuarioFormulario: FC = () => {
         subtitle='Áreas las cuales puede atender el técnico'
         required
         multi
+      />}
+      {tipoUsuarioSeleccionado === TiposUsuario.Academico &&<FormSelect
+        name="departamento"
+        options={departamentos!}
+        title="Departamento"
+        subtitle="Seleccione el departamento del usuario"
+        required
       />}
     </ContenedorFormularioC>
   );

@@ -1,3 +1,4 @@
+import { Departamento } from "./Departamento";
 import { TipoUsuario } from "./TipoUsuario";
 
 export interface Usuario {
@@ -8,5 +9,6 @@ export interface Usuario {
   apellidoMat: string;
   email: string;
   avatar?: string;
+  departamento: Departamento;
   tipoUsuario: TipoUsuario | string
 }

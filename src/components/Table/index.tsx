@@ -72,7 +72,7 @@ const Table: FC<TableProps> = ({ cabeceros, rows }) => {
                 >
                   <FadeIn translate>
                     {cabecero.transform
-                      ? cabecero.transform(row)
+                      ? (cabecero.transform(row) || 'N / A')
                       : (row[cabecero.key!] || 'N / A')}
                   </FadeIn>
                 </TableCell>

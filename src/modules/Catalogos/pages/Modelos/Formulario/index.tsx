@@ -70,7 +70,7 @@ const ModeloFormulario: FC = () => {
 
   const { mutateAsync } = useMutation({
     mutationKey: 'salon',
-    mutationFn: registrarModelo
+    mutationFn: (modelo: FormData) => registrarModelo(modelo, id!)
   });
 
   const guardar = useCallback(async (modelo: Modelo) => {
@@ -117,11 +117,6 @@ const ModeloFormulario: FC = () => {
         title="Descripcion"
         subtitle="Descripcion sobre el modelo"
       />
-      <FormFile
-        name='imagen'
-        title='Imagen'
-        subtitle='Imagen representativa del modelo'
-      />
       <FormSelect
         name='area'
         title='Área'
@@ -129,6 +124,13 @@ const ModeloFormulario: FC = () => {
         options={areas!}
         disabled={!!id}
         required
+      />
+      <FormFile
+        name='imagen'
+        title='Imagen'
+        subtitle='Imagen representativa del modelo'
+        previewSrc={modelo?.imagen}
+        showPreview
       />
       <FormSelect
         name='categoria'

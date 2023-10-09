@@ -7,10 +7,12 @@ export const LOGIN = '/login'
 export const EDIFICIOS = '/edificios'
 export const SALONES = '/salones';
 export const AREAS = '/areas';
+export const DEPARTAMENTOS = '/departamentos';
 export const CATEGORIAS = '/categorias';
 export const MODELOS = '/modelos';
 export const RECURSOS = '/recursos';
 export const INCIDENCIAS = '/incidencias';
+export const RENOVAR = '/renovar';
 
 export const obtenerPaginado = (uri: string) => `${uri}${PAGINADO}?itemsPorPagina=${ITEMS_POR_PAGINA}`;
 export const param = (uri: string, param: string | number) => `${uri}/${param}`;

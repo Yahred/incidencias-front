@@ -18,7 +18,7 @@ interface SidebarItemProps {
   divider: boolean;
 }
 
-const SidebarItem: FC<SidebarItemProps> = ({
+const SidebarItemComponent: FC<SidebarItemProps> = ({
   item,
   seleccionado,
   onClick,
@@ -65,4 +65,4 @@ const SidebarItem: FC<SidebarItemProps> = ({
   );
 };
 
-export default SidebarItem;
+export default SidebarItemComponent;

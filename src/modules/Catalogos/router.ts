@@ -11,6 +11,7 @@ const Edificios = lazy(() => import('./pages/Edificios/Catalogo'));
 const Salones = lazy(() => import('./pages/Salones/Catalogo'));
 const Areas = lazy(() => import('./pages/Areas/Catalogo'));
 const Categorias = lazy(() => import('./pages/Categorias/Catalogo'));
+const Departamentos = lazy(() => import('./pages/Departamentos/Catalogo'));
 
 const AreaFormulario = lazy(() => import('./pages/Areas/Formulario'));
 const EdificioFormulario = lazy(() => import('./pages/Edificios/Formulario'));
@@ -19,6 +20,7 @@ const SalonFormulario = lazy(() => import('./pages/Salones/Formulario'));
 const RecursoFormulario = lazy(() => import('./pages/Recursos/Formulario'));
 const ModeloFormulario = lazy(() => import('./pages/Modelos/Formulario'));
 const CategoriaFormulario = lazy(() => import('./pages/Categorias/Formulario'));
+const DepartamentoFormulario = lazy(() => import('./pages/Departamentos/Formulario'));
 
 const router = {
   path: 'catalogos',
@@ -150,6 +152,24 @@ const router = {
         },
       ],
     },
+    {
+      path: 'departamentos',
+      Component: Outlet,
+      children: [
+        {
+          path: '',
+          Component: Departamentos,
+        },
+        {
+          path: 'formulario',
+          Component: DepartamentoFormulario,
+        },
+        {
+          path: ':id',
+          Component: DepartamentoFormulario,
+        },
+      ]
+    }
   ],
 };
 

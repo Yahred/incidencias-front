@@ -10,9 +10,14 @@ export const SIDEBAR_CATALOGOS: ISidebarItem[] = [
     divider: true,
   },
   {
+    nombre: 'Departamentos',
+    ruta: '/departamentos',
+    icono: 'apartment'
+  },
+  {
     nombre: 'Edificios',
     ruta: '/edificios',
-    icono: 'domain_add'
+    icono: 'domain'
   },
   {
     nombre: 'Salones',
