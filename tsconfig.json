@@ -25,7 +25,7 @@
     "baseUrl": ".",
     "paths": {
       "@catalogos/*": ["src/modules/catalogos/pages/*"],
-      "@services/*": ["src/services/"],
+      "@services": ["src/services/index"],
       "@components/*": ["src/components/*"],
       "@hooks/*": ["src/utils/hooks/*"],
       "@interfaces/*": ["src/interfaces/*"],

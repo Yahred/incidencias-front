@@ -8,7 +8,7 @@ module.exports = {
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh'],
+  plugins: ['react-refresh', 'import-resolver-alias'],
   rules: {
     'react-refresh/only-export-components': [
       'warn',
@@ -16,4 +16,15 @@ module.exports = {
     ],
     "@typescript-eslint/no-explicit-any": "off"
   },
+  settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
+    'import/resolver': {
+      node: {
+        paths: ['src'],
+        extensions: ['.js', '.jsx', '.ts', '.d.ts', '.tsx'],
+      },
+    },
+  }
 }

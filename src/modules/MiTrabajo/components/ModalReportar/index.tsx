@@ -21,7 +21,7 @@ import {
   obtenerEdicios,
   obtenerRecursos,
   obtenerSalones,
-} from '@services/';
+} from '@services';
 import { Incidencia } from '../../../../interfaces/Incidencia';
 import { CAMPO_REQUERIDO } from '../../../../constants/validaciones';
 import DialogoConfirmacion from '../../../../components/DialogoConfirmacion';
