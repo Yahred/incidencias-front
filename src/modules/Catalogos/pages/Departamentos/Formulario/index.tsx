@@ -15,7 +15,7 @@ import { useParams } from 'react-router-dom';
 import {
   obtenerDepartamentoPorId,
   registrarDepartamento,
-} from '../../../services/departamentos';
+} from '../../../../../services/departamentos';
 import { Departamento } from '../../../../../interfaces/Departamento';
 
 const areaSchema = yup.object({

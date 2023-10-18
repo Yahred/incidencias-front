@@ -18,12 +18,12 @@ import {
   CAMPO_REQUERIDO,
   CARACTERISTICA_REPETIDA,
 } from '../../../../../constants/validaciones';
-import { obtenerAreas } from '../../../services/areas';
+import { obtenerAreas } from '../../../../../services/areas';
 import { Caracteristica, Categoria } from '../../../../../interfaces/Categoria';
 import {
   obtenerCategoriaPorId,
   registrarCategoria,
-} from '../../../services/categorias';
+} from '../../../../../services/categorias';
 import { useParams } from 'react-router-dom';
 import useFormSetEffect from '../../../../../utils/hooks/useSetForm';
 

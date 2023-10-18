@@ -1,10 +1,10 @@
 import { FC } from 'react';
 
 import Catalogo from '../../../components/Catalogo';
-import { Cabeceros } from '../../../../../components/Table';
+import { Cabeceros } from '@components/Table';
 
-import { Area } from '../../../../../interfaces/Area';
-import { eliminarArea, obtenerAreasPaginado } from '../../../services/areas';
+import { Area } from '@interfaces/Area';
+import { eliminarArea, obtenerAreasPaginado } from '@services/areas';
 
 const cabeceros: Cabeceros<Area>[] = [
   {

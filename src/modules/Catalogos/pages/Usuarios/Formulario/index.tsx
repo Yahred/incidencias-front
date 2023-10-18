@@ -25,7 +25,7 @@ import {
   EMAIL_INVALIDO,
 } from '../../../../../constants/validaciones';
 import { TiposUsuario } from '../../../../../constants/tiposUsuario';
-import { obtenerDepartamentos } from '../../../services/departamentos';
+import { obtenerDepartamentos } from '../../../../../services/departamentos';
 
 const usuarioSchema = yup.object({
   id: yup.string(),

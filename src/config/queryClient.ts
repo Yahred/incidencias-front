@@ -4,6 +4,8 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
+      optimisticResults: true,
+      retry: false,
     },
   },
 });

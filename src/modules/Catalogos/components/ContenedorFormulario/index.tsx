@@ -7,9 +7,9 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-import DialogoConfirmacion from '../../../../components/DialogoConfirmacion';
-import Form from '../../../../components/Form';
-import SubmitButton from '../../../../components/SubmitButton';
+import DialogoConfirmacion from '@components/DialogoConfirmacion';
+import Form from '@components/Form';
+import SubmitButton from '@components/SubmitButton';
 
 interface ContenedorFormularioProps {
   methods: UseFormReturn<any>;

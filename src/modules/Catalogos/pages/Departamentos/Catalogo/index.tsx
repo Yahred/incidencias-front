@@ -3,7 +3,7 @@ import { FC } from 'react';
 import Catalogo from '../../../components/Catalogo';
 import { Cabeceros } from '../../../../../components/Table';
 
-import { eliminarDepartamento, obtenerDepartamentosPaginado } from '../../../services/departamentos';
+import { eliminarDepartamento, obtenerDepartamentosPaginado } from '../../../../../services/departamentos';
 import { Departamento } from 'src/interfaces/Departamento';
 
 const cabeceros: Cabeceros<Departamento>[] = [
