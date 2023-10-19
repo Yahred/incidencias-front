@@ -12,15 +12,15 @@ import Typography from '@mui/material/Typography';
 import { useMutation, useQuery } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import FadeIn from '../../../../components/FadeIn';
-import Table, { Cabeceros } from '../../../../components/Table';
-import TextField from '../../../../components/TextField';
-import Paginador from '../../../../components/Paginador';
-import DialogoConfirmacion from '../../../../components/DialogoConfirmacion';
+import FadeIn from '@components/FadeIn';
+import Table, { Cabeceros } from '@components/Table';
+import TextField from '@components/TextField';
+import Paginador from '@components/Paginador';
+import DialogoConfirmacion from '@components/DialogoConfirmacion';
 
-import useDebounce from '../../../../utils/hooks/useDebounce';
-import { Paginado } from '../../../../interfaces/Paginado';
-import { DEBOUNCE_TIME, ITEMS_POR_PAGINA } from '../../../../constants/general';
+import useDebounce from '@hooks/useDebounce';
+import { Paginado } from '@interfaces/Paginado';
+import { DEBOUNCE_TIME, ITEMS_POR_PAGINA } from '@constants/general';
 
 interface CatalogoProps {
   cabeceros: Cabeceros<any>[];

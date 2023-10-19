@@ -4,11 +4,8 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
-
-
 const TabsIncidenciasC: FC = () => {
   const [indexTab, setIndexTab] = useState<number>(0);
-
 
   return (
     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

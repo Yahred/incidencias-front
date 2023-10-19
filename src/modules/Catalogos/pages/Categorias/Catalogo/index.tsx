@@ -3,7 +3,7 @@ import { FC } from 'react';
 import Catalogo from '../../../components/Catalogo';
 import { Cabeceros } from '../../../../../components/Table';
 
-import { eliminarCategoria, obtenerCategoriasPaginado } from '../../../services/categorias';
+import { eliminarCategoria, obtenerCategoriasPaginado } from '../../../../../services/categorias';
 import { Categoria } from '../../../../../interfaces/Categoria';
 
 const cabeceros: Cabeceros<Categoria>[] = [

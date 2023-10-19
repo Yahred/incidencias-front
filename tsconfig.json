@@ -24,7 +24,12 @@
     /* Path */
     "baseUrl": ".",
     "paths": {
-      "@catalogos/*": ["modules/catalogos/pages/*"]
+      "@catalogos/*": ["src/modules/catalogos/pages/*"],
+      "@services": ["src/services/index"],
+      "@components/*": ["src/components/*"],
+      "@hooks/*": ["src/utils/hooks/*"],
+      "@interfaces/*": ["src/interfaces/*"],
+      "@constants/*": ["src/constants/*"]
     }
   },
   "include": ["src"],

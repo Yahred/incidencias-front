@@ -72,4 +72,22 @@ export const APPBAR_MENU_ITEMS = [
     clave: 'catalogos',
     submodulos: SIDEBAR_CATALOGOS,
   },
+  {
+    nombre: 'Reportes',
+    ruta: '/reportes',
+    clave: 'reportes',
+  },
 ];
+
+export const TABS_REPORTES = [
+  {
+    id: 1,
+    nombre: 'Gestión de configuraciones',
+    ruta: '/configuraciones',
+  },
+  {
+    id: 2,
+    nombre: 'Incidencias',
+    ruta: '/configuraciones',
+  },
+]

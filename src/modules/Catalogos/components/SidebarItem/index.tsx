@@ -9,7 +9,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 
-import { ISidebarItem } from '../../../../interfaces/SidebarItem';
+import { ISidebarItem } from '@interfaces/SidebarItem';
 
 interface SidebarItemProps {
   item: ISidebarItem;

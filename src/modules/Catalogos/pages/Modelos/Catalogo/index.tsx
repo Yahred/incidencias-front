@@ -4,7 +4,7 @@ import { Cabeceros } from '../../../../../components/Table';
 
 import Catalogo from '../../../components/Catalogo';
 import { Modelo } from '../../../../../interfaces/Modelo';
-import { eliminarModelo, obtenerModelosPaginado } from '../../../services/modelos';
+import { eliminarModelo, obtenerModelosPaginado } from '../../../../../services/modelos';
 import { Categoria } from '../../../../../interfaces/Categoria';
 
 const cabeceros: Cabeceros<Modelo>[] = [

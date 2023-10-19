@@ -7,7 +7,7 @@ import List from '@mui/material/List';
 
 import SidebarItem from '../SidebarItem';
 
-import { APPBAR_MENU_ITEMS } from '../../../../constants/menu';
+import { APPBAR_MENU_ITEMS } from '@constants/menu';
 
 const Sidebar: React.FC = () => {
   const { pathname } = useLocation();

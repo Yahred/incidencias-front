@@ -16,7 +16,7 @@ import { CAMPO_REQUERIDO } from '../../../../../constants/validaciones';
 import { obtenerRecursoPorId, registrarRecurso } from '../../../../../services/recursos';
 import { Recurso } from '../../../../../interfaces/Recurso';
 import { obtenerAreas, obtenerCategorias, obtenerEdicios, obtenerSalones } from '../../../services';
-import { obtenerModelos } from '../../../services/modelos';
+import { obtenerModelos } from '../../../../../services/modelos';
 import useFormSetEffect from '../../../../../utils/hooks/useSetForm';
 
 const recursoSchema = yup.object({

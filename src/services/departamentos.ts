@@ -1,7 +1,7 @@
-import axios from '../../../config/axios';
-import { DEPARTAMENTOS, obtenerPaginado, param } from '../../../constants/uris';
-import { Departamento } from '../../../interfaces/Departamento';
-import { Paginado } from '../../../interfaces/Paginado';
+import axios from '../config/axios';
+import { DEPARTAMENTOS, obtenerPaginado, param } from '../constants/uris';
+import { Departamento } from '../interfaces/Departamento';
+import { Paginado } from '../interfaces/Paginado';
 
 export const obtenerDepartamentosPaginado = (q: string, pagina?: string) =>
   axios.get<unknown, Paginado<Departamento>>(obtenerPaginado(DEPARTAMENTOS), {
