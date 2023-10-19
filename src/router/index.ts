@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createHashRouter } from 'react-router-dom';
 
 import CatalogosRouter from '../modules/Catalogos/router';
 import ReportesRouter from '../modules/Reportes/router';
@@ -11,7 +11,7 @@ import Tablero from '../modules/Tablero';
 import MiTrabajo from '../modules/MiTrabajo';
 import NotFound from '../modules/NotFound';
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '',
     Component: App,

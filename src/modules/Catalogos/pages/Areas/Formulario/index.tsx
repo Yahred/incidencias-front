@@ -9,7 +9,7 @@ import ContenedorFormularioC from '../../../components/ContenedorFormulario';
 import FormField from '@components/FormField';
 
 import { CAMPO_REQUERIDO } from '@constants/validaciones';
-import { registrarArea } from '@services/areas';
+import { registrarArea } from '@services';
 import { Area } from '@interfaces/Area';
 
 const salonSchema = yup.object({

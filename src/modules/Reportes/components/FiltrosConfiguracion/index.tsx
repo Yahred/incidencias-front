@@ -10,17 +10,15 @@ import { obtenerEdicios } from '../../../../services/edificios';
 import { obtenerDepartamentos } from '../../../../services/departamentos';
 import { obtenerModelos } from '../../../../services/modelos';
 import { obtenerCategorias } from '../../../../services/categorias';
+import { IFiltrosConfiguracion } from '@interfaces/Reportes';
 
-interface FiltrosConfiguracionProps {}
 
-const FiltrosConfiguracion: FC<FiltrosConfiguracionProps> = () => {
-  const [filtros, setFiltros] = useState({
-    edificio: null,
-    departamento: null,
-    modelo: null,
-    categoria: null,
-  });
+interface FiltrosConfiguracionProps {
+  value: IFiltrosConfiguracion;
+  onChange: (value: IFiltrosConfiguracion) => void;
+}
 
+const FiltrosConfiguracion: FC<FiltrosConfiguracionProps> = ({ value, onChange }) => {
   const { data: edificios } = useQuery({
     queryKey: 'edificios',
     queryFn: obtenerEdicios,
@@ -50,8 +48,8 @@ const FiltrosConfiguracion: FC<FiltrosConfiguracionProps> = () => {
       <Select
         name="departamento"
         title="Departamento"
-        onChange={setFiltros}
-        value={filtros.departamento}
+        onChange={onChange}
+        value={value.departamento}
         options={departamentos!}
         containerSx={{ flexBasis: 240 }}
         isHandleChange
@@ -59,8 +57,8 @@ const FiltrosConfiguracion: FC<FiltrosConfiguracionProps> = () => {
       <Select
         name="edificio"
         title="Edificio"
-        onChange={setFiltros}
-        value={filtros.edificio}
+        onChange={onChange}
+        value={value.edificio}
         options={edificios!}
         containerSx={{ flexBasis: 240 }}
         isHandleChange
@@ -68,8 +66,8 @@ const FiltrosConfiguracion: FC<FiltrosConfiguracionProps> = () => {
       <Select
         name="categoria"
         title="Categorías"
-        onChange={setFiltros}
-        value={filtros.categoria}
+        onChange={onChange}
+        value={value.categoria}
         options={categorias!}
         containerSx={{ flexBasis: 240 }}
         isHandleChange
@@ -77,8 +75,8 @@ const FiltrosConfiguracion: FC<FiltrosConfiguracionProps> = () => {
       <Select
         name="modelo"
         title="Modelos"
-        onChange={setFiltros}
-        value={filtros.modelo}
+        onChange={onChange}
+        value={value.modelo}
         options={modelos!}
         containerSx={{ flexBasis: 240 }}
         isHandleChange
