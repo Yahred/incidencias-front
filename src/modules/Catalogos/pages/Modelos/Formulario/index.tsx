@@ -16,7 +16,7 @@ import FormularioCaracteristicasModelo from '../../../components/FormularioCarac
 import objectToFormData from '../../../../../utils/functions/objectToFormData';
 import useFormSetEffect from '../../../../../utils/hooks/useSetForm';
 import { CAMPO_REQUERIDO } from '../../../../../constants/validaciones';
-import { obtenerAreas, obtenerCategoriaPorId, obtenerCategorias } from '../../../services';
+import { obtenerAreas, obtenerCategoriaPorId, obtenerCategorias } from '@services';
 import { CaracteristicaModelo, Modelo } from '../../../../../interfaces/Modelo';
 import { obtenerModeloPorId, registrarModelo } from '../../../../../services/modelos';
 import { useParams } from 'react-router-dom';

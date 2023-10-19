@@ -1,6 +1,4 @@
-import { FC, useCallback } from 'react';
-
-import { Outlet } from 'react-router-dom';
+import { FC } from 'react';
 
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';

@@ -18,7 +18,7 @@ import {
   obtenerTiposUsuario,
   obtenerUsuarioPorId,
   registrarUsuario,
-} from '../../../services';
+} from '@services';
 import { Usuario } from '../../../../../interfaces/Usuario';
 import {
   CAMPO_REQUERIDO,

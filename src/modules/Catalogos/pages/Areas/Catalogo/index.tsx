@@ -4,7 +4,7 @@ import Catalogo from '../../../components/Catalogo';
 import { Cabeceros } from '@components/Table';
 
 import { Area } from '@interfaces/Area';
-import { eliminarArea, obtenerAreasPaginado } from '@services/areas';
+import { eliminarArea, obtenerAreasPaginado } from '@services';
 
 const cabeceros: Cabeceros<Area>[] = [
   {

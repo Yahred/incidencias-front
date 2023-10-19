@@ -13,9 +13,17 @@ import FormSelect from '../../../../../components/FormSelect';
 
 import objectToFormData from '../../../../../utils/functions/objectToFormData';
 import { CAMPO_REQUERIDO } from '../../../../../constants/validaciones';
-import { obtenerRecursoPorId, registrarRecurso } from '../../../../../services/recursos';
+import {
+  obtenerRecursoPorId,
+  registrarRecurso,
+} from '../../../../../services/recursos';
 import { Recurso } from '../../../../../interfaces/Recurso';
-import { obtenerAreas, obtenerCategorias, obtenerEdicios, obtenerSalones } from '../../../services';
+import {
+  obtenerAreas,
+  obtenerCategorias,
+  obtenerEdicios,
+  obtenerSalones,
+} from '@services';
 import { obtenerModelos } from '../../../../../services/modelos';
 import useFormSetEffect from '../../../../../utils/hooks/useSetForm';
 
@@ -61,7 +69,7 @@ const RecursoFormulario: FC = () => {
       queryKey: ['recurso', id],
       queryFn: () => obtenerRecursoPorId(id!),
       enabled: !!id,
-    }
+    },
   ]);
 
   const { data: salones } = useQuery({
@@ -85,10 +93,13 @@ const RecursoFormulario: FC = () => {
     initialData: [],
   });
 
-  const guardar = useCallback(async (recurso: Recurso) => {
-    const formData = objectToFormData(recurso);
-    await mutateAsync(formData);
-  }, [mutateAsync]);
+  const guardar = useCallback(
+    async (recurso: Recurso) => {
+      const formData = objectToFormData(recurso);
+      await mutateAsync(formData);
+    },
+    [mutateAsync]
+  );
 
   useFormSetEffect(modelo, methods.setValue);
 
@@ -110,15 +121,11 @@ const RecursoFormulario: FC = () => {
         title="Descripcion"
         subtitle="Descripcion sobre el recurso"
       />
-      <FormFile
-        name='foto'
-        title='Foto'
-        subtitle='Fotografía del recurso'
-      />
+      <FormFile name="foto" title="Foto" subtitle="Fotografía del recurso" />
       <FormSelect
-        name='edificio'
+        name="edificio"
         title="Edificio"
-        subtitle='Edificio en donde se encuentra el recurso'
+        subtitle="Edificio en donde se encuentra el recurso"
         options={edificios!}
         required
       />
@@ -131,24 +138,24 @@ const RecursoFormulario: FC = () => {
         required
       />
       <FormSelect
-        name='area'
+        name="area"
         title="Área"
-        subtitle='Área a la que pertenece el recurso'
+        subtitle="Área a la que pertenece el recurso"
         options={areas!}
         required
       />
       <FormSelect
-        name='categoria'
+        name="categoria"
         title="Categoría"
-        subtitle='Categoría a la que pertenece el recurso'
+        subtitle="Categoría a la que pertenece el recurso"
         options={categorias!}
         disabled={!areaSeleccionada}
         required
       />
       <FormSelect
-        name='modelo'
+        name="modelo"
         title="Modelo"
-        subtitle='Modelo del recurso'
+        subtitle="Modelo del recurso"
         options={modelos!}
         disabled={!categoriaSeleccionada}
         required
