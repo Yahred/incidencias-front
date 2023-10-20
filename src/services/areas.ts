@@ -1,3 +1,4 @@
+import { Area } from "@interfaces/Area";
 import axios from "../config/axios";
 import { AREAS, obtenerPaginado, param } from "../constants/uris";
 import { Edificio } from "../interfaces/Edificio";
@@ -12,6 +13,6 @@ export const obtenerAreasPaginado = (q: string, pagina?: string) => axios.get<un
 
 export const obtenerAreas = () => axios.get<unknown, Edificio[]>(AREAS)
 
-export const registrarArea = (edificio: Edificio) => axios.post(AREAS, edificio);
+export const registrarArea = (edificio: Area) => axios.post(AREAS, edificio);
 
 export const eliminarArea = (id: string) => axios.delete(param(AREAS, id));
