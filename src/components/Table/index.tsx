@@ -31,7 +31,7 @@ const Table: FC<TableProps> = ({ cabeceros, rows }) => {
   const isLoading = useStore(({ isFetching: isLoading }) => isLoading);
 
   return (
-    <TableContainer sx={{ overflowY: 'hidden' }}>
+    <TableContainer sx={{ overflowY: 'hidden', minHeight: '50svh', }}>
       <MuiTable sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>

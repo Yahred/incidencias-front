@@ -1,5 +1,6 @@
 import { FC, memo, useCallback, useState } from 'react';
 
+import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import { SxProps, styled } from '@mui/material';
 
@@ -28,7 +29,9 @@ const ImagePreviewComponent: FC<ImagePreviewProps> = ({ alt, src, sx }) => {
   return (
     <>
       {isLoading && (
-        <CircularProgress />
+        <Box sx={{ display: 'grid', placeItems: 'center', height: 120 }}>
+           <CircularProgress />
+        </Box>
       )}
       <FadeIn>
         <Image

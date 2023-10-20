@@ -16,6 +16,10 @@ const cabeceros: Cabeceros<Edificio>[] = [
     key: 'descripcion',
     transform: ({ descripcion }) => descripcion || 'N / A'
   },
+  {
+    label: 'Departamento',
+    transform: ({ departamento }) => departamento?.nombre || 'N / A'
+  },
 ];
 
 const Edificios: FC = () => {

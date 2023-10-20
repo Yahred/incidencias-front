@@ -19,8 +19,9 @@ import Paginador from '@components/Paginador';
 import DialogoConfirmacion from '@components/DialogoConfirmacion';
 
 import useDebounce from '@hooks/useDebounce';
+import usePagination from '@hooks/usePagination';
 import { Paginado } from '@interfaces/Paginado';
-import { DEBOUNCE_TIME, ITEMS_POR_PAGINA } from '@constants/general';
+import { DEBOUNCE_TIME } from '@constants/general';
 
 interface CatalogoProps {
   cabeceros: Cabeceros<any>[];
@@ -43,6 +44,8 @@ const Catalogo: FC<CatalogoProps> = ({
 
   const [dialogoConfirmacioOpen, setDialogoConfirmacionOpen] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams({ pagina: '1', q: '' });
+
+  const { handlePaginaChange, pagina } = usePagination(searchParams, setSearchParams);
 
   const debounceQ = useDebounce<string>(
     searchParams.get('q') || '',
@@ -96,24 +99,13 @@ const Catalogo: FC<CatalogoProps> = ({
     }
   ], [cabeceros, handleEdit, handleDelete]);
 
-
   const handleAgregarClick = useCallback(() => {
     navigate('./formulario');
   }, [navigate]);
 
-  const handleSearchChange = useCallback(
-    (q: string) => {
-      setSearchParams({ q, pagina: '1' });
-    },
-    [setSearchParams]
-  );
-
-  const handlePaginaChange = useCallback(
-    (_, page: number) => {
-      setSearchParams({ q: searchParams.get('q') || '' , pagina: page.toString() });
-    },
-    [setSearchParams, searchParams]
-  );
+  const handleSearchChange = useCallback((q: string) => {
+    setSearchParams({ q, pagina: '1' });
+  }, [setSearchParams]);
 
   return (
     <>
@@ -152,8 +144,7 @@ const Catalogo: FC<CatalogoProps> = ({
           <FadeIn delay={350}>
             <Paginador
               onChange={handlePaginaChange}
-              pagina={Number(searchParams.get('pagina')) || 1}
-              itemsPorPagina={ITEMS_POR_PAGINA}
+              pagina={pagina || 1}
               totalPaginas={data?.totalPages || 1}
             />
           </FadeIn>

@@ -7,25 +7,23 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import ContenedorFormulario from '../../../components/ContenedorFormulario';
-import FormField from '../../../../../components/FormField';
-import FormFile from '../../../../../components/FormFile';
-import FormSelect from '../../../../../components/FormSelect';
+import FormField from '@components/FormField';
+import FormFile from '@components/FormFile';
+import FormSelect from '@components/FormSelect';
 
-import objectToFormData from '../../../../../utils/functions/objectToFormData';
-import { CAMPO_REQUERIDO } from '../../../../../constants/validaciones';
-import {
-  obtenerRecursoPorId,
-  registrarRecurso,
-} from '../../../../../services/recursos';
-import { Recurso } from '../../../../../interfaces/Recurso';
+import objectToFormData from '@functions/objectToFormData';
+import useFormSetEffect from '@hooks/useSetForm';
+import { CAMPO_REQUERIDO } from '@constants/validaciones';
+import { Recurso } from '@interfaces/Recurso';
 import {
   obtenerAreas,
   obtenerCategorias,
   obtenerEdicios,
   obtenerSalones,
+  obtenerRecursoPorId,
+  registrarRecurso,
+  obtenerModelos
 } from '@services';
-import { obtenerModelos } from '../../../../../services/modelos';
-import useFormSetEffect from '../../../../../utils/hooks/useSetForm';
 
 const recursoSchema = yup.object({
   nombre: yup.string().required(CAMPO_REQUERIDO),
@@ -62,7 +60,7 @@ const RecursoFormulario: FC = () => {
     },
     {
       queryKey: 'edificios',
-      queryFn: obtenerEdicios,
+      queryFn: () => obtenerEdicios(),
       initialData: [],
     },
     {
@@ -121,7 +119,11 @@ const RecursoFormulario: FC = () => {
         title="Descripcion"
         subtitle="Descripcion sobre el recurso"
       />
-      <FormFile name="foto" title="Foto" subtitle="Fotografía del recurso" />
+      <FormFile
+        name="foto"
+        title="Foto"
+        subtitle="Fotografía del recurso"
+      />
       <FormSelect
         name="edificio"
         title="Edificio"

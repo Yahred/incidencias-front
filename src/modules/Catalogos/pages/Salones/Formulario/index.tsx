@@ -27,7 +27,7 @@ const SalonFormulario: FC = () => {
 
   const { data: edificios } = useQuery({
     queryKey: 'edificios',
-    queryFn: obtenerEdicios,
+    queryFn: () => obtenerEdicios(),
     initialData: []
   })
 

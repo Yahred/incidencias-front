@@ -1,8 +1,5 @@
-import { lazy } from "react";
-
-const Reportes = lazy(() => import('./'));
-
-const ElementosConfiguracion = lazy(() => import('./pages/ElementosConfiguracion'));
+import Reportes from './';
+import ElementosConfiguracion from './pages/ElementosConfiguracion';
 
 const router = {
   path: 'reportes',
@@ -10,9 +7,9 @@ const router = {
   children: [
     {
       path: 'configuraciones',
-      Component: ElementosConfiguracion
-    }
-  ]
-}
+      Component: ElementosConfiguracion,
+    },
+  ],
+};
 
 export default router;

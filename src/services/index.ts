@@ -8,3 +8,4 @@ export * from './salones';
 export * from './usuarios';
 export * from './incidencias';
 export * from './sesion';
+export * from './reportes';

@@ -55,7 +55,7 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
 
   const { data: edificios } = useQuery({
     queryKey: 'edificios',
-    queryFn: obtenerEdicios,
+    queryFn: () => obtenerEdicios(),
     initialData: [],
   });
 

@@ -24,7 +24,7 @@ const Tarjeta: FC<TarjetaProps> = ({ title, value, isLoading }) => {
   }
 
   return (
-    <Card variant="outlined" sx={{ width: 240, height: 180 }}>
+    <Card variant="outlined" sx={{ width: '100%', height: 180 }}>
       <FadeIn sx={{ height: '100%' }}>
         <Box
           display="flex"

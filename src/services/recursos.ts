@@ -11,7 +11,7 @@ export const obtenerRecursosPaginado = (q: string, pagina?: string) =>
     },
   });
 
-export const obtenerRecursos = (salon: string) =>
+export const obtenerRecursos = (salon?: string) =>
   axios.get<unknown, Recurso[]>(RECURSOS, {
     params: {
       salon,

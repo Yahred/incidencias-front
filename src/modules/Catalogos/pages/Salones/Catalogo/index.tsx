@@ -4,8 +4,8 @@ import Catalogo from '../../../components/Catalogo';
 import { Cabeceros } from '../../../../../components/Table';
 
 import { eliminarSalon, obtenerSalonesPaginado } from '../../../../../services/salones';
-import { Salon } from '../../../../../interfaces/Salon';
-import { Edificio } from '../../../../../interfaces/Edificio';
+import { Salon } from '@interfaces/Salon';
+import { Edificio } from '@interfaces/Edificio';
 
 const cabeceros: Cabeceros<Salon>[] = [
   {

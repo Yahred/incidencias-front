@@ -10,7 +10,9 @@ export const obtenerEdificiosPaginado = (q: string, pagina?: string) => axios.ge
   }
 });
 
-export const obtenerEdicios = () => axios.get<unknown, Edificio[]>(EDIFICIOS)
+export const obtenerEdicios = (departamento?: string) => axios.get<unknown, Edificio[]>(EDIFICIOS, {
+  params: { departamento }
+})
 
 export const registrarEdificio = (edificio: Edificio) => axios.post(EDIFICIOS, edificio);
 

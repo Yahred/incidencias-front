@@ -28,8 +28,9 @@
       "@services": ["src/services/index"],
       "@components/*": ["src/components/*"],
       "@hooks/*": ["src/utils/hooks/*"],
+      "@functions/*": ["src/utils/functions/*"],
       "@interfaces/*": ["src/interfaces/*"],
-      "@constants/*": ["src/constants/*"]
+      "@constants/*": ["src/constants/*"],
     }
   },
   "include": ["src"],

@@ -4,7 +4,6 @@ import Pagination from '@mui/material/Pagination';
 
 interface PaginadorProps {
   pagina: number;
-  itemsPorPagina: number;
   totalPaginas: number;
   onChange: (event: React.ChangeEvent<unknown>, page: number) => void;
 }

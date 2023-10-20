@@ -15,6 +15,7 @@ export default defineConfig({
       '@hooks': fileURLToPath(new URL('./src/utils/hooks', import.meta.url)),
       '@interfaces': fileURLToPath(new URL('./src/interfaces', import.meta.url)),
       '@constants': fileURLToPath(new URL('./src/constants', import.meta.url)),
+      "@functions": fileURLToPath(new URL('./src/utils/functions', import.meta.url)),
     }
   }
 })
