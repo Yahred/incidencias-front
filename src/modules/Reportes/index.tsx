@@ -1,6 +1,6 @@
 import { FC, Suspense, useEffect, useMemo, useState } from 'react';
 
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 
@@ -11,6 +11,7 @@ import { Stack, Typography } from '@mui/material';
 
 const Reportes: FC = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const opciones = useMemo(() => TABS_REPORTES, []);
   const [seleccion, setSeleccion] = useState(1);
@@ -18,7 +19,7 @@ const Reportes: FC = () => {
   useEffect(() => {
     const opcion = opciones.find(({ id }) => id === seleccion);
     navigate(`.${opcion?.ruta}`);
-  }, [seleccion, navigate, opciones]);
+  }, [seleccion, navigate, opciones, pathname]);
 
   return (
     <Suspense>

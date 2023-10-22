@@ -10,21 +10,23 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-import Dialogo from '../../../../components/Dialogo';
-import FormField from '../../../../components/FormField';
-import Form from '../../../../components/Form';
-import FormSelect from '../../../../components/FormSelect';
-import ListaImagenes from '../../../../components/ListaImagenes';
-import SubmitButton from '../../../../components/SubmitButton';
+import Dialogo from '@components/Dialogo';
+import FormField from '@components/FormField';
+import Form from '@components/Form';
+import FormSelect from '@components/FormSelect';
+import ListaImagenes from '@components/ListaImagenes';
+import SubmitButton from '@components/SubmitButton';
 
 import {
   obtenerEdicios,
   obtenerRecursos,
   obtenerSalones,
 } from '@services';
-import { Incidencia } from '../../../../interfaces/Incidencia';
-import { CAMPO_REQUERIDO } from '../../../../constants/validaciones';
-import DialogoConfirmacion from '../../../../components/DialogoConfirmacion';
+import { Incidencia } from '@interfaces/Incidencia';
+import { CAMPO_REQUERIDO } from '@constants/validaciones';
+import DialogoConfirmacion from '@components/DialogoConfirmacion';
+import { Usuario } from '@interfaces/Usuario';
+import useSesion from '../../../../stores/hooks/useSesion';
 
 interface ModalReportarProps {
   open: boolean;
@@ -43,6 +45,8 @@ const incidenciaSchema = yup.object({
 });
 
 const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
+  const usuario = useSesion() as Usuario;
+
   const methods = useForm({
     resolver: yupResolver(incidenciaSchema),
   });
@@ -55,7 +59,7 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
 
   const { data: edificios } = useQuery({
     queryKey: 'edificios',
-    queryFn: () => obtenerEdicios(),
+    queryFn: () => obtenerEdicios(usuario.departamento.id),
     initialData: [],
   });
 

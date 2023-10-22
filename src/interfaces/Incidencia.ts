@@ -5,6 +5,7 @@ import { Salon } from './Salon';
 import { Usuario } from './Usuario';
 
 export interface Incidencia {
+  id?: string;
   titulo: string;
   descripcion: string;
   edificio: Edificio ;

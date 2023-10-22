@@ -5,11 +5,10 @@ import ReportesRouter from '../modules/Reportes/router';
 
 import Login from '../modules/Login';
 import App from '../App';
-import Catalogos from '../modules/Catalogos';
-import Usuarios from '../modules/Catalogos/pages/Usuarios/Catalogo';
 import Tablero from '../modules/Tablero';
 import MiTrabajo from '../modules/MiTrabajo';
 import NotFound from '../modules/NotFound';
+import Incidencias from '../modules/Incidencias';
 
 const router = createHashRouter([
   {
@@ -32,13 +31,7 @@ const router = createHashRouter([
       },
       {
         path: '/incidencias',
-        Component: Catalogos,
-        children: [
-          {
-            path: '',
-            Component: Usuarios,
-          },
-        ],
+        Component: Incidencias,
       },
     ],
   },

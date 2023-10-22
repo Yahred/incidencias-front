@@ -8,14 +8,17 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-import TarjetaIncidencia from './components/TarjetaIncidencia';
+import TarjetaIncidencia from '@components/TarjetaIncidencia';
 import TabsIncidencias from './components/TabsIncidencias';
 import ModalReportar from './components/ModalReportar';
 import ModalIncidencia from '../../components/ModalIncidencia';
 
 import scrollbarMixin from '../../theme/scrollbar';
 import objectToFormData from '@functions/objectToFormData';
-import { obtenerIncidenciasDelUsuario, registrarIncidencia } from '@services';
+import {
+  obtenerIncidenciasDelUsuario,
+  registrarIncidencia,
+} from '@services';
 import { Incidencia } from '@interfaces/Incidencia';
 
 const MiTrabajo: FC = () => {
@@ -23,6 +26,7 @@ const MiTrabajo: FC = () => {
   const [modalIncidenciaAbierto, setModalIncidenciaAbierto] =
     useState<boolean>(false);
   const [incidencia, setIncidencia] = useState<Incidencia | null>(null);
+
   const fechaInicio = useMemo(() => sub(new Date(), { days: 30 }), []);
 
   const handleAgregarClick = useCallback(() => {
@@ -49,19 +53,16 @@ const MiTrabajo: FC = () => {
     staleTime: 0,
   });
 
-  const guardarIncidencia = useCallback(
-    async (form: Incidencia) => {
-      const { evidencias, ...incidencia } = form;
-      const formData = objectToFormData(incidencia);
-      evidencias?.forEach((evidencia) =>
-        formData.append('evidencias', new Blob([evidencia]))
-      );
-      await mutateAsync(formData);
-      refetch();
-      setModalAbierto(false);
-    },
-    [mutateAsync, refetch]
-  );
+  const guardarIncidencia = useCallback(async (form: Incidencia) => {
+    const { evidencias, ...incidencia } = form;
+    const formData = objectToFormData(incidencia);
+    evidencias?.forEach((evidencia) =>
+      formData.append('evidencias', evidencia)
+    );
+    await mutateAsync(formData);
+    refetch();
+    setModalAbierto(false);
+  }, [mutateAsync, refetch]);
 
   const handleIncidenciaClick = useCallback((incidencia: Incidencia) => {
     setIncidencia(incidencia);
