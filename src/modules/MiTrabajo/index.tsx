@@ -14,16 +14,14 @@ import ModalReportar from './components/ModalReportar';
 import ModalIncidencia from '../../components/ModalIncidencia';
 
 import scrollbarMixin from '../../theme/scrollbar';
-import objectToFormData from '../../utils/functions/objectToFormData';
-import {
-  obtenerIncidenciasDelUsuario,
-  registrarIncidencia,
-} from '../../services/incidencias';
-import { Incidencia } from '../../interfaces/Incidencia';
+import objectToFormData from '@functions/objectToFormData';
+import { obtenerIncidenciasDelUsuario, registrarIncidencia } from '@services';
+import { Incidencia } from '@interfaces/Incidencia';
 
 const MiTrabajo: FC = () => {
   const [modalAbierto, setModalAbierto] = useState<boolean>(false);
-  const [modalIncidenciaAbierto, setModalIncidenciaAbierto] = useState<boolean>(false);
+  const [modalIncidenciaAbierto, setModalIncidenciaAbierto] =
+    useState<boolean>(false);
   const [incidencia, setIncidencia] = useState<Incidencia | null>(null);
   const fechaInicio = useMemo(() => sub(new Date(), { days: 30 }), []);
 
@@ -56,7 +54,7 @@ const MiTrabajo: FC = () => {
       const { evidencias, ...incidencia } = form;
       const formData = objectToFormData(incidencia);
       evidencias?.forEach((evidencia) =>
-        formData.append('evidencias', evidencia)
+        formData.append('evidencias', new Blob([evidencia]))
       );
       await mutateAsync(formData);
       refetch();
@@ -68,6 +66,10 @@ const MiTrabajo: FC = () => {
   const handleIncidenciaClick = useCallback((incidencia: Incidencia) => {
     setIncidencia(incidencia);
     setModalIncidenciaAbierto(true);
+  }, []);
+
+  const handleCerrarModalIncidencia = useCallback(() => {
+    setModalIncidenciaAbierto(false);
   }, []);
 
   return (
@@ -126,6 +128,7 @@ const MiTrabajo: FC = () => {
       <ModalIncidencia
         incidencia={incidencia}
         isOpen={modalIncidenciaAbierto}
+        onCerrar={handleCerrarModalIncidencia}
       />
     </>
   );

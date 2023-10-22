@@ -93,22 +93,14 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
   }, []);
 
   const handleEvidenciaRemovida = useCallback((index: number) => {
-    setListaEvidencia((prev) => {
-      const lista = Object.values({ ...prev, [index]: undefined }).filter(
-        (value) => !!value
-      );
-      return lista as ListaEvidencia;
-    });
+    setListaEvidencia((prev) => prev.filter((_, i) => i !== index));
   }, []);
 
-  const guardarIncidencia = useCallback(
-    async (incidencia: Incidencia) => {
-      onSave({ ...incidencia, evidencias: listaEvidencia! });
-      methods.reset();
-      setListaEvidencia([]);
-    },
-    [onSave, methods, listaEvidencia]
-  );
+  const guardarIncidencia = useCallback(async (incidencia: Incidencia) => {
+    onSave({ ...incidencia, evidencias: listaEvidencia! });
+    methods.reset();
+    setListaEvidencia([]);
+  }, [onSave, methods, listaEvidencia]);
 
   const handleConfirmacionCancelar = useCallback((confirmado: boolean) => {
     setConfirmacionOpen(false);

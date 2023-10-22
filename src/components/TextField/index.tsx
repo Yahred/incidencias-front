@@ -31,6 +31,7 @@ interface TextFieldProps {
   isHandleChange?: boolean;
   onChange?: (prevState: object) => void;
   name?: string;
+  disabled?: boolean;
 }
 
 const TextField: FC<TextFieldProps> = ({
@@ -51,6 +52,7 @@ const TextField: FC<TextFieldProps> = ({
   isHandleChange,
   onChange,
   name,
+  disabled,
 }) => {
   const handleChange = useCallback((event: any) => {
     const {
@@ -80,6 +82,7 @@ const TextField: FC<TextFieldProps> = ({
         onChange={handleChange}
         InputProps={InputProps}
         sx={sx}
+        disabled={disabled}
       />
     </Box>
   );
@@ -88,7 +91,8 @@ const TextField: FC<TextFieldProps> = ({
 TextField.defaultProps = {
   onTextChange: () => {},
   isHandleChange: false,
-  onChange: () => {}
+  onChange: () => {},
+  disabled: false,
 };
 
 export default TextField;

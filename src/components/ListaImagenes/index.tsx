@@ -11,8 +11,9 @@ interface ListaImagenesProps {
   images: (string | File)[];
   title?: string;
   deleteAllowed?: boolean;
-  onChange: (image: File | string) => void;
-  onRemoved: (index: number) => void;
+  addAllowed?: boolean;
+  onChange?: (image: File | string) => void;
+  onRemoved?: (index: number) => void;
   onClick?: (index: number) => void;
 }
 
@@ -33,6 +34,7 @@ const ListaImagenes: FC<ListaImagenesProps> = ({
   onRemoved,
   deleteAllowed,
   onClick,
+  addAllowed,
 }) => {
   const [imagesSrc, setImagesSrc] = useState<string[]>([]);
 
@@ -46,55 +48,40 @@ const ListaImagenes: FC<ListaImagenesProps> = ({
 
   const handleFileSelected = useCallback((event: any) => {
     if (!event.target.files) return;
-    onChange(event.target.files[0]);
+    if (onChange) onChange(event.target.files[0]);
     if (fileInputRef.current) fileInputRef.current.value = '';
   }, [onChange]);
 
-  const readFiles = useCallback((images) => {
-    images.forEach((image, index) => {
+  const readFiles = useCallback(async (images: (string | File)[]) => {
+    const nuevoImagenesSrc: string[] = [];
+    await Promise.all(images.map((image) => {
       if (typeof image === 'string') {
         setImagesSrc((prev) => [...prev, image]);
+        nuevoImagenesSrc.push(image);
         return;
       }
+
       if (image instanceof File) {
         const reader = new FileReader();
-        reader.onload = function (e) {
-          const { result: src } = e.target as any;
-          setImagesSrc((prev) => {
-            const newImagesSrc = Object.values({
-              ...prev,
-              [index]: src,
-            });
-            return newImagesSrc as string[];
-          });
-        };
-        reader.readAsDataURL(image);
+
+        return new Promise<void>((resolve) => {
+          reader.onload = function (e) {
+            const { result } = e.target as any;
+            nuevoImagenesSrc.push(result);
+            resolve();
+          };
+          reader.readAsDataURL(image);
+        });
       }
-    });
-  }, []);
+    }));
 
-  const addFile = useCallback((images) => {
-    const image = images.at(-1);
-
-    if (typeof image === 'string') {
-      setImagesSrc((prev) => [...prev, image]);
-      return;
-    }
-
-    if (image instanceof File) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const { result: src } = e.target as any;
-        setImagesSrc((prev) => [...prev, src]);
-      };
-      reader.readAsDataURL(image);
-    }
+    setImagesSrc(nuevoImagenesSrc);
   }, []);
 
   const handleDeleteClick = useCallback((index: number) => {
     return () => {
       indexEliminado.current = index;
-      onRemoved(index);
+      if (onRemoved) onRemoved(index);
     };
   }, [onRemoved]);
 
@@ -118,21 +105,16 @@ const ListaImagenes: FC<ListaImagenesProps> = ({
   }, [imagesSrc]);
 
   useEffect(() => {
-    if (!longitudImagesSrc.current) {
-      readFiles(images);
-      return;
-    }
-
     if (longitudImagesSrc.current > images.length) {
       removeImage();
       return;
     }
 
-    addFile(images);
-  }, [images, readFiles, addFile, removeImage]);
+    readFiles(images);
+  }, [images, readFiles, removeImage]);
 
   return (
-    <Box display="flex" flexDirection="column" gap={2}>
+    <Box display="flex" flexDirection="column" gap={2} overflow="auto" maxWidth="90%">
       <Typography>{title}</Typography>
       <Box display="flex" gap={2} py={2} width="100%" maxWidth="100%" overflow="auto" sx={{ ...scrollbarMixin }}>
         <HiddenFileInput
@@ -166,11 +148,11 @@ const ListaImagenes: FC<ListaImagenesProps> = ({
             <Image src={src} />
           </Card>
         ))}
-        <Box display="grid" alignItems="center">
+        {addAllowed && <Box display="grid" alignItems="center">
           <IconButton onClick={handleClick}>
             <Add />
           </IconButton>
-        </Box>
+        </Box>}
       </Box>
     </Box>
   );
@@ -180,6 +162,7 @@ ListaImagenes.defaultProps = {
   images: [],
   onChange: () => {},
   deleteAllowed: true,
+  addAllowed: true,
 };
 
 export default ListaImagenes;
