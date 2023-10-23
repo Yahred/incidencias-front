@@ -1,16 +1,18 @@
 import { FC, useCallback } from 'react';
 
 import { useForm } from 'react-hook-form';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
 
 import ContenedorFormularioC from '../../../components/ContenedorFormulario';
 import FormField from '@components/FormField';
 
 import { CAMPO_REQUERIDO } from '@constants/validaciones';
-import { registrarArea } from '@services';
+import { obtenerAreaPorId, registrarArea } from '@services';
 import { Area } from '@interfaces/Area';
+import useFormSetEffect from '@hooks/useSetForm';
 
 const salonSchema = yup.object({
   nombre: yup.string().required(CAMPO_REQUERIDO),
@@ -18,18 +20,29 @@ const salonSchema = yup.object({
 })
 
 const AreaFormulario: FC = () => {
+  const { id } = useParams();
+
   const methods = useForm({
     resolver: yupResolver(salonSchema),
   });
 
+  const { data: area } = useQuery({
+    queryKey: ['area', id],
+    enabled: !!id,
+    queryFn: () => obtenerAreaPorId(id!),
+    initialData: null,
+  });
+
   const { mutateAsync } = useMutation({
     mutationKey: 'area',
-    mutationFn: registrarArea
+    mutationFn: (area: Area) => registrarArea(area, id),
   });
 
   const guardar = useCallback(async (area: Area) => {
     await mutateAsync(area)
   }, [mutateAsync]);
+
+  useFormSetEffect(area, methods.setValue);
 
   return (
     <ContenedorFormularioC

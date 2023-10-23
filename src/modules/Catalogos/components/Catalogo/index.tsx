@@ -116,11 +116,12 @@ const Catalogo: FC<CatalogoProps> = ({
         <Grid
           item
           container
+          rowSpacing={2}
           xs={12}
           display="flex"
           justifyContent="space-between"
         >
-          <Grid item xs={6}>
+          <Grid item xs={12} lg={6}>
             <TextField
               placeholder={placeholderBusqueda}
               onTextChange={handleSearchChange}
@@ -133,8 +134,8 @@ const Catalogo: FC<CatalogoProps> = ({
                 ),
               }} />
           </Grid>
-          <Grid item xs={6} display="flex" justifyContent="flex-end">
-            <Button onClick={handleAgregarClick}>{agregarText}</Button>
+          <Grid item xs={12} lg={6} display="flex" justifyContent="flex-end">
+            <Button type='button' onClick={handleAgregarClick}>{agregarText}</Button>
           </Grid>
         </Grid>
         <Grid item xs={12} minHeight='50svh'>

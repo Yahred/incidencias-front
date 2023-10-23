@@ -147,7 +147,10 @@ const CategoriaFormulario: FC = () => {
           gridColumn: 'span 2 / span 2',
           gap: 2,
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+          gridTemplateColumns: {
+            lg: 'repeat(3, minmax(0, 1fr))',
+            xs: 'repeat(1, minmax(0, 1fr))'
+          },
           py: 4,
         }}
       >
@@ -176,7 +179,10 @@ const CategoriaFormulario: FC = () => {
         <Box
           display="flex"
           justifyContent="flex-end"
-          gridColumn="span 3 / span 3"
+          gridColumn={{
+            lg: 'span 3 / span 3',
+            xs: 'span 1 / span 1'
+          }}
         >
           <Button type="submit">Agregar característica</Button>
         </Box>

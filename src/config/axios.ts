@@ -19,13 +19,14 @@ const axios = ax.create({
 });
 
 axios.interceptors.request.use((req) => {
-  const token = JSON.parse(localStorage.getItem('token')! || sessionStorage.getItem('token')!);
+  const token = JSON.parse(
+    localStorage.getItem('token')! || sessionStorage.getItem('token')!
+  );
   req.headers.set('token', token);
-  console.log(req.method)
+
   if (req.method === 'get') {
     store.getState().setLoadingOn();
-  }
-  else if (['post', 'put', 'delete'].includes(req.method!)) {
+  } else if (['post', 'put', 'delete'].includes(req.method!)) {
     store.getState().setMutatingOn();
   }
   return req;
@@ -44,10 +45,15 @@ axios.interceptors.response.use(
     return data;
   },
   (error) => {
+    const { data } = error.response;
+    let msj = ''
+    if (typeof data === 'string') {
+      msj = data;
+    }
     store.getState().setLoadingOff();
     store.getState().setMutatingOff();
     const mensaje = obtenerMensajeError(error);
-    toast.error(mensaje || MensajesToast.ERROR);
+    toast.error(mensaje || msj|| MensajesToast.ERROR);
     throw new Error(error);
   }
 );

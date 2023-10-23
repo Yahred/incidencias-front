@@ -9,6 +9,9 @@ const router = {
       path: 'configuraciones',
       Component: ElementosConfiguracion,
     },
+    {
+      path: '',
+    }
   ],
 };
 

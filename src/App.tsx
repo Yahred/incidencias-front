@@ -4,7 +4,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'chart.js/auto';
 
-
 import Layout from './layout';
 
 import autenticarUsuario from './utils/functions/autenticarUsuario';
@@ -26,7 +25,7 @@ function App() {
 
   return (
     <Layout>
-      <ToastContainer limit={1} />
+      <ToastContainer limit={4} />
       <Outlet />
     </Layout>
   );

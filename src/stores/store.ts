@@ -10,8 +10,13 @@ interface IStore {
   isMutating: boolean;
   setMutatingOn: () => void;
   setMutatingOff: () => void;
-  usuario: Usuario | null,
-  setUsuario: (usuario: Usuario) => void
+  usuario: Usuario | null;
+  setUsuario: (usuario: Usuario) => void;
+  isSidebarOpen: boolean;
+  existSidebar: boolean;
+  setExistSidebar: (exist: boolean) => void;
+  setIsSidebarOpen: (open: boolean) => void;
+  toggleSidebar: () => void;
 }
 
 const useStore = create(
@@ -24,6 +29,15 @@ const useStore = create(
     setMutatingOff: () => set({ isMutating: false }),
     usuario: null,
     setUsuario: (usuario: Usuario) => set({ usuario }),
+    isSidebarOpen: false,
+    setIsSidebarOpen: (open: boolean) => set({ isSidebarOpen: open }),
+    toggleSidebar: () =>
+      set(({ isSidebarOpen, existSidebar }) => {
+        if (existSidebar) return { isSidebarOpen: !isSidebarOpen };
+        return {};
+      }),
+    existSidebar: false,
+    setExistSidebar: (existSidebar) => set({ existSidebar }),
   }))
 );
 

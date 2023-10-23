@@ -26,6 +26,7 @@ import {
 } from '@services';
 
 const recursoSchema = yup.object({
+  folio: yup.string().required(CAMPO_REQUERIDO),
   nombre: yup.string().required(CAMPO_REQUERIDO),
   descripcion: yup.string(),
   area: yup.string().required(CAMPO_REQUERIDO),
@@ -108,6 +109,12 @@ const RecursoFormulario: FC = () => {
       methods={methods}
       onSubmit={guardar}
     >
+      <FormField
+        name="folio"
+        title="Folio"
+        subtitle="Folio del recurso"
+        required
+      />
       <FormField
         name="nombre"
         title="Nombre"

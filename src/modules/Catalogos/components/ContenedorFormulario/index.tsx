@@ -63,7 +63,7 @@ const ContenedorFormularioC: FC<ContenedorFormularioProps> = ({
     <>
       <Form methods={methods} onSubmit={methods.handleSubmit(handleSubmit)}>
         <Box display="flex" flexDirection="column" gap={4}>
-          <Box display="flex" width="100%" justifyContent="space-between">
+          <Box display="flex" width="100%" justifyContent="space-between" flexDirection={{ lg: 'row', xs: 'column' }}>
             <Box display="flex" flexDirection="column">
               <Typography variant="h5">{title}</Typography>
               <Typography variant="body1" color="gray">

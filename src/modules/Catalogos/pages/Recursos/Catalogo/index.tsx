@@ -12,7 +12,11 @@ import { Modelo } from '../../../../../interfaces/Modelo';
 
 const cabeceros: Cabeceros<Recurso>[] = [
   {
-    label: 'Recurso',
+    label: 'Folio',
+    key: 'folio',
+  },
+  {
+    label: 'Nombre',
     key: 'nombre',
   },
   {
@@ -41,7 +45,7 @@ const Recursos: FC = () => {
       deleteFn={eliminarRecurso}
       agregarText="Agregar recurso"
       title="Recursos"
-      placeholderBusqueda="Buscar recurso"
+      placeholderBusqueda="Búsqueda por nombre o folio"
     />
   );
 };

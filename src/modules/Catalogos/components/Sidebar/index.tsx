@@ -8,10 +8,14 @@ import List from '@mui/material/List';
 import SidebarItem from '../SidebarItem';
 
 import { APPBAR_MENU_ITEMS } from '@constants/menu';
+import useSmallScreen from '@hooks/useSmallScreen';
+import MobileSidebar from '../MobileSidebar';
 
 const Sidebar: React.FC = () => {
-  const { pathname } = useLocation();
   const navigate = useNavigate();
+  const isSmallScreen = useSmallScreen();
+
+  const { pathname } = useLocation();
 
   const submodulos = useMemo(() => {
     const modulo = pathname.split('/')[1];
@@ -25,7 +29,7 @@ const Sidebar: React.FC = () => {
   const submoduloSeleccionado = useMemo<string>(() => {
     let seleccionado = submodulos.find(({ ruta }) => {
       if (ruta === '/') return false;
-      return pathname.includes(ruta!)
+      return pathname.includes(ruta!);
     });
 
     if (!seleccionado) {
@@ -35,10 +39,23 @@ const Sidebar: React.FC = () => {
     return seleccionado?.ruta || '';
   }, [submodulos, pathname]);
 
-  const handleItemClick = useCallback((ruta: string) => {
-    if (ruta === '/') return navigate('/catalogos');
-    navigate(`.${ruta}`);
-  },[navigate]);
+  const handleItemClick = useCallback(
+    (ruta: string) => {
+      if (ruta === '/') return navigate('/catalogos');
+      navigate(`.${ruta}`);
+    },
+    [navigate]
+  );
+
+  if (isSmallScreen) {
+    return (
+      <MobileSidebar
+        onItemClick={handleItemClick}
+        submoduloSeleccionado={submoduloSeleccionado}
+        submodulos={submodulos}
+      />
+    );
+  }
 
   return (
     <Box

@@ -1,6 +1,6 @@
 import { FC, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 
-import { Box, SxProps, TextField, Typography } from '@mui/material';
+import { Box, FilledInputProps, InputProps, OutlinedInputProps, SxProps, TextField, TextFieldVariants, Typography } from '@mui/material';
 import {
   Controller,
   FieldValues,
@@ -24,6 +24,7 @@ interface FormFieldProps {
   size?: 'small' | 'medium';
   fullWidth?: boolean;
   type?: 'text' | 'password' | 'number' | 'date';
+  variant?: TextFieldVariants;
   required?: boolean;
   flat?: boolean;
   flatPlaceholder?: (value: string, onDobleClick: () => void) => ReactNode;
@@ -31,6 +32,8 @@ interface FormFieldProps {
   maxRows?: number;
   rows?: number;
   multiline?: boolean;
+  InputProps?: Partial<FilledInputProps> | Partial<OutlinedInputProps> | Partial<InputProps>;
+  disabled?: boolean;
 }
 
 const FormField: FC<FormFieldProps> = ({
@@ -51,6 +54,9 @@ const FormField: FC<FormFieldProps> = ({
   maxRows,
   multiline,
   rows,
+  InputProps,
+  variant,
+  disabled,
 }) => {
   const {
     control,
@@ -120,6 +126,9 @@ const FormField: FC<FormFieldProps> = ({
               maxRows={maxRows}
               rows={rows}
               multiline={multiline}
+              InputProps={InputProps}
+              variant={variant}
+              disabled={disabled}
             />
           )}
         </Box>

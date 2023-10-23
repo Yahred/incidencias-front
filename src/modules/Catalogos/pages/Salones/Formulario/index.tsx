@@ -10,9 +10,11 @@ import FormField from '../../../../../components/FormField';
 import FormSelect from '../../../../../components/FormSelect';
 
 import { CAMPO_REQUERIDO } from '../../../../../constants/validaciones';
-import { registrarSalon } from '../../../../../services/salones';
+import { obtenerSalonPorId, registrarSalon } from '../../../../../services/salones';
 import { obtenerEdicios } from '../../../../../services/edificios';
 import { Salon } from '../../../../../interfaces/Salon';
+import { useParams } from 'react-router-dom';
+import useFormSetEffect from '../../../../../utils/hooks/useSetForm';
 
 const salonSchema = yup.object({
   nombre: yup.string().required(CAMPO_REQUERIDO),
@@ -21,6 +23,8 @@ const salonSchema = yup.object({
 })
 
 const SalonFormulario: FC = () => {
+  const { id } = useParams();
+
   const methods = useForm({
     resolver: yupResolver(salonSchema),
   });
@@ -29,16 +33,25 @@ const SalonFormulario: FC = () => {
     queryKey: 'edificios',
     queryFn: () => obtenerEdicios(),
     initialData: []
+  });
+
+  const { data: salon } = useQuery({
+    queryKey: ['salon', id],
+    queryFn: () => obtenerSalonPorId(id!),
+    enabled: !!id,
+    initialData: null,
   })
 
   const { mutateAsync } = useMutation({
     mutationKey: 'salon',
-    mutationFn: registrarSalon
+    mutationFn: (salon: Salon) => registrarSalon(salon, id!),
   });
 
   const guardar = useCallback(async (salon: Salon) => {
     await mutateAsync(salon)
   }, [mutateAsync]);
+
+  useFormSetEffect(salon, methods.setValue);
 
   return (
     <ContenedorFormularioC

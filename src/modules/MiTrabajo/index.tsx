@@ -75,7 +75,7 @@ const MiTrabajo: FC = () => {
 
   return (
     <>
-      <Grid container py={6} px={8} rowGap={2}>
+      <Grid container py={{ lg: 6, xs: 2 }} px={{ lg: 8, xs: 2 }} rowGap={2}>
         <Grid container item xs={12} rowGap={2}>
           <Grid item xs={12} display="flex" justifyContent="space-between">
             <Typography variant="h5">Mis incidencias</Typography>

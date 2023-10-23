@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { CSSProperties, FC, useCallback, useState } from 'react';
 
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
@@ -17,16 +17,13 @@ import FormSelect from '@components/FormSelect';
 import ListaImagenes from '@components/ListaImagenes';
 import SubmitButton from '@components/SubmitButton';
 
-import {
-  obtenerEdicios,
-  obtenerRecursos,
-  obtenerSalones,
-} from '@services';
+import { obtenerEdicios, obtenerRecursos, obtenerSalones } from '@services';
 import { Incidencia } from '@interfaces/Incidencia';
 import { CAMPO_REQUERIDO } from '@constants/validaciones';
 import DialogoConfirmacion from '@components/DialogoConfirmacion';
 import { Usuario } from '@interfaces/Usuario';
 import useSesion from '../../../../stores/hooks/useSesion';
+import TextField from '../../../../components/TextField';
 
 interface ModalReportarProps {
   open: boolean;
@@ -42,13 +39,23 @@ const incidenciaSchema = yup.object({
   edificio: yup.string().required(CAMPO_REQUERIDO),
   salon: yup.string().required(CAMPO_REQUERIDO),
   recurso: yup.string().required(CAMPO_REQUERIDO),
+  departamento: yup.string().required(),
 });
+
+const flatFormFieldMixin: CSSProperties = {
+  fontSize: 22,
+  fontWeight: 'bold',
+};
 
 const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
   const usuario = useSesion() as Usuario;
+  console.log(usuario);
 
   const methods = useForm({
     resolver: yupResolver(incidenciaSchema),
+    defaultValues: {
+      departamento: usuario.departamento?.id,
+    },
   });
 
   const [listaEvidencia, setListaEvidencia] = useState<ListaEvidencia>([]);
@@ -59,7 +66,7 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
 
   const { data: edificios } = useQuery({
     queryKey: 'edificios',
-    queryFn: () => obtenerEdicios(usuario.departamento.id),
+    queryFn: () => obtenerEdicios(usuario.departamento?.id),
     initialData: [],
   });
 
@@ -100,26 +107,33 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
     setListaEvidencia((prev) => prev.filter((_, i) => i !== index));
   }, []);
 
-  const guardarIncidencia = useCallback(async (incidencia: Incidencia) => {
-    onSave({ ...incidencia, evidencias: listaEvidencia! });
-    methods.reset();
-    setListaEvidencia([]);
-  }, [onSave, methods, listaEvidencia]);
+  const guardarIncidencia = useCallback(
+    async (incidencia: Incidencia) => {
+      onSave({ ...incidencia, evidencias: listaEvidencia! });
+      methods.reset();
+      setListaEvidencia([]);
+    },
+    [onSave, methods, listaEvidencia]
+  );
 
-  const handleConfirmacionCancelar = useCallback((confirmado: boolean) => {
-    setConfirmacionOpen(false);
-    if (!confirmado) return;
-    methods.reset();
-    onCancel();
-    setListaEvidencia([]);
-  }, [methods, onCancel]);
+  const handleConfirmacionCancelar = useCallback(
+    (confirmado: boolean) => {
+      setConfirmacionOpen(false);
+      if (!confirmado) return;
+      methods.reset();
+      onCancel();
+      setListaEvidencia([]);
+    },
+    [methods, onCancel]
+  );
 
   return (
     <>
       <Dialogo open={open} fullWidth maxWidth="xl">
         <Form methods={methods} onSubmit={guardarIncidencia}>
           <Box
-            px={4}
+            px={{ md: 4, xs: 2 }}
+            pb={{ md: 0, xs: 2  }}
             minHeight="60svh"
             display="flex"
             flexDirection="column"
@@ -128,25 +142,22 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
             <Box
               display="flex"
               justifyContent="space-between"
-              gap={12}
+              gap={{ md: 12, xs: 2 }}
               alignItems="flex-end"
+              flexDirection={{ xs: 'column', md: 'row' }}
             >
-              <Box flexGrow={1}>
+              <Box flexGrow={{ md: 1 }} width="100%" order={{ xs: 2, md: 1 }}>
                 <FormField
                   name="titulo"
-                  flatPlaceholder={(value, onDoubleClick) => (
-                    <Typography
-                      variant="h4"
-                      fontWeight="bold"
-                      onClick={onDoubleClick}
-                    >
-                      {value || 'Escribe el título de la incidencia aquí...'}
-                    </Typography>
-                  )}
-                  flat
+                  placeholder="Escribe el título aquí..."
+                  variant="standard"
+                  InputProps={{
+                    disableUnderline: true,
+                    sx: flatFormFieldMixin,
+                  }}
                 />
               </Box>
-              <Box display="flex" gap={2}>
+              <Box display="flex" gap={2} order={{ xs: 1, md: 2 }}>
                 <Button onClick={handleCancelar} sx={{ height: 40 }}>
                   Cancelar
                 </Button>
@@ -158,7 +169,8 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
             <Grid container spacing={2}>
               <Grid
                 item
-                xs={8}
+                xs={12}
+                md={8}
                 px={2}
                 display="flex"
                 flexDirection="column"
@@ -168,12 +180,14 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
                   name="descripcion"
                   multiline
                   rows={3}
-                  flatPlaceholder={(value, onClick) => (
-                    <Typography variant="h6" onClick={onClick}>
-                      {value || 'Describe aquí lo que está ocurriendo...'}
-                    </Typography>
-                  )}
-                  flat
+                  placeholder="Describe aquí lo que está ocurriendo..."
+                  variant="standard"
+                  InputProps={{
+                    disableUnderline: true,
+                    sx: {
+                      fontSize: 18,
+                    },
+                  }}
                 />
                 <ListaImagenes
                   title="Adjuntar evidencia"
@@ -184,15 +198,25 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
               </Grid>
               <Grid
                 item
-                xs={4}
+                xs={12}
+                md={4}
                 height="100%"
                 display="flex"
                 flexDirection="column"
                 rowGap={2}
                 px={4}
-                sx={{ borderLeft: 4, borderColor: 'primary.main' }}
+                sx={{
+                  borderLeft: { md: 4, xs: 0 },
+                  borderColor: { md: 'primary.main', xs: 'none' },
+                }}
               >
                 <Typography variant="h6">Detalle de la incidencia</Typography>
+                <TextField
+                  name="departamento"
+                  title="Departamento"
+                  value={usuario?.departamento?.nombre}
+                  disabled
+                />
                 <FormSelect
                   name="edificio"
                   title="Edificio"

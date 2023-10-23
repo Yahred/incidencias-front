@@ -1,5 +1,5 @@
-import { Departamento } from "./Departamento";
-import { TipoUsuario } from "./TipoUsuario";
+import { Departamento } from '.';
+import { TipoUsuario } from './TipoUsuario';
 
 export interface Usuario {
   username: string;
@@ -10,5 +10,5 @@ export interface Usuario {
   email: string;
   avatar?: string;
   departamento: Departamento;
-  tipoUsuario: TipoUsuario | string
+  tipoUsuario: TipoUsuario | string;
 }
