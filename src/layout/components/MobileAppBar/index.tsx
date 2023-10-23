@@ -19,11 +19,11 @@ import NavMenu from '../NavMenu';
 import useStore from '../../../stores/store';
 
 interface MobileAppBarProps {
-  onOpenUserMenu: () => void;
-  onCloseUserMenu: () => void;
-  settings: string[];
+  onOpenUserMenu?: () => void;
+  onCloseUserMenu?: () => void;
+  settings?: string[];
   moduloSeleccionado: string;
-  onNavMenuClick: (ruta: string) => void;
+  onNavMenuClick?: (ruta: string) => void;
 }
 
 const MobileAppBar: FC<MobileAppBarProps> = ({
@@ -94,7 +94,7 @@ const MobileAppBar: FC<MobileAppBarProps> = ({
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
+                {settings!.map((setting) => (
                   <MenuItem key={setting} onClick={() => {}}>
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
@@ -102,7 +102,7 @@ const MobileAppBar: FC<MobileAppBarProps> = ({
               </Menu>
             </Box>
           </Stack>
-          <NavMenu moduloSeleccionado={moduloSeleccionado} onClick={onNavMenuClick} />
+          <NavMenu moduloSeleccionado={moduloSeleccionado} onClick={onNavMenuClick!} />
         </Stack>
       </Toolbar>
     </AppBar>
@@ -111,6 +111,8 @@ const MobileAppBar: FC<MobileAppBarProps> = ({
 
 MobileAppBar.defaultProps = {
   settings: [],
+  onCloseUserMenu: () => {},
+  onOpenUserMenu: () => {},
 };
 
 export default MobileAppBar;

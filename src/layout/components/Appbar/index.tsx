@@ -70,7 +70,10 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
   );
 
   if (isSmallScreen) {
-    return <MobileAppBar  moduloSeleccionado={moduloSeleccionado} onNavMenuClick={handleNavClick} />
+    return <MobileAppBar
+      moduloSeleccionado={moduloSeleccionado}
+      onNavMenuClick={handleNavClick}
+    />
   }
 
   return (
