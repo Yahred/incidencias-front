@@ -6,29 +6,39 @@ import Typography from '@mui/material/Typography';
 import TarjetaIncidencia from '@components/TarjetaIncidencia';
 
 import { Incidencia } from '@interfaces/Incidencia';
+import FadeIn from '../../../../components/FadeIn';
 
 interface SliderIncidenciasProps {
   incidencias: Incidencia[];
   titulo: string;
   isLoading: boolean;
+  onClick: (incidencia: Incidencia) => void;
 }
 
 const SliderIncidenciasC: FC<SliderIncidenciasProps> = ({
   incidencias,
   titulo,
-  isLoading,
+  onClick,
 }) => {
+
   return (
-    <Stack rowGap={2}>
-      <Typography variant="h4">{titulo}</Typography>
+    <Stack rowGap={3}>
+      <Typography variant="body1" fontWeight="bold">{titulo}</Typography>
       <Stack direction="row" gap={2}>
-        {incidencias.map((incidencia) => (
+        {incidencias.map((incidencia, index) => (
           <TarjetaIncidencia
-            key={incidencia.id}
+            key={index}
             incidencia={incidencia}
-            isLoading={isLoading}
+            onClick={() => onClick(incidencia)}
           />
         ))}
+        {!incidencias.length && (
+          <FadeIn
+            sx={{ display: 'grid', placeItems: 'center', height: 120, width: '100%' }}
+          >
+            <Typography variant='h6'>Sin incidencias</Typography>
+          </FadeIn>
+        )}
       </Stack>
     </Stack>
   );

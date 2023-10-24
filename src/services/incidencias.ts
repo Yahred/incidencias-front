@@ -17,9 +17,5 @@ export const obtenerIncidenciasDelUsuario = (fechaInicio?: Date) =>
     },
   });
 
-export const obtenerIncidenciasPorDepartamento = (departamento: string) =>
-  axios.get<unknown, Incidencia[]>(INCIDENCIAS, {
-    params: {
-      departamento,
-    },
-  });
+export const obtenerIncidencias = () =>
+  axios.get<unknown, Incidencia[]>(INCIDENCIAS);

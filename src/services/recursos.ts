@@ -1,5 +1,6 @@
 import axios from '../config/axios';
-import { RECURSOS, obtenerPaginado, param } from '../constants/uris';
+import { MODELO, RECURSOS, obtenerPaginado, param } from '../constants/uris';
+import { Modelo } from '../interfaces';
 import { Paginado } from '../interfaces/Paginado';
 import { Recurso } from '../interfaces/Recurso';
 
@@ -17,6 +18,9 @@ export const obtenerRecursos = (salon?: string) =>
       salon,
     },
   });
+
+export const obtenerModeloPorRecursoId = (id: string) =>
+  axios.get<unknown, Modelo>(param(RECURSOS, id, MODELO));
 
 export const obtenerRecursoPorId = (id: string) =>
   axios.get<unknown, Recurso>(param(RECURSOS, id));

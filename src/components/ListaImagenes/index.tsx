@@ -124,6 +124,7 @@ const ListaImagenes: FC<ListaImagenesProps> = ({
         />
         {imagesSrc.map((src, index) => (
           <Card
+            key={src}
             sx={{
               display: 'flex',
               width: 250,

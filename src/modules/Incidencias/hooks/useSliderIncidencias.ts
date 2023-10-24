@@ -2,27 +2,46 @@ import { useMemo } from 'react';
 import { useQuery } from 'react-query';
 
 import groupBy from '@functions/groupBy';
-import { obtenerIncidenciasPorDepartamento } from '@services';
+import { obtenerIncidencias } from '@services';
 import { EstatusEnum } from '@constants/estatus';
 
 const useSliderIncidencias = (departamento: string) => {
-  const { data: incidencias, isLoading } = useQuery({
+  const { data: incidencias, isFetching } = useQuery({
     queryKey: ['incidencias', departamento],
-    queryFn: () => obtenerIncidenciasPorDepartamento(departamento),
+    queryFn: obtenerIncidencias,
     initialData: [],
   });
 
-  const sliders = useMemo(
-    () => groupBy(incidencias!, 'estatus'),
+  const incidenciasPorDepartamento = useMemo(
+    () =>
+      groupBy(
+        incidencias!.map((incidencia) => ({
+          ...incidencia,
+          departamentoId: incidencia.departamento.id,
+        })),
+        'departamentoId'
+      ),
+    [incidencias]
+  );
+
+  const departamentos = useMemo(
+    () =>
+      incidencias
+        ?.map(({ departamento }) => departamento)
+        .filter(
+          ({ id: a }, index, arr) =>
+            index === arr.findIndex(({ id: b }) => a === b)
+        ),
     [incidencias]
   );
 
   const estatus = useMemo(() => Object.values(EstatusEnum), []);
 
   return {
-    sliders,
-    isLoading,
+    sliders: incidenciasPorDepartamento,
+    isFetching,
     estatus,
+    departamentos,
   };
 };
 

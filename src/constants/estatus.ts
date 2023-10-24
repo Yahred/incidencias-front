@@ -7,9 +7,9 @@ export enum EstatusEnum {
 }
 
 export const ESTATUS_NOMBRES = {
-  [EstatusEnum.Aprobada]: 'Incidencias aprobadas',
-  [EstatusEnum.EnProceso]: 'Incidencias en proceso',
-  [EstatusEnum.Pendiente]: 'Incidencias pendientes',
-  [EstatusEnum.Terminada]: 'Incidencias terminadas',
-  [EstatusEnum.Validado]: 'Incidencias validadas',
+  [EstatusEnum.Aprobada]: 'Aprobadas',
+  [EstatusEnum.EnProceso]: 'En proceso',
+  [EstatusEnum.Pendiente]: 'Pendientes',
+  [EstatusEnum.Terminada]: 'Terminadas',
+  [EstatusEnum.Validado]: 'Validadas',
 };

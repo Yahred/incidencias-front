@@ -9,9 +9,9 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import TarjetaIncidencia from '@components/TarjetaIncidencia';
+import ModalIncidencia from '@components/ModalIncidencia';
 import TabsIncidencias from './components/TabsIncidencias';
 import ModalReportar from './components/ModalReportar';
-import ModalIncidencia from '../../components/ModalIncidencia';
 
 import scrollbarMixin from '../../theme/scrollbar';
 import objectToFormData from '@functions/objectToFormData';
@@ -45,7 +45,7 @@ const MiTrabajo: FC = () => {
   const {
     data: incidencias,
     refetch,
-    isLoading,
+    isFetching,
   } = useQuery({
     queryKey: ['incidencias'],
     queryFn: () => obtenerIncidenciasDelUsuario(fechaInicio),
@@ -99,10 +99,9 @@ const MiTrabajo: FC = () => {
                 <TarjetaIncidencia
                   onClick={handleIncidenciaClick}
                   incidencia={incidencia}
-                  isLoading={isLoading}
                 />
               ))}
-              {!isLoading && !incidencias?.length && (
+              {!isFetching && !incidencias?.length && (
                 <Box
                   display="flex"
                   alignItems="center"

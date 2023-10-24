@@ -9,6 +9,10 @@ export const MensajesToast = {
   CAMPO_DUPLICADO: (campo: string) => `El ${campo} ya existe`,
 }
 
+export const MensajesConfirmacion = {
+  APROBAR_INCIDENCIA: 'Se aprobará la incidencia'
+}
+
 export const MAP_ESTATUS_MENSAJE = {
   201: MensajesToast.EXITO,
   202: MensajesToast.EXITO_ACTUALIZACION,

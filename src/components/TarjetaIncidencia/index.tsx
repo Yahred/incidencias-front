@@ -19,8 +19,8 @@ const Bold = styled('span')({
 });
 
 interface TarjetaIncidenciaProps {
-  incidencia: Incidencia;
-  isLoading: boolean;
+  incidencia?: Incidencia;
+  isLoading?: boolean;
   onClick?: (incidencia: Incidencia) => void
 }
 
@@ -33,7 +33,7 @@ const TarjetaIncidencia: FC<TarjetaIncidenciaProps> = ({
     return (
       <Paper>
         <Box
-          minWidth={320}
+          minWidth={350}
           display="flex"
           flexDirection="column"
           gap="12px"
@@ -43,7 +43,7 @@ const TarjetaIncidencia: FC<TarjetaIncidenciaProps> = ({
           <Skeleton
             variant="circular"
             height={30}
-            width={40}
+            width={30}
             sx={{ position: 'absolute', bottom: 20, right: 20 }}
           />
           <Skeleton height={40} />
@@ -60,7 +60,7 @@ const TarjetaIncidencia: FC<TarjetaIncidenciaProps> = ({
   return (
     <FadeIn sx={{ width: 380 }}>
       <Paper
-        onClick={() => onClick!(incidencia)}
+        onClick={() => onClick!(incidencia!)}
         elevation={2}
         sx={{
           position: 'relative',
@@ -109,6 +109,10 @@ const TarjetaIncidencia: FC<TarjetaIncidenciaProps> = ({
             <Typography>
               <Bold>Ubicación:</Bold>{' '}
               {`${incidencia?.edificio.nombre} ${incidencia?.salon.nombre}`}
+            </Typography>
+            <Typography>
+              <Bold>Departamento:</Bold>{' '}
+              {incidencia?.departamento.nombre}
             </Typography>
           </Grid>
         </Grid>

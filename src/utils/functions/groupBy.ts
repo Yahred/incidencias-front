@@ -3,6 +3,8 @@ import isNullOrUndefined from './isNullOrUndefined';
 const groupBy = (arr: object[], prop: string) => {
   const group = {};
 
+  console.log(arr)
+
   arr.forEach((item) => {
     const propValue = item[prop];
 

@@ -8,11 +8,13 @@ import { Button, Typography } from '@mui/material';
 interface DialogoConfirmacionProps {
   onClose?: (confirmado: boolean) => void;
   open: boolean;
+  mensaje?: string;
 }
 
 const DialogoConfirmacion: FC<DialogoConfirmacionProps> = ({
   open,
   onClose,
+  mensaje,
 }) => {
   const handleClose = useCallback(
     (confirmado: boolean) => {
@@ -26,7 +28,7 @@ const DialogoConfirmacion: FC<DialogoConfirmacionProps> = ({
   return (
     <Dialogo open={open} title="¿Estás seguro?">
       <Box p={2} display='flex' flexDirection='column' gap={2}>
-        <Typography>Se perderán los cambios realizados</Typography>
+        <Typography>{mensaje}</Typography>
         <Box display="flex" width="100%" justifyContent='space-between'>
           <Button variant="text" onClick={handleClose(false)}>
             Cancelar
@@ -42,6 +44,7 @@ const DialogoConfirmacion: FC<DialogoConfirmacionProps> = ({
 
 DialogoConfirmacion.defaultProps = {
   onClose: () => {},
+  mensaje: 'Se perderán los cambios realizados'
 };
 
 export default DialogoConfirmacion;
