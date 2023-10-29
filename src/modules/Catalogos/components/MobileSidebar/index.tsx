@@ -20,8 +20,11 @@ const MobileSidebar: FC<MobileSidebarProps> = ({
   submoduloSeleccionado,
   onItemClick,
 }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useStore(
-    ({ isSidebarOpen, setIsSidebarOpen }) => [isSidebarOpen, setIsSidebarOpen]
+  const { isSidebarOpen, setIsSidebarOpen } = useStore(
+    ({ isSidebarOpen, setIsSidebarOpen }) => ({
+      isSidebarOpen,
+      setIsSidebarOpen,
+    })
   );
 
   const handleItemClick = useCallback(
@@ -33,7 +36,7 @@ const MobileSidebar: FC<MobileSidebarProps> = ({
   );
 
   return (
-    <Drawer open={isSidebarOpen}>
+    <Drawer open={isSidebarOpen} onClick={() => setIsSidebarOpen(false)}>
       <Stack py={1} px={2}>
         <List>
           {submodulos.map((item, index) => (

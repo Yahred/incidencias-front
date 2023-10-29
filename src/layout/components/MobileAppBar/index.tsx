@@ -11,12 +11,13 @@ import {
   AppBar,
   Stack,
 } from '@mui/material';
-import { Menu as IconMenu } from '@mui/icons-material'
+import { Menu as IconMenu } from '@mui/icons-material';
+
+import NavMenu from '../NavMenu';
 
 import useSesion from '../../../stores/hooks/useSesion';
-import { Usuario } from '@interfaces/Usuario';
-import NavMenu from '../NavMenu';
 import useStore from '../../../stores/store';
+import { Usuario } from '@interfaces/Usuario';
 
 interface MobileAppBarProps {
   onOpenUserMenu?: () => void;
@@ -33,7 +34,9 @@ const MobileAppBar: FC<MobileAppBarProps> = ({
   moduloSeleccionado,
 }) => {
   const usuario = useSesion() as Usuario;
-  const toggleSidebar = useStore(({ toggleSidebar }) => toggleSidebar);
+  const [toggleSidebar, existSidebar] = useStore(
+    ({ toggleSidebar, existSidebar }) => [toggleSidebar, existSidebar]
+  );
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -53,8 +56,17 @@ const MobileAppBar: FC<MobileAppBarProps> = ({
     >
       <Toolbar sx={{ px: { lg: 4, xs: 1 }, position: 'relative' }}>
         <Stack width="100%" pt={2}>
-          <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
-            <IconButton onClick={handleSidebarClick}>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="flex-start"
+          >
+            <IconButton
+              sx={{
+                visibility: existSidebar ? 'visible' : 'hidden',
+              }}
+              onClick={handleSidebarClick}
+            >
               <IconMenu />
             </IconButton>
             <Typography
@@ -102,7 +114,10 @@ const MobileAppBar: FC<MobileAppBarProps> = ({
               </Menu>
             </Box>
           </Stack>
-          <NavMenu moduloSeleccionado={moduloSeleccionado} onClick={onNavMenuClick!} />
+          <NavMenu
+            moduloSeleccionado={moduloSeleccionado}
+            onClick={onNavMenuClick!}
+          />
         </Stack>
       </Toolbar>
     </AppBar>

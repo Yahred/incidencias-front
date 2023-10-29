@@ -20,8 +20,8 @@ const Catalogos: FC = () => {
     <>
       <Sidebar />
       <Suspense>
-        <Box display="flex" pl={{ md: '220px', xs: 0 }}>
-          <Box p={{ lg: 4, xs: 2 }} width={{ lg: '100%', xs: '90%'}}>
+        <Box pl={{ md: '220px', xs: 0 }}>
+          <Box p={{ lg: 4, xs: 2 }}  >
             <Outlet />
           </Box>
         </Box>

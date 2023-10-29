@@ -25,7 +25,7 @@ const Categorias: FC = () => {
       queryFn={obtenerDepartamentosPaginado}
       deleteFn={eliminarDepartamento}
       agregarText="Agregar departamento"
-      title="Departamenos"
+      title="Departamentos"
       placeholderBusqueda="Buscar departamento"
     />
   );

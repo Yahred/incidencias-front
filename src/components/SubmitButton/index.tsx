@@ -1,5 +1,9 @@
-import { Button, CircularProgress, SxProps } from '@mui/material';
 import { FC, ReactNode } from 'react';
+
+import Button from '@mui/material/Button'
+import CircularProgress from '@mui/material/CircularProgress'
+import { SxProps } from '@mui/material';
+
 import useStore from '../../stores/store';
 
 interface SubmitButtonProps {
@@ -14,7 +18,7 @@ interface SubmitButtonProps {
     | 'error'
     | 'info'
     | 'warning';
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const SubmitButton: FC<SubmitButtonProps> = ({
@@ -41,6 +45,10 @@ const SubmitButton: FC<SubmitButtonProps> = ({
       )}
     </Button>
   );
+};
+
+SubmitButton.defaultProps = {
+  onClick: () => {},
 };
 
 export default SubmitButton;
