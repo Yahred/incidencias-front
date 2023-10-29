@@ -3,15 +3,15 @@ import { FC, memo } from 'react';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
+import FadeIn from '@components/FadeIn';
 import TarjetaIncidencia from '@components/TarjetaIncidencia';
 
 import { Incidencia } from '@interfaces/Incidencia';
-import FadeIn from '../../../../components/FadeIn';
 
 interface SliderIncidenciasProps {
   incidencias: Incidencia[];
-  titulo: string;
-  isLoading: boolean;
+  titulo?: string;
+  isLoading?: boolean;
   onClick: (incidencia: Incidencia) => void;
 }
 

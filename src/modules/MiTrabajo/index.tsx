@@ -1,24 +1,19 @@
 import { FC, useCallback, useMemo, useState } from 'react';
 
-import { useMutation, useQuery } from 'react-query';
 import sub from 'date-fns/sub';
+import { useMutation, useQuery } from 'react-query';
 
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-import TarjetaIncidencia from '@components/TarjetaIncidencia';
 import ModalIncidencia from '@components/ModalIncidencia';
+import SliderIncidencias from '@components/SliderIncidencias';
 import TabsIncidencias from './components/TabsIncidencias';
 import ModalReportar from './components/ModalReportar';
 
-import scrollbarMixin from '../../theme/scrollbar';
 import objectToFormData from '@functions/objectToFormData';
-import {
-  obtenerIncidenciasDelUsuario,
-  registrarIncidencia,
-} from '@services';
+import { obtenerIncidenciasDelUsuario, registrarIncidencia } from '@services';
 import { Incidencia } from '@interfaces/Incidencia';
 
 const MiTrabajo: FC = () => {
@@ -42,27 +37,26 @@ const MiTrabajo: FC = () => {
     mutationFn: (incidencia: FormData) => registrarIncidencia(incidencia),
   });
 
-  const {
-    data: incidencias,
-    refetch,
-    isFetching,
-  } = useQuery({
+  const { data: incidencias, refetch } = useQuery({
     queryKey: ['incidencias'],
     queryFn: () => obtenerIncidenciasDelUsuario(fechaInicio),
     initialData: [],
     staleTime: 0,
   });
 
-  const guardarIncidencia = useCallback(async (form: Incidencia) => {
-    const { evidencias, ...incidencia } = form;
-    const formData = objectToFormData(incidencia);
-    evidencias?.forEach((evidencia) =>
-      formData.append('evidencias', evidencia)
-    );
-    await mutateAsync(formData);
-    refetch();
-    setModalAbierto(false);
-  }, [mutateAsync, refetch]);
+  const guardarIncidencia = useCallback(
+    async (form: Incidencia) => {
+      const { evidencias, ...incidencia } = form;
+      const formData = objectToFormData(incidencia);
+      evidencias?.forEach((evidencia) =>
+        formData.append('evidencias', evidencia)
+      );
+      await mutateAsync(formData);
+      refetch();
+      setModalAbierto(false);
+    },
+    [mutateAsync, refetch]
+  );
 
   const handleIncidenciaClick = useCallback((incidencia: Incidencia) => {
     setIncidencia(incidencia);
@@ -88,32 +82,10 @@ const MiTrabajo: FC = () => {
             </Button>
           </Grid>
           <Grid item xs={12}>
-            <Box
-              display="flex"
-              gap={3}
-              px={1}
-              py={4}
-              sx={{ overflowX: 'auto', ...scrollbarMixin }}
-            >
-              {incidencias?.map((incidencia) => (
-                <TarjetaIncidencia
-                  onClick={handleIncidenciaClick}
-                  incidencia={incidencia}
-                />
-              ))}
-              {!isFetching && !incidencias?.length && (
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  width="100%"
-                >
-                  <Typography variant="h4">
-                    Aún no has levantado ninguna incidencia
-                  </Typography>
-                </Box>
-              )}
-            </Box>
+            <SliderIncidencias
+              incidencias={incidencias!}
+              onClick={handleIncidenciaClick}
+            />
           </Grid>
         </Grid>
         <Grid item xs={12}>

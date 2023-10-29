@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { UseFormReturn } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import Alert from '@mui/material/Alert';
 import Paper from '@mui/material/Paper';
@@ -9,27 +9,23 @@ import Typography from '@mui/material/Typography';
 
 import Form from '../../../../components/Form';
 import FormField from '../../../../components/FormField';
-import Checkbox from '../../../../components/Checkbox';
 import SubmitButton from '../../../../components/SubmitButton';
 
 import { CAMPO_REQUERIDO } from '../../../../constants/validaciones';
 import { LoginForm } from '../../interfaces';
+import FormCheckbox from '../../../../components/FormCheckbox';
 
 interface FormularioLoginProps {
   onSubmit: (data: LoginForm) => void;
-  methods: UseFormReturn<any>;
-  recordar: boolean;
-  onRecordarChange: (value: boolean) => void;
   errorLogin: boolean;
 }
 
 const FormularioLogin: FC<FormularioLoginProps> = ({
   onSubmit,
-  methods,
-  recordar,
-  onRecordarChange,
   errorLogin,
 }) => {
+  const methods = useForm<LoginForm>();
+
   return (
     <Paper elevation={2}>
       <Box
@@ -73,9 +69,8 @@ const FormularioLogin: FC<FormularioLoginProps> = ({
               rules={{ required: CAMPO_REQUERIDO }}
             />
             <Box display="flex" width="100%">
-              <Checkbox
-                checked={recordar}
-                onChange={onRecordarChange}
+              <FormCheckbox
+                name='recordar'
                 label="Mantener sesión"
               />
             </Box>

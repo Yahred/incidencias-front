@@ -14,6 +14,7 @@ interface SubmitButtonProps {
     | 'error'
     | 'info'
     | 'warning';
+  onClick: () => void;
 }
 
 const SubmitButton: FC<SubmitButtonProps> = ({
@@ -21,6 +22,7 @@ const SubmitButton: FC<SubmitButtonProps> = ({
   sx,
   width,
   color,
+  onClick,
 }) => {
   const isLoading = useStore(({ isMutating: isLoading }) => isLoading);
 
@@ -30,6 +32,7 @@ const SubmitButton: FC<SubmitButtonProps> = ({
       type="submit"
       sx={{ width, ...sx }}
       disabled={isLoading}
+      onClick={onClick}
     >
       {isLoading ? (
         <CircularProgress size={20} sx={{ color: 'common.white' }} />

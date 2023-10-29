@@ -7,8 +7,9 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-import { obtenerModeloPorRecursoId } from '../../services';
 import ImagePreview from '../ImagePreview';
+
+import { obtenerModeloPorRecursoId } from '../../services';
 
 interface InfoRecursoProps {
   recursoId?: string;

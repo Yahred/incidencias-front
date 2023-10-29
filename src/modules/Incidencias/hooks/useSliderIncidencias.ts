@@ -6,7 +6,7 @@ import { obtenerIncidencias } from '@services';
 import { EstatusEnum } from '@constants/estatus';
 
 const useSliderIncidencias = (departamento: string) => {
-  const { data: incidencias, isFetching } = useQuery({
+  const { data: incidencias, isFetching, refetch } = useQuery({
     queryKey: ['incidencias', departamento],
     queryFn: obtenerIncidencias,
     initialData: [],
@@ -42,6 +42,7 @@ const useSliderIncidencias = (departamento: string) => {
     isFetching,
     estatus,
     departamentos,
+    refetch
   };
 };
 

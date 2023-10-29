@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import Stack from '@mui/material/Stack';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
-import SliderIncidencias from './components/SliderIncidencias';
+import SliderIncidencias from '@components/SliderIncidencias';
 import ModalIncidencia from '@components/ModalIncidencia';
 
 import useStore from '../../stores/store';
@@ -13,18 +13,25 @@ import useManejarIncidencia from './hooks/useManejarIncidencia';
 import { ESTATUS_NOMBRES, EstatusEnum } from '@constants/estatus';
 
 const Incidencias = () => {
-  const [tabValue, setTabValue] = useState<EstatusEnum>(EstatusEnum.Pendiente);
   const usuario = useStore(({ usuario }) => usuario);
 
-  const { sliders, estatus, isFetching, departamentos } = useSliderIncidencias(
+  const [tabValue, setTabValue] = useState<EstatusEnum>(EstatusEnum.Pendiente);
+
+  const { sliders, estatus, isFetching, departamentos, refetch } = useSliderIncidencias(
     usuario?.departamento.id || ''
   );
 
-  const { modalAbierto, abrirModal, cerrarModal, incidenciaSeleccionada } =
+  const { modalAbierto, abrirModal, cerrarModal, incidenciaSeleccionada, aprobarIncidencia } =
     useManejarIncidencia();
 
   const incidenciasPorEstatus = (estatus: EstatusEnum, departamento: string) =>
     sliders[departamento].filter(({ estatus: { id } }) => id === estatus);
+
+  const handleAprobarIncidencia = useCallback(async (id: string) => {
+    await aprobarIncidencia(id);
+    refetch();
+    cerrarModal();
+  }, [aprobarIncidencia, refetch, cerrarModal]);
 
   return (
     <>
@@ -51,6 +58,7 @@ const Incidencias = () => {
         incidencia={incidenciaSeleccionada}
         onCerrar={cerrarModal}
         aprobarIncidencia={tabValue === EstatusEnum.Pendiente}
+        onAprobar={handleAprobarIncidencia}
       />
     </>
   );

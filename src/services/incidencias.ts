@@ -1,5 +1,6 @@
 import axios from '../config/axios';
-import { INCIDENCIAS } from '../constants/uris';
+import { EstatusEnum } from '../constants/estatus';
+import { ESTATUS, INCIDENCIAS, param } from '../constants/uris';
 import { Incidencia } from '../interfaces/Incidencia';
 
 export const registrarIncidencia = (incidencia: FormData) =>
@@ -16,6 +17,9 @@ export const obtenerIncidenciasDelUsuario = (fechaInicio?: Date) =>
       fechaInicio,
     },
   });
+
+export const aprobarIncidenciaPorId = (id: string) =>
+  axios.put(param(INCIDENCIAS, id, ESTATUS, EstatusEnum.Aprobada));
 
 export const obtenerIncidencias = () =>
   axios.get<unknown, Incidencia[]>(INCIDENCIAS);

@@ -45,13 +45,13 @@ axios.interceptors.response.use(
     return data;
   },
   (error) => {
+    store.getState().setLoadingOff();
+    store.getState().setMutatingOff();
     const { data } = error.response;
     let msj = ''
     if (typeof data === 'string') {
       msj = data;
     }
-    store.getState().setLoadingOff();
-    store.getState().setMutatingOff();
     const mensaje = obtenerMensajeError(error);
     toast.error(mensaje || msj|| MensajesToast.ERROR);
     throw new Error(error);

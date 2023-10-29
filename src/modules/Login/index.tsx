@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 
-import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 
@@ -11,28 +10,26 @@ import FormularioLogin from './components/FormularioLogin';
 import Landscape from './components/Landscape';
 
 import autenticarUsuario from '../../utils/functions/autenticarUsuario';
+import useStore from '../../stores/store';
 import { LoginForm } from './interfaces';
 import { iniciarSesion } from './services';
-import useStore from '../../stores/store';
 
 function Login() {
   const navigate = useNavigate();
   const setUsuario = useStore(({ setUsuario }) =>  setUsuario);
-  const methods = useForm<LoginForm>();
 
   const { mutateAsync } = useMutation({
     mutationKey: 'login',
     mutationFn: iniciarSesion
   })
 
-  const [recordar, setRecordar] = useState<boolean>(false);
   const [errorLogin, setErrorLogin] = useState<boolean>(false);
 
   const login = useCallback(async (data: LoginForm) => {
     try {
       const { token, usuario } = await mutateAsync(data);
 
-      if (recordar) {
+      if (data.recordar) {
         localStorage.setItem('token', JSON.stringify(token!));
       } else {
         sessionStorage.setItem('token', JSON.stringify(token!));
@@ -43,7 +40,7 @@ function Login() {
     } catch (error) {
       setErrorLogin(true);
     }
-  }, [recordar, navigate, mutateAsync, setUsuario]);
+  }, [navigate, mutateAsync, setUsuario]);
 
   useEffect(() => {
     const autenticado = autenticarUsuario();
@@ -69,10 +66,7 @@ function Login() {
           justifyContent="center"
         >
           <FormularioLogin
-            methods={methods}
             onSubmit={login}
-            recordar={recordar}
-            onRecordarChange={setRecordar}
             errorLogin={errorLogin}
           />
         </Grid>

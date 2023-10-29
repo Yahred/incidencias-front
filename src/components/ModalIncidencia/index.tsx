@@ -14,16 +14,17 @@ import Info from '@mui/icons-material/Info';
 import ListaImagenes from '@components/ListaImagenes';
 import TextField from '@components/TextField';
 import DialogoConfirmacion from '../DialogoConfirmacion';
+import InfoRecurso from '../InfoRecurso';
+import SubmitButton from '../SubmitButton';
 
 import { MensajesConfirmacion } from '../../constants/general';
-import InfoRecurso from '../InfoRecurso';
 
 interface ModalIncidenciaProps {
   incidencia: Incidencia | null;
   isOpen: boolean;
   onCerrar: () => void;
   aprobarIncidencia?: boolean;
-  onAprobar?: () => void;
+  onAprobar?: (id: string) => Promise<void>;
 }
 
 const ModalIncidencia: FC<ModalIncidenciaProps> = ({
@@ -38,14 +39,13 @@ const ModalIncidencia: FC<ModalIncidenciaProps> = ({
 
   const anchorElInfoRecurso = useRef<HTMLElement | null>(null);
 
-  const handleAprobarIncidencia = useCallback(
-    (confirmado: boolean) => {
-      setIsDialogoOpen(false);
-      if (!confirmado) return;
-      onAprobar!();
-    },
-    [onAprobar]
-  );
+  const handleAprobarIncidencia = useCallback((confirmado: boolean) => {
+    console.log('confirmado', confirmado)
+    setIsDialogoOpen(false);
+    if (!confirmado) return;
+    console.log('incidencia', incidencia?.id)
+    onAprobar!(incidencia!.id!);
+  }, [onAprobar, incidencia]);
 
   const handleInfoRecursoClick = useCallback(() => {
     setIsInfoRecursoOpen(true);
@@ -62,9 +62,9 @@ const ModalIncidencia: FC<ModalIncidenciaProps> = ({
             </Typography>
             <Stack direction="row" gap={2}>
               {aprobarIncidencia && (
-                <Button color="success" onClick={() => setIsDialogoOpen(true)}>
+                <SubmitButton color="success" onClick={() => setIsDialogoOpen(true)}>
                   Aprobar
-                </Button>
+                </SubmitButton>
               )}
               <Button onClick={onCerrar}>Cerrar</Button>
             </Stack>
