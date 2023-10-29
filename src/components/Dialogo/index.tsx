@@ -9,6 +9,7 @@ interface DialogoProps {
   open: boolean;
   children: ReactNode;
   onClose?: () => void;
+  onClick?: () => void;
   sx?: SxProps;
   fullWidth?: boolean;
   maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -22,10 +23,12 @@ const Dialogo: FC<DialogoProps> = ({
   sx,
   fullWidth,
   maxWidth,
+  onClick,
 }) => {
   return (
     <Dialog
       open={open}
+      onClick={onClick}
       onClose={onClose}
       sx={sx}
       fullWidth={fullWidth}
@@ -39,6 +42,7 @@ const Dialogo: FC<DialogoProps> = ({
 
 Dialogo.defaultProps = {
   onClose: () => {},
+  onClick: () => {},
   open: false,
   title: '',
 };

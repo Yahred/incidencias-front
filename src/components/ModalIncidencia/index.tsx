@@ -1,7 +1,6 @@
 import { FC, useCallback, useRef, useState } from 'react';
 
 import { Incidencia } from '../../interfaces/Incidencia';
-import Dialogo from '../Dialogo';
 
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
@@ -13,11 +12,12 @@ import Info from '@mui/icons-material/Info';
 
 import ListaImagenes from '@components/ListaImagenes';
 import TextField from '@components/TextField';
+import Dialogo from '../Dialogo';
 import DialogoConfirmacion from '../DialogoConfirmacion';
 import InfoRecurso from '../InfoRecurso';
 import SubmitButton from '../SubmitButton';
 
-import { MensajesConfirmacion } from '../../constants/general';
+import { MensajesConfirmacion } from '@constants/general';
 
 interface ModalIncidenciaProps {
   incidencia: Incidencia | null;
@@ -40,10 +40,8 @@ const ModalIncidencia: FC<ModalIncidenciaProps> = ({
   const anchorElInfoRecurso = useRef<HTMLElement | null>(null);
 
   const handleAprobarIncidencia = useCallback((confirmado: boolean) => {
-    console.log('confirmado', confirmado)
     setIsDialogoOpen(false);
     if (!confirmado) return;
-    console.log('incidencia', incidencia?.id)
     onAprobar!(incidencia!.id!);
   }, [onAprobar, incidencia]);
 
@@ -56,11 +54,11 @@ const ModalIncidencia: FC<ModalIncidenciaProps> = ({
       <Dialogo
         open={isOpen}
         title={
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h4" fontWeight="bold">
+          <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" rowGap={{ xs: 4, sm: 0 }}>
+            <Typography sx={{  order: { xs: 2, md: 1 } }} variant="h4" fontWeight="bold">
               {incidencia?.titulo}
             </Typography>
-            <Stack direction="row" gap={2}>
+            <Stack order={{ xs: 1 }} direction="row" gap={2} justifyContent={{ xs: 'flex-end' }}>
               {aprobarIncidencia && (
                 <SubmitButton color="success" onClick={() => setIsDialogoOpen(true)}>
                   Aprobar
@@ -82,6 +80,7 @@ const ModalIncidencia: FC<ModalIncidenciaProps> = ({
                   images={incidencia.evidencias}
                   addAllowed={false}
                   deleteAllowed={false}
+                  carrusel
                 />
               )}
             </Stack>

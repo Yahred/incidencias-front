@@ -21,13 +21,15 @@ const Bold = styled('span')({
 interface TarjetaIncidenciaProps {
   incidencia?: Incidencia;
   isLoading?: boolean;
-  onClick?: (incidencia: Incidencia) => void
+  onClick?: (incidencia: Incidencia) => void;
+  fullWidth?: boolean;
 }
 
 const TarjetaIncidencia: FC<TarjetaIncidenciaProps> = ({
   incidencia,
   isLoading,
   onClick,
+  fullWidth,
 }) => {
   if (isLoading) {
     return (
@@ -58,7 +60,7 @@ const TarjetaIncidencia: FC<TarjetaIncidenciaProps> = ({
   }
 
   return (
-    <FadeIn sx={{ width: 380 }}>
+    <FadeIn sx={{ width: fullWidth ? '100%' : 380  }}>
       <Paper
         onClick={() => onClick!(incidencia!)}
         elevation={2}
@@ -82,7 +84,7 @@ const TarjetaIncidencia: FC<TarjetaIncidenciaProps> = ({
             cursor: 'pointer',
           }}
         />
-        <Grid container p={3} rowGap={2} width={380}>
+        <Grid container p={3} rowGap={2} width={fullWidth ? '100%' : 380}>
           <Grid item xs={12}>
             <Typography
               variant="h6"

@@ -10,13 +10,16 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { Avatar, SxProps, Tooltip } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Tooltip from '@mui/material/Tooltip';
+import { SxProps } from '@mui/material';
 
-import useSesion from '../../../stores/hooks/useSesion';
 import NavMenu from '../NavMenu';
 import MobileAppBar from '../MobileAppBar';
-import { Usuario } from '@interfaces/Usuario';
+
+import useSesion from '../../../stores/hooks/useSesion';
 import useSmallScreen from '@hooks/useSmallScreen';
+import { Usuario } from '@interfaces/Usuario';
 
 const settings = ['Perfil', 'Dashboard', 'Cerrar sesión'];
 

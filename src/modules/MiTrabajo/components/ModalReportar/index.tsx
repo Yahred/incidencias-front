@@ -194,6 +194,7 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
                   images={listaEvidencia}
                   onChange={handleAgregarEvidencia}
                   onRemoved={handleEvidenciaRemovida}
+                  carrusel
                 />
               </Grid>
               <Grid

@@ -7,7 +7,7 @@ import List from '@mui/material/List';
 import SidebarItem from '../SidebarItem';
 
 import useStore from '../../../../stores/store';
-import { ISidebarItem } from '../../../../interfaces';
+import { ISidebarItem } from '@interfaces/SidebarItem';
 
 interface MobileSidebarProps {
   submodulos: ISidebarItem[];
