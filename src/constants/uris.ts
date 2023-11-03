@@ -19,6 +19,7 @@ export const CONFIGURACIONES = '/configuraciones';
 export const ESTATUS = '/estatus';
 export const TECNICOS = '/tecnicos'
 export const TECNICO = '/tecnico';
+export const SERVICIOS = '/servicios';
 
 export const obtenerPaginado = (uri: string) =>
   `${uri}${PAGINADO}?itemsPorPagina=${ITEMS_POR_PAGINA}`;

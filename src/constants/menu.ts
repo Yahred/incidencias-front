@@ -38,6 +38,11 @@ export const SIDEBAR_CATALOGOS: ISidebarItem[] = [
     icono: 'settings'
   },
   {
+    nombre: 'Servicios',
+    ruta: '/servicios',
+    icono: 'construction'
+  },
+  {
     nombre: 'Categorías',
     ruta: '/categorias',
     icono: 'subject'

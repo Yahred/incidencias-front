@@ -9,3 +9,4 @@ export * from './usuarios';
 export * from './incidencias';
 export * from './sesion';
 export * from './reportes';
+export * from './servicios';
