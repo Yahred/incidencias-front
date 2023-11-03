@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import FadeIn from '@components/FadeIn';
 import TarjetaIncidencia from '@components/TarjetaIncidencia';
 
+import scrollbarMixin from '../../theme/scrollbar';
 import useSmallScreen from '@hooks/useSmallScreen';
 import { Incidencia } from '@interfaces/Incidencia';
 
@@ -30,6 +31,7 @@ const SliderIncidenciasC: FC<SliderIncidenciasProps> = ({
       </Typography>
       <Stack
         direction={{ xs: 'column', md: 'row' }}
+        sx={{ ...scrollbarMixin }}
         overflow="auto"
         maxHeight={420}
         gap={2}

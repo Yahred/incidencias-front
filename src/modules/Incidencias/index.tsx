@@ -6,37 +6,49 @@ import Tab from '@mui/material/Tab';
 
 import SliderIncidencias from '@components/SliderIncidencias';
 import ModalIncidencia from '@components/ModalIncidencia';
+import AsignacionTecnico from './components/AsignacionTecnico';
 
 import useStore from '../../stores/store';
 import useSliderIncidencias from './hooks/useSliderIncidencias';
 import useManejarIncidencia from './hooks/useManejarIncidencia';
+import useAccionIncidencia from './hooks/useAccionIncidencia';
 import { ESTATUS_NOMBRES, EstatusEnum } from '@constants/estatus';
 
 const Incidencias = () => {
   const usuario = useStore(({ usuario }) => usuario);
 
-  const [tabValue, setTabValue] = useState<EstatusEnum>(EstatusEnum.Pendiente);
+  const [estatusSelecccionado, setEstatusSeleccionado] = useState<EstatusEnum>(EstatusEnum.Pendiente);
 
   const { sliders, estatus, isFetching, departamentos, refetch } = useSliderIncidencias(
     usuario?.departamento.id || ''
   );
 
-  const { modalAbierto, abrirModal, cerrarModal, incidenciaSeleccionada, aprobarIncidencia } =
-    useManejarIncidencia();
+  const {
+    modalAbierto,
+    abrirModal,
+    cerrarModal,
+    incidenciaSeleccionada,
+  } = useManejarIncidencia();
+
+  const handleIncidenciaAccion = useCallback(() => {
+    cerrarModal();
+    refetch();
+  }, [cerrarModal, refetch]);
+
+  const {
+    accionPorEstatus,
+    isAsignarTecnicoOpen,
+    asignarTecnico,
+    cerrarAsignarTecnico,
+  } = useAccionIncidencia(incidenciaSeleccionada, handleIncidenciaAccion);
 
   const incidenciasPorEstatus = (estatus: EstatusEnum, departamento: string) =>
     sliders[departamento].filter(({ estatus: { id } }) => id === estatus);
 
-  const handleAprobarIncidencia = useCallback(async (id: string) => {
-    await aprobarIncidencia(id);
-    refetch();
-    cerrarModal();
-  }, [aprobarIncidencia, refetch, cerrarModal]);
-
   return (
     <>
       <Stack padding={{ md: 4, xs: 2 }} rowGap={4}>
-        <Tabs value={tabValue} onChange={(_, value) => setTabValue(value)}>
+        <Tabs value={estatusSelecccionado} onChange={(_, value) => setEstatusSeleccionado(value)}>
           {estatus.map((est) => (
             <Tab key={est} label={ESTATUS_NOMBRES[est]} value={est} />
           ))}
@@ -45,7 +57,7 @@ const Incidencias = () => {
           {departamentos?.map((departamento) => (
             <SliderIncidencias
               key={departamento.id}
-              incidencias={incidenciasPorEstatus(tabValue, departamento.id!)}
+              incidencias={incidenciasPorEstatus(estatusSelecccionado, departamento.id!)}
               isLoading={isFetching}
               titulo={departamento.nombre}
               onClick={abrirModal}
@@ -57,8 +69,13 @@ const Incidencias = () => {
         isOpen={modalAbierto}
         incidencia={incidenciaSeleccionada}
         onCerrar={cerrarModal}
-        aprobarIncidencia={tabValue === EstatusEnum.Pendiente}
-        onAprobar={handleAprobarIncidencia}
+        accion={accionPorEstatus[estatusSelecccionado]}
+      />
+      <AsignacionTecnico
+        area={incidenciaSeleccionada?.recurso.area}
+        open={isAsignarTecnicoOpen}
+        onClick={asignarTecnico}
+        onCancelar={cerrarAsignarTecnico}
       />
     </>
   );

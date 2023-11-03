@@ -1,5 +1,10 @@
 import axios from '../config/axios';
-import { MODELO, RECURSOS, obtenerPaginado, param } from '../constants/uris';
+import {
+  MODELO,
+  RECURSOS,
+  obtenerPaginado,
+  param,
+} from '../constants/uris';
 import { Modelo } from '../interfaces';
 import { Paginado } from '../interfaces/Paginado';
 import { Recurso } from '../interfaces/Recurso';

@@ -158,10 +158,10 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
                 />
               </Box>
               <Box display="flex" gap={2} order={{ xs: 1, md: 2 }}>
-                <Button onClick={handleCancelar} sx={{ height: 40 }}>
+                <Button onClick={handleCancelar} sx={{ height: 40 }} variant='outlined'>
                   Cancelar
                 </Button>
-                <SubmitButton color="success" sx={{ height: 40 }}>
+                <SubmitButton sx={{ height: 40 }}>
                   Guardar
                 </SubmitButton>
               </Box>

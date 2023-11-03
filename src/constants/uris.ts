@@ -17,9 +17,12 @@ export const RENOVAR = '/renovar';
 export const REPORTES = '/reportes';
 export const CONFIGURACIONES = '/configuraciones';
 export const ESTATUS = '/estatus';
+export const TECNICOS = '/tecnicos'
+export const TECNICO = '/tecnico';
 
 export const obtenerPaginado = (uri: string) =>
   `${uri}${PAGINADO}?itemsPorPagina=${ITEMS_POR_PAGINA}`;
+
 export const param = (uri: string, ...param: (string | number)[]) =>
   `${uri}${param
     .map((res: string | number) =>

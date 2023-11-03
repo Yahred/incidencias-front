@@ -42,7 +42,7 @@ const Carrusel: FC<CarruselProps> = ({ open, onClose, imagen }) => {
         }}
       >
         <ImagenSeleccionada src={imagen} />
-      </Box>
+      </Box> 
     </Dialogo>
   );
 };

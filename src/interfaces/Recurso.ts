@@ -10,4 +10,5 @@ export interface Recurso  {
   foto?: string;
   salon?: Salon | string;
   edificio?: Edificio | string;
+  area?: string;
 }

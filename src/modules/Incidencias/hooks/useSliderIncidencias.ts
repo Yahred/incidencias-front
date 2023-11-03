@@ -42,7 +42,7 @@ const useSliderIncidencias = (departamento: string) => {
     isFetching,
     estatus,
     departamentos,
-    refetch
+    refetch,
   };
 };
 

@@ -71,8 +71,8 @@ const ContenedorFormularioC: FC<ContenedorFormularioProps> = ({
               </Typography>
             </Box>
             <Box display="flex" paddingY={4} gap={2}>
-              <Button type="button" onClick={handleRegresar}>Regresar</Button>
-              <SubmitButton width={100} color="success">
+              <Button type="button" variant='outlined' onClick={handleRegresar}>Regresar</Button>
+              <SubmitButton width={100}>
                 Guardar
               </SubmitButton>
             </Box>

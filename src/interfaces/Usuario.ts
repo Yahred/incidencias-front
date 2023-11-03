@@ -2,6 +2,7 @@ import { Departamento } from '.';
 import { TipoUsuario } from './TipoUsuario';
 
 export interface Usuario {
+  id?: string;
   username: string;
   password: string;
   nombres: string;

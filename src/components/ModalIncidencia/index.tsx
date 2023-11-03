@@ -1,6 +1,4 @@
-import { FC, useCallback, useRef, useState } from 'react';
-
-import { Incidencia } from '../../interfaces/Incidencia';
+import { FC, ReactNode, useCallback, useRef, useState } from 'react';
 
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
@@ -18,6 +16,7 @@ import InfoRecurso from '../InfoRecurso';
 import SubmitButton from '../SubmitButton';
 
 import { MensajesConfirmacion } from '@constants/general';
+import { Incidencia } from '@interfaces/Incidencia';
 
 interface ModalIncidenciaProps {
   incidencia: Incidencia | null;
@@ -25,6 +24,7 @@ interface ModalIncidenciaProps {
   onCerrar: () => void;
   aprobarIncidencia?: boolean;
   onAprobar?: (id: string) => Promise<void>;
+  accion?: ReactNode;
 }
 
 const ModalIncidencia: FC<ModalIncidenciaProps> = ({
@@ -33,6 +33,7 @@ const ModalIncidencia: FC<ModalIncidenciaProps> = ({
   onCerrar,
   aprobarIncidencia,
   onAprobar,
+  accion,
 }) => {
   const [isDialogoOpen, setIsDialogoOpen] = useState<boolean>(false);
   const [isInfoRecursoOpen, setIsInfoRecursoOpen] = useState<boolean>(false);
@@ -64,7 +65,8 @@ const ModalIncidencia: FC<ModalIncidenciaProps> = ({
                   Aprobar
                 </SubmitButton>
               )}
-              <Button onClick={onCerrar}>Cerrar</Button>
+              {accion}
+              <Button onClick={onCerrar} variant='outlined'>Cerrar</Button>
             </Stack>
           </Stack>
         }
