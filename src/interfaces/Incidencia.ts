@@ -7,6 +7,7 @@ import { Usuario } from './Usuario';
 
 export interface Incidencia {
   id?: string;
+  folio: string;
   titulo: string;
   departamento: Departamento;
   descripcion: string;

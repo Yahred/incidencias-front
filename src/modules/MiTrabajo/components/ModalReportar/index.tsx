@@ -49,7 +49,6 @@ const flatFormFieldMixin: CSSProperties = {
 
 const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
   const usuario = useSesion() as Usuario;
-  console.log(usuario);
 
   const methods = useForm({
     resolver: yupResolver(incidenciaSchema),
@@ -95,7 +94,6 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
       onCancel();
       setListaEvidencia([]);
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [methods.formState.isDirty]);
 

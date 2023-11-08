@@ -66,7 +66,7 @@ const Incidencias = () => {
         </Stack>
       </Stack>
       <ModalIncidencia
-        isOpen={modalAbierto}
+        open={modalAbierto}
         incidencia={incidenciaSeleccionada}
         onCerrar={cerrarModal}
         accion={accionPorEstatus[estatusSelecccionado]}

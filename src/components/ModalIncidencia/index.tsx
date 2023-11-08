@@ -17,10 +17,11 @@ import SubmitButton from '../SubmitButton';
 
 import { MensajesConfirmacion } from '@constants/general';
 import { Incidencia } from '@interfaces/Incidencia';
+import { Avatar } from '@mui/material';
 
 interface ModalIncidenciaProps {
   incidencia: Incidencia | null;
-  isOpen: boolean;
+  open: boolean;
   onCerrar: () => void;
   aprobarIncidencia?: boolean;
   onAprobar?: (id: string) => Promise<void>;
@@ -29,7 +30,7 @@ interface ModalIncidenciaProps {
 
 const ModalIncidencia: FC<ModalIncidenciaProps> = ({
   incidencia,
-  isOpen,
+  open,
   onCerrar,
   aprobarIncidencia,
   onAprobar,
@@ -40,11 +41,14 @@ const ModalIncidencia: FC<ModalIncidenciaProps> = ({
 
   const anchorElInfoRecurso = useRef<HTMLElement | null>(null);
 
-  const handleAprobarIncidencia = useCallback((confirmado: boolean) => {
-    setIsDialogoOpen(false);
-    if (!confirmado) return;
-    onAprobar!(incidencia!.id!);
-  }, [onAprobar, incidencia]);
+  const handleAprobarIncidencia = useCallback(
+    (confirmado: boolean) => {
+      setIsDialogoOpen(false);
+      if (!confirmado) return;
+      onAprobar!(incidencia!.id!);
+    },
+    [onAprobar, incidencia]
+  );
 
   const handleInfoRecursoClick = useCallback(() => {
     setIsInfoRecursoOpen(true);
@@ -53,20 +57,38 @@ const ModalIncidencia: FC<ModalIncidenciaProps> = ({
   return (
     <>
       <Dialogo
-        open={isOpen}
+        open={open}
         title={
-          <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" rowGap={{ xs: 4, sm: 0 }}>
-            <Typography sx={{  order: { xs: 2, md: 1 } }} variant="h4" fontWeight="bold">
+          <Stack
+            direction={{ xs: 'column', md: 'row' }}
+            justifyContent="space-between"
+            rowGap={{ xs: 4, sm: 0 }}
+          >
+            <Typography
+              sx={{ order: { xs: 2, md: 1 } }}
+              variant="h4"
+              fontWeight="bold"
+            >
               {incidencia?.titulo}
             </Typography>
-            <Stack order={{ xs: 1 }} direction="row" gap={2} justifyContent={{ xs: 'flex-end' }}>
+            <Stack
+              order={{ xs: 1 }}
+              direction="row"
+              gap={2}
+              justifyContent={{ xs: 'flex-end' }}
+            >
               {aprobarIncidencia && (
-                <SubmitButton color="success" onClick={() => setIsDialogoOpen(true)}>
+                <SubmitButton
+                  color="success"
+                  onClick={() => setIsDialogoOpen(true)}
+                >
                   Aprobar
                 </SubmitButton>
               )}
               {accion}
-              <Button onClick={onCerrar} variant='outlined'>Cerrar</Button>
+              <Button onClick={onCerrar} variant="outlined">
+                Cerrar
+              </Button>
             </Stack>
           </Stack>
         }
@@ -94,6 +116,16 @@ const ModalIncidencia: FC<ModalIncidenciaProps> = ({
             sx={{ borderLeft: 4, borderColor: 'primary.main' }}
           >
             <Stack px={2} rowGap={2}>
+              {incidencia?.atiende && <Stack direction="row" gap={2} alignItems="center">
+                <Typography fontWeight="bold">Atiende: </Typography>
+                <Typography>{`${incidencia?.atiende?.nombres} ${incidencia?.atiende?.apellidoPat} ${incidencia?.atiende?.apellidoMat}`}</Typography>
+                <Avatar src={incidencia?.atiende?.avatar} />
+              </Stack>}
+              <TextField
+                value={incidencia?.folio || 'SIN FOLIO'}
+                title="Folio"
+                disabled
+              />
               <TextField
                 value={incidencia?.departamento?.nombre || ''}
                 title="Departamento"

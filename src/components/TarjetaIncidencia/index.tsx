@@ -76,14 +76,15 @@ const TarjetaIncidencia: FC<TarjetaIncidenciaProps> = ({
         }}
       >
         <IndicadorEstatus color={incidencia?.estatus.color} />
-        <Avatar
+        {incidencia?.atiende && <Avatar
           sx={{
             position: 'absolute',
             bottom: 20,
             right: 20,
             cursor: 'pointer',
           }}
-        />
+          src={incidencia?.atiende?.avatar}
+        />}
         <Grid container p={3} rowGap={2} width={fullWidth ? '100%' : 380}>
           <Grid item xs={12}>
             <Typography
@@ -99,6 +100,11 @@ const TarjetaIncidencia: FC<TarjetaIncidenciaProps> = ({
             >
               {incidencia?.titulo}
             </Typography>
+            <Typography
+              variant="caption"
+            >
+              {incidencia?.folio || 'Sin folio'}
+            </Typography>
           </Grid>
           <Grid item xs={12} display="flex" flexDirection="column" rowGap="6px">
             <Typography>
@@ -111,10 +117,6 @@ const TarjetaIncidencia: FC<TarjetaIncidenciaProps> = ({
             <Typography>
               <Bold>Ubicación:</Bold>{' '}
               {`${incidencia?.edificio.nombre} ${incidencia?.salon.nombre}`}
-            </Typography>
-            <Typography>
-              <Bold>Departamento:</Bold>{' '}
-              {incidencia?.departamento.nombre}
             </Typography>
           </Grid>
         </Grid>

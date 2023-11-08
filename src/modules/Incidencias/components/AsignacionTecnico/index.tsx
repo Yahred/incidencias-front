@@ -17,7 +17,12 @@ interface AsignacionTecnicoProps {
   onCancelar: () => void;
 }
 
-const AsignacionTecnico: FC<AsignacionTecnicoProps> = ({ open, area, onClick, onCancelar }) => {
+const AsignacionTecnico: FC<AsignacionTecnicoProps> = ({
+  open,
+  area,
+  onClick,
+  onCancelar,
+}) => {
   const { data: tecnicos } = useQuery({
     queryKey: ['tecnicos', area],
     queryFn: () => obtenerTecnicosPorArea(area!),
@@ -25,9 +30,12 @@ const AsignacionTecnico: FC<AsignacionTecnicoProps> = ({ open, area, onClick, on
     initialData: [],
   });
 
-  const handleClick = useCallback((tecnico: Usuario) => {
-    onClick(tecnico);
-  }, [onClick]);
+  const handleClick = useCallback(
+    (tecnico: Usuario) => {
+      onClick(tecnico);
+    },
+    [onClick]
+  );
 
   return (
     <Drawer open={open} anchor="right" hideBackdrop sx={{ zIndex: 1500 }}>
@@ -41,10 +49,15 @@ const AsignacionTecnico: FC<AsignacionTecnicoProps> = ({ open, area, onClick, on
           </Stack>
         </Grid>
         <Grid item xs={12}>
-          <Typography>Seleccione el técnico que se encargará de atender la incidencia</Typography>
+          <Typography>
+            Seleccione el técnico que se encargará de atender la incidencia
+          </Typography>
         </Grid>
         <Grid item xs={12}>
-          <ListaTecnicos tecnicos={tecnicos} onClick={handleClick} />
+          <ListaTecnicos
+            tecnicos={tecnicos}
+            onClick={handleClick}
+          />
         </Grid>
       </Grid>
     </Drawer>

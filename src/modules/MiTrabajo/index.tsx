@@ -73,13 +73,7 @@ const MiTrabajo: FC = () => {
         <Grid container item xs={12} rowGap={2}>
           <Grid item xs={12} display="flex" justifyContent="space-between">
             <Typography variant="h5">Mis incidencias</Typography>
-            <Button
-              onClick={handleAgregarClick}
-              color="error"
-              sx={{ color: 'white' }}
-            >
-              Reportar
-            </Button>
+            <Button onClick={handleAgregarClick}>Reportar</Button>
           </Grid>
           <Grid item xs={12}>
             <SliderIncidencias
@@ -98,8 +92,8 @@ const MiTrabajo: FC = () => {
         onSave={guardarIncidencia}
       />
       <ModalIncidencia
+        open={modalIncidenciaAbierto}
         incidencia={incidencia}
-        isOpen={modalIncidenciaAbierto}
         onCerrar={handleCerrarModalIncidencia}
       />
     </>
