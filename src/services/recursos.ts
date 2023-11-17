@@ -3,7 +3,7 @@ import {
   MODELO,
   RECURSOS,
   obtenerPaginado,
-  param,
+  endpoint,
 } from '../constants/uris';
 import { Modelo } from '../interfaces';
 import { Paginado } from '../interfaces/Paginado';
@@ -25,14 +25,14 @@ export const obtenerRecursos = (salon?: string) =>
   });
 
 export const obtenerModeloPorRecursoId = (id: string) =>
-  axios.get<unknown, Modelo>(param(RECURSOS, id, MODELO));
+  axios.get<unknown, Modelo>(endpoint(RECURSOS, id, MODELO));
 
 export const obtenerRecursoPorId = (id: string) =>
-  axios.get<unknown, Recurso>(param(RECURSOS, id));
+  axios.get<unknown, Recurso>(endpoint(RECURSOS, id));
 
 export const registrarRecurso = (recurso: FormData, id?: string) =>
   id
-    ? axios.put(param(RECURSOS, id), recurso, {
+    ? axios.put(endpoint(RECURSOS, id), recurso, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
     : axios.post(RECURSOS, recurso, {
@@ -40,4 +40,4 @@ export const registrarRecurso = (recurso: FormData, id?: string) =>
       });
 
 export const eliminarRecurso = (id: string) =>
-  axios.delete(param(RECURSOS, id));
+  axios.delete(endpoint(RECURSOS, id));

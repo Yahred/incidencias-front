@@ -1,14 +1,19 @@
 import { Box, Button } from '@mui/material';
 import { FC, useCallback, useEffect, useRef } from 'react';
-import { APPBAR_MENU_ITEMS } from '../../../constants/menu';
 import AnimatedBar from '../../../components/AnimatedBar';
+import { AppbarItem } from '@interfaces/AppbarItem';
 
 interface NavMenuProps {
   onClick: (ruta: string) => void;
   moduloSeleccionado: string;
+  modulos: AppbarItem[];
 }
 
-const NavMenu: FC<NavMenuProps> = ({ onClick, moduloSeleccionado }) => {
+const NavMenu: FC<NavMenuProps> = ({
+  onClick,
+  moduloSeleccionado,
+  modulos,
+}) => {
   const barRef = useRef<HTMLDivElement | null>(null);
   const selectedRef = useRef<HTMLDivElement | null>(null);
 
@@ -24,12 +29,13 @@ const NavMenu: FC<NavMenuProps> = ({ onClick, moduloSeleccionado }) => {
   useEffect(() => {
     const target = selectedRef.current as HTMLDivElement;
     const bar = barRef.current as HTMLDivElement;
+
     if (bar && target) {
       const { left, right } = target.getBoundingClientRect();
       bar.style.left = `${Math.floor(left)}px`;
       bar.style.width = `${Math.floor(right - left)}px`;
     }
-  }, [moduloSeleccionado]);
+  }, [moduloSeleccionado, modulos]);
 
   return (
     <Box
@@ -41,9 +47,9 @@ const NavMenu: FC<NavMenuProps> = ({ onClick, moduloSeleccionado }) => {
         overflowX: 'auto',
       }}
     >
-      <AnimatedBar ref={barRef} />
+      {modulos.length && <AnimatedBar ref={barRef} />}
 
-      {APPBAR_MENU_ITEMS.map((item) =>
+      {modulos.map((item) =>
         item.ruta === moduloSeleccionado ? (
           <Box
             ref={selectedRef}

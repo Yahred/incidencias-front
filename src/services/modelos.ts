@@ -1,5 +1,5 @@
 import axios from '../config/axios';
-import { MODELOS, obtenerPaginado, param } from '../constants/uris';
+import { MODELOS, obtenerPaginado, endpoint } from '../constants/uris';
 import { Modelo } from '../interfaces/Modelo';
 import { Paginado } from '../interfaces/Paginado';
 
@@ -19,15 +19,15 @@ export const obtenerModelos = (categoria?: string) =>
   });
 
 export const obtenerModeloPorId = (id: string) =>
-  axios.get<unknown, Modelo>(param(MODELOS, id));
+  axios.get<unknown, Modelo>(endpoint(MODELOS, id));
 
 export const registrarModelo = (modelo: FormData, id?: string) =>
   id
-    ? axios.put(param(MODELOS, id), modelo, {
+    ? axios.put(endpoint(MODELOS, id), modelo, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
     : axios.post(MODELOS, modelo, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-export const eliminarModelo = (id: string) => axios.delete(param(MODELOS, id));
+export const eliminarModelo = (id: string) => axios.delete(endpoint(MODELOS, id));

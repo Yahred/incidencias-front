@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState, Fragment } from 'react';
 
 import Stack from '@mui/material/Stack';
 import Tabs from '@mui/material/Tabs';
@@ -7,28 +7,27 @@ import Tab from '@mui/material/Tab';
 import SliderIncidencias from '@components/SliderIncidencias';
 import ModalIncidencia from '@components/ModalIncidencia';
 import AsignacionTecnico from './components/AsignacionTecnico';
+import FadeIn from '@components/FadeIn';
 
 import useStore from '../../stores/store';
 import useSliderIncidencias from './hooks/useSliderIncidencias';
 import useManejarIncidencia from './hooks/useManejarIncidencia';
 import useAccionIncidencia from './hooks/useAccionIncidencia';
 import { ESTATUS_NOMBRES, EstatusEnum } from '@constants/estatus';
+import { Typography } from '@mui/material';
 
 const Incidencias = () => {
   const usuario = useStore(({ usuario }) => usuario);
 
-  const [estatusSelecccionado, setEstatusSeleccionado] = useState<EstatusEnum>(EstatusEnum.Pendiente);
-
-  const { sliders, estatus, isFetching, departamentos, refetch } = useSliderIncidencias(
-    usuario?.departamento.id || ''
+  const [estatusSelecccionado, setEstatusSeleccionado] = useState<EstatusEnum>(
+    EstatusEnum.Pendiente
   );
 
-  const {
-    modalAbierto,
-    abrirModal,
-    cerrarModal,
-    incidenciaSeleccionada,
-  } = useManejarIncidencia();
+  const { sliders, estatus, isFetching, departamentos, refetch } =
+    useSliderIncidencias(usuario?.departamento?.id || '');
+
+  const { modalAbierto, abrirModal, cerrarModal, incidenciaSeleccionada } =
+    useManejarIncidencia();
 
   const handleIncidenciaAccion = useCallback(() => {
     cerrarModal();
@@ -42,28 +41,60 @@ const Incidencias = () => {
     cerrarAsignarTecnico,
   } = useAccionIncidencia(incidenciaSeleccionada, handleIncidenciaAccion);
 
-  const incidenciasPorEstatus = (estatus: EstatusEnum, departamento: string) =>
-    sliders[departamento].filter(({ estatus: { id } }) => id === estatus);
+  const incidenciasPorEstatus = useCallback(
+    (estatus: EstatusEnum, departamento: string) =>
+      sliders[departamento].filter(({ estatus: { id } }) => id === estatus),
+    [sliders]
+  );
+
+  const estatusSinIncidencias = useMemo(
+    () =>
+      departamentos?.every(
+        (departamento) =>
+          !incidenciasPorEstatus(estatusSelecccionado, departamento.id!).length
+      ),
+    [departamentos, estatusSelecccionado, incidenciasPorEstatus]
+  );
 
   return (
     <>
-      <Stack padding={{ md: 4, xs: 2 }} rowGap={4}>
-        <Tabs value={estatusSelecccionado} onChange={(_, value) => setEstatusSeleccionado(value)}>
+      <Stack padding={{ md: 4, xs: 2 }} rowGap={4} height="100%">
+        <Tabs
+          value={estatusSelecccionado}
+          onChange={(_, value) => setEstatusSeleccionado(value)}
+        >
           {estatus.map((est) => (
             <Tab key={est} label={ESTATUS_NOMBRES[est]} value={est} />
           ))}
         </Tabs>
         <Stack rowGap={4}>
-          {departamentos?.map((departamento) => (
-            <SliderIncidencias
-              key={departamento.id}
-              incidencias={incidenciasPorEstatus(estatusSelecccionado, departamento.id!)}
-              isLoading={isFetching}
-              titulo={departamento.nombre}
-              onClick={abrirModal}
-            />
-          ))}
+          {departamentos?.map((departamento) =>
+            incidenciasPorEstatus(estatusSelecccionado, departamento.id!)
+              .length ? (
+              <SliderIncidencias
+                key={departamento.id}
+                incidencias={incidenciasPorEstatus(
+                  estatusSelecccionado,
+                  departamento.id!
+                )}
+                isLoading={isFetching}
+                titulo={departamento.nombre}
+                onClick={abrirModal}
+              />
+            ) : (
+              <Fragment key={departamento.id} />
+            )
+          )}
         </Stack>
+        {estatusSinIncidencias && (
+          <Stack height="100%" justifyContent="center" alignItems="center">
+            <FadeIn sx={{ display: 'grid', placeItems: 'center' }}>
+              <Typography variant="h4">
+                Sin incidencias {ESTATUS_NOMBRES[estatusSelecccionado]}
+              </Typography>
+            </FadeIn>
+          </Stack>
+        )}
       </Stack>
       <ModalIncidencia
         open={modalAbierto}

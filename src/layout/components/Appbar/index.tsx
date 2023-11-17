@@ -20,6 +20,11 @@ import MobileAppBar from '../MobileAppBar';
 import useSesion from '../../../stores/hooks/useSesion';
 import useSmallScreen from '@hooks/useSmallScreen';
 import { Usuario } from '@interfaces/Usuario';
+import { APPBAR_MENU_ITEMS, AppbarItems } from '@constants/menu';
+import { TipoUsuario } from '@interfaces/TipoUsuario';
+import { TiposUsuario } from '@constants/tiposUsuario';
+import Notifications from '../Notifications';
+import useStore from '../../../stores/store';
 
 const settings = ['Perfil', 'Dashboard', 'Cerrar sesión'];
 
@@ -29,6 +34,7 @@ interface AppbarProps {
 
 const Appbar: FC<AppbarProps> = ({ sx }) => {
   const usuario = useSesion() as Usuario;
+  const swSubscription = useStore(({ swSubscription }) => swSubscription);
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -40,6 +46,20 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
     [pathname]
   );
 
+  const modulosConAcceso = useMemo(() => {
+    if (!usuario) return [];
+
+    const tipoUsuario = usuario.tipoUsuario as TipoUsuario;
+    if (tipoUsuario.id === TiposUsuario.Admin) return APPBAR_MENU_ITEMS;
+
+    const { modulos } = usuario.tipoUsuario as TipoUsuario;
+    if (!modulos) return APPBAR_MENU_ITEMS;
+
+    return APPBAR_MENU_ITEMS.filter(
+      ({ clave }) => clave === AppbarItems.MiTrabajo || modulos?.includes(clave)
+    );
+  }, [usuario]);
+
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -50,15 +70,19 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
     setAnchorElUser(null);
   };
 
-  const handleNavClick = useCallback((ruta: string) => {
-    navigate(ruta);
-  }, [navigate]);
+  const handleNavClick = useCallback(
+    (ruta: string) => {
+      navigate(ruta);
+    },
+    [navigate]
+  );
 
   const cerrarSesion = useCallback(() => {
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');
+    swSubscription?.unsubscribe();
     navigate('/login');
-  }, [navigate]);
+  }, [navigate, swSubscription]);
 
   const handleMenuClick = useCallback(
     (opcion: string) => {
@@ -73,10 +97,13 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
   );
 
   if (isSmallScreen) {
-    return <MobileAppBar
-      moduloSeleccionado={moduloSeleccionado}
-      onNavMenuClick={handleNavClick}
-    />
+    return (
+      <MobileAppBar
+        moduloSeleccionado={moduloSeleccionado}
+        onNavMenuClick={handleNavClick}
+        modulos={modulosConAcceso}
+      />
+    );
   }
 
   return (
@@ -86,7 +113,6 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
       position="sticky"
     >
       <Toolbar sx={{ px: 4, position: 'relative' }}>
-
         <AdbIcon
           color="primary"
           sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
@@ -109,7 +135,11 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
           LOGO
         </Typography>
 
-        <NavMenu onClick={handleNavClick} moduloSeleccionado={moduloSeleccionado} />
+        <NavMenu
+          onClick={handleNavClick}
+          moduloSeleccionado={moduloSeleccionado}
+          modulos={modulosConAcceso}
+        />
 
         <AdbIcon
           color="primary"
@@ -134,7 +164,8 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
           LOGO
         </Typography>
 
-        <Box sx={{ flexGrow: 0 }}>
+        <Box sx={{ flexGrow: 0, gap: 1, display: 'flex' }}>
+          <Notifications />
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar alt="Remy Sharp" src={usuario?.avatar} />

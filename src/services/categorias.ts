@@ -1,5 +1,5 @@
 import axios from '../config/axios';
-import { CATEGORIAS, obtenerPaginado, param } from '../constants/uris';
+import { CATEGORIAS, obtenerPaginado, endpoint } from '../constants/uris';
 import { Categoria } from '../interfaces/Categoria';
 import { Paginado } from '../interfaces/Paginado';
 
@@ -19,10 +19,10 @@ export const obtenerCategorias = (area?: string) =>
   });
 
 export const obtenerCategoriaPorId = (id: string) =>
-  axios.get<unknown, Categoria>(param(CATEGORIAS, id));
+  axios.get<unknown, Categoria>(endpoint(CATEGORIAS, id));
 
 export const registrarCategoria = (categoria: Categoria, id?: string) =>
-  id ? axios.put(param(CATEGORIAS, id), categoria) : axios.post(CATEGORIAS, categoria);
+  id ? axios.put(endpoint(CATEGORIAS, id), categoria) : axios.post(CATEGORIAS, categoria);
 
 export const eliminarCategoria = (id: string) =>
-  axios.delete(param(CATEGORIAS, id));
+  axios.delete(endpoint(CATEGORIAS, id));

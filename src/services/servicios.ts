@@ -1,5 +1,5 @@
 import axios from '../config/axios';
-import { SERVICIOS, obtenerPaginado, param } from '@constants/uris';
+import { SERVICIOS, obtenerPaginado, endpoint } from '@constants/uris';
 import { Servicio } from '@interfaces/Servicio';
 import { Paginado } from '@interfaces/Paginado';
 
@@ -17,12 +17,19 @@ export const obtenerServicios = (categoria?: string) =>
   });
 
 export const obtenerServicioPorId = (id: string) =>
-  axios.get<never, Servicio>(param(SERVICIOS, id));
+  axios.get<never, Servicio>(endpoint(SERVICIOS, id));
+
+export const obtenerServiciosPorRecurso = (recurso: string) =>
+  axios.get<never, Servicio[]>(SERVICIOS, {
+    params: {
+      recurso,
+    },
+  });
 
 export const registrarServicio = (servicio: Servicio, id?: string) =>
   id
-    ? axios.put(param(SERVICIOS, id), servicio)
+    ? axios.put(endpoint(SERVICIOS, id), servicio)
     : axios.post(SERVICIOS, servicio);
 
 export const eliminarServicio = (id: string) =>
-  axios.delete(param(SERVICIOS, id));
+  axios.delete(endpoint(SERVICIOS, id));

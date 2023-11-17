@@ -71,7 +71,7 @@ const FormSelect: FC<FormSelectProps> = ({
         <Box sx={containerSx} display="flex" flexDirection="column" gap="4px">
           <Box display="flex" flexDirection="column">
             <Typography variant="body1">
-              {`${title} ${required ? '*' : ''}`}{' '}
+              {`${title || ''} ${required ? '*' : ''}`}{' '}
             </Typography>
             <Typography variant="caption">{subtitle}</Typography>
           </Box>

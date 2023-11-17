@@ -1,5 +1,5 @@
 import axios from '../config/axios';
-import { DEPARTAMENTOS, obtenerPaginado, param } from '../constants/uris';
+import { DEPARTAMENTOS, obtenerPaginado, endpoint } from '../constants/uris';
 import { Departamento } from '../interfaces/Departamento';
 import { Paginado } from '../interfaces/Paginado';
 
@@ -16,14 +16,14 @@ export const registrarDepartamento = (
   id?: string
 ) =>
   id
-    ? axios.put(param(DEPARTAMENTOS, id!), departamento)
+    ? axios.put(endpoint(DEPARTAMENTOS, id!), departamento)
     : axios.post(DEPARTAMENTOS, departamento);
 
 export const obtenerDepartamentos = () =>
   axios.get<unknown, Departamento[]>(DEPARTAMENTOS);
 
 export const obtenerDepartamentoPorId = (id: string) =>
-  axios.get<never, Departamento>(param(DEPARTAMENTOS, id));
+  axios.get<never, Departamento>(endpoint(DEPARTAMENTOS, id));
 
 export const eliminarDepartamento = (id: string) =>
-  axios.delete(param(DEPARTAMENTOS, id));
+  axios.delete(endpoint(DEPARTAMENTOS, id));

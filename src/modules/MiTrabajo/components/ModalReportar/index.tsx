@@ -23,7 +23,6 @@ import useSesion from '../../../../stores/hooks/useSesion';
 import { obtenerEdicios, obtenerRecursos, obtenerSalones } from '@services';
 import { Incidencia } from '@interfaces/Incidencia';
 import { CAMPO_REQUERIDO } from '@constants/validaciones';
-import { Usuario } from '@interfaces/Usuario';
 
 interface ModalReportarProps {
   open: boolean;
@@ -39,7 +38,7 @@ const incidenciaSchema = yup.object({
   edificio: yup.string().required(CAMPO_REQUERIDO),
   salon: yup.string().required(CAMPO_REQUERIDO),
   recurso: yup.string().required(CAMPO_REQUERIDO),
-  departamento: yup.string().required(),
+  departamento: yup.string().required(CAMPO_REQUERIDO),
 });
 
 const flatFormFieldMixin: CSSProperties = {
@@ -48,7 +47,7 @@ const flatFormFieldMixin: CSSProperties = {
 };
 
 const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
-  const usuario = useSesion() as Usuario;
+  const usuario = useSesion();
 
   const methods = useForm({
     resolver: yupResolver(incidenciaSchema),
@@ -64,9 +63,10 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
   const salonSeleccionado = methods.watch('salon');
 
   const { data: edificios } = useQuery({
-    queryKey: 'edificios',
-    queryFn: () => obtenerEdicios(usuario.departamento?.id),
+    queryKey: ['edificios', usuario],
+    queryFn: () => obtenerEdicios(usuario?.departamento?.id),
     initialData: [],
+    enabled: !!usuario,
   });
 
   const { data: salones } = useQuery({
@@ -131,7 +131,7 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
         <Form methods={methods} onSubmit={guardarIncidencia}>
           <Box
             px={{ md: 4, xs: 2 }}
-            pb={{ md: 0, xs: 2  }}
+            pb={{ md: 0, xs: 2 }}
             minHeight="60svh"
             display="flex"
             flexDirection="column"
@@ -156,12 +156,14 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
                 />
               </Box>
               <Box display="flex" gap={2} order={{ xs: 1, md: 2 }}>
-                <Button onClick={handleCancelar} sx={{ height: 40 }} variant='outlined'>
+                <Button
+                  onClick={handleCancelar}
+                  sx={{ height: 40 }}
+                  variant="outlined"
+                >
                   Cancelar
                 </Button>
-                <SubmitButton sx={{ height: 40 }}>
-                  Guardar
-                </SubmitButton>
+                <SubmitButton sx={{ height: 40 }}>Guardar</SubmitButton>
               </Box>
             </Box>
             <Grid container spacing={2}>

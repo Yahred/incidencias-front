@@ -17,6 +17,8 @@ interface IStore {
   setExistSidebar: (exist: boolean) => void;
   setIsSidebarOpen: (open: boolean) => void;
   toggleSidebar: () => void;
+  swSubscription: PushSubscription | null;
+  setSwSubscription: (sub: PushSubscription) => void;
 }
 
 const useStore = create(
@@ -38,6 +40,8 @@ const useStore = create(
       }),
     existSidebar: false,
     setExistSidebar: (existSidebar) => set({ existSidebar }),
+    swSubscription: null,
+    setSwSubscription: (swSubscription) => set({ swSubscription }),
   }))
 );
 

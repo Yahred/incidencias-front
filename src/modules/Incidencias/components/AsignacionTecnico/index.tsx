@@ -38,7 +38,7 @@ const AsignacionTecnico: FC<AsignacionTecnicoProps> = ({
   );
 
   return (
-    <Drawer open={open} anchor="right" hideBackdrop sx={{ zIndex: 1500 }}>
+    <Drawer open={open}>
       <Grid container p={4} rowSpacing={4} maxWidth={420}>
         <Grid item xs={12}>
           <Stack direction="row" justifyContent="space-between">

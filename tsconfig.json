@@ -31,8 +31,9 @@
       "@functions/*": ["src/utils/functions/*"],
       "@interfaces/*": ["src/interfaces/*"],
       "@constants/*": ["src/constants/*"],
+      "@workers/*": ["src/utils/workers/*"],
     }
   },
-  "include": ["src"],
+  "include": ["src", "public/workers/notificaciones.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

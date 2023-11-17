@@ -1,6 +1,6 @@
 import axios from '../config/axios';
 import { EstatusEnum } from '../constants/estatus';
-import { ESTATUS, INCIDENCIAS, TECNICO, param } from '../constants/uris';
+import { ESTATUS, INCIDENCIAS, TECNICO, endpoint } from '../constants/uris';
 import { Incidencia } from '../interfaces/Incidencia';
 
 export const registrarIncidencia = (incidencia: FormData) =>
@@ -10,19 +10,20 @@ export const registrarIncidencia = (incidencia: FormData) =>
     },
   });
 
-export const obtenerIncidenciasDelUsuario = (fechaInicio?: Date) =>
+export const obtenerIncidenciasDelUsuario = (fechaInicio?: Date, atiende?: number) =>
   axios.get<unknown, Incidencia[]>(INCIDENCIAS, {
     params: {
-      usuarioCreacion: true,
+      usuarioCreacion: !atiende,
       fechaInicio,
+      atiende,
     },
   });
 
 export const aprobarIncidenciaPorId = (id: string) =>
-  axios.put(param(INCIDENCIAS, id, ESTATUS, EstatusEnum.Aprobada));
+  axios.put(endpoint(INCIDENCIAS, id, ESTATUS, EstatusEnum.Aprobada));
 
 export const asignarTecnicoPorId = (id: string, tecnico: string) =>
-  axios.put(param(INCIDENCIAS, id, TECNICO, tecnico));
+  axios.put(endpoint(INCIDENCIAS, id, TECNICO, tecnico));
 
 export const obtenerIncidencias = () =>
   axios.get<unknown, Incidencia[]>(INCIDENCIAS);

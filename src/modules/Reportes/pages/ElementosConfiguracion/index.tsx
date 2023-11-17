@@ -48,7 +48,12 @@ const cabeceros: Cabeceros<Recurso>[] = [
 ];
 
 const ElementosConfiguracion = () => {
-  const [filtros, setFiltros] = useState<IFiltrosConfiguracion>({});
+  const [filtros, setFiltros] = useState<IFiltrosConfiguracion>({
+    categoria: '',
+    departamento: '',
+    edificio: '',
+    modelo: '',
+  });
 
   const tarjetas = useMemo(() => TARJETAS_REPORTE_CONFIGURACIONES, []);
   const [searchParams, setSearchParams] = useSearchParams({ pagina: '1' });

@@ -20,11 +20,12 @@ export const ESTATUS = '/estatus';
 export const TECNICOS = '/tecnicos'
 export const TECNICO = '/tecnico';
 export const SERVICIOS = '/servicios';
+export const NOTIFICACIONES = '/notificaciones';
 
 export const obtenerPaginado = (uri: string) =>
   `${uri}${PAGINADO}?itemsPorPagina=${ITEMS_POR_PAGINA}`;
 
-export const param = (uri: string, ...param: (string | number)[]) =>
+export const endpoint = (uri: string, ...param: (string | number)[]) =>
   `${uri}${param
     .map((res: string | number) =>
       String(res).startsWith('/') ? String(res) : `/${res}`

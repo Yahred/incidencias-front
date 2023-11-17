@@ -1,5 +1,5 @@
 import axios from "../config/axios";
-import { EDIFICIOS, obtenerPaginado, param } from "../constants/uris";
+import { EDIFICIOS, obtenerPaginado, endpoint } from "../constants/uris";
 import { Edificio } from "../interfaces/Edificio";
 import { Paginado } from "../interfaces/Paginado";
 
@@ -16,4 +16,4 @@ export const obtenerEdicios = (departamento?: string) => axios.get<unknown, Edif
 
 export const registrarEdificio = (edificio: Edificio) => axios.post(EDIFICIOS, edificio);
 
-export const eliminarEdificio = (id: string) => axios.delete(param(EDIFICIOS, id));
+export const eliminarEdificio = (id: string) => axios.delete(endpoint(EDIFICIOS, id));

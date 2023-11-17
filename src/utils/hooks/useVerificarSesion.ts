@@ -4,12 +4,12 @@ import { useMutation } from 'react-query';
 import useStore from '../../stores/store';
 import { renovarToken } from '../../services/sesion';
 
-const useTokenRenew = () => {
+const useRenovarSesion = () => {
   const setUsuario = useStore(({ setUsuario }) => setUsuario);
 
   const { mutateAsync } = useMutation({
     mutationKey: 'renovar-token',
-    mutationFn: renovarToken
+    mutationFn: renovarToken,
   });
 
   const renovarSesion = useCallback(async () => {
@@ -30,6 +30,7 @@ const useTokenRenew = () => {
     } else {
       sessionStorage.setItem('token', JSON.stringify(token));
     }
+
   }, [mutateAsync, setUsuario]);
 
   return {
@@ -37,4 +38,4 @@ const useTokenRenew = () => {
   };
 };
 
-export default useTokenRenew;
+export default useRenovarSesion;

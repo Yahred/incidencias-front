@@ -10,7 +10,7 @@ export interface FormProps {
   sx?: SxProps;
 }
 
-const StyledForm = styled('form')();
+const StyledForm = styled('form')({});
 
 const Form: FC<FormProps> = ({ methods, children, onSubmit, sx }) => {
   return (

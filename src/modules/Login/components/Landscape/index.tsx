@@ -1,7 +1,7 @@
 import { SxProps, styled } from '@mui/material';
 import { FC } from 'react';
 
-const Img = styled('img')();
+const Img = styled('img')({});
 
 interface LandscapeProps {
   sx?: SxProps;

@@ -11,16 +11,26 @@ import ModalIncidencia from '@components/ModalIncidencia';
 import SliderIncidencias from '@components/SliderIncidencias';
 import TabsIncidencias from './components/TabsIncidencias';
 import ModalReportar from './components/ModalReportar';
+import Diagnostico from './components/Diagnostico';
 
 import objectToFormData from '@functions/objectToFormData';
+import useSesion from '../../stores/hooks/useSesion';
 import { obtenerIncidenciasDelUsuario, registrarIncidencia } from '@services';
 import { Incidencia } from '@interfaces/Incidencia';
+import { TipoUsuario } from '@interfaces/TipoUsuario';
+import { TiposUsuario } from '@constants/tiposUsuario';
 
 const MiTrabajo: FC = () => {
+  const usuario = useSesion();
+
+  const esTecnico = useMemo(() =>
+    (usuario?.tipoUsuario as TipoUsuario)?.id === TiposUsuario.Tecnico
+  , [usuario]);
+
   const [modalAbierto, setModalAbierto] = useState<boolean>(false);
+  const [incidencia, setIncidencia] = useState<Incidencia | null>(null);
   const [modalIncidenciaAbierto, setModalIncidenciaAbierto] =
     useState<boolean>(false);
-  const [incidencia, setIncidencia] = useState<Incidencia | null>(null);
 
   const fechaInicio = useMemo(() => sub(new Date(), { days: 30 }), []);
 
@@ -38,8 +48,8 @@ const MiTrabajo: FC = () => {
   });
 
   const { data: incidencias, refetch } = useQuery({
-    queryKey: ['incidencias'],
-    queryFn: () => obtenerIncidenciasDelUsuario(fechaInicio),
+    queryKey: ['incidencias', esTecnico],
+    queryFn: () => obtenerIncidenciasDelUsuario(fechaInicio, Number(esTecnico)),
     initialData: [],
     staleTime: 0,
   });
@@ -67,13 +77,20 @@ const MiTrabajo: FC = () => {
     setModalIncidenciaAbierto(false);
   }, []);
 
+  const handleDiagnostico = useCallback(() => {
+    console.log('dando diagnotiso');
+  }, []);
+
   return (
     <>
       <Grid container py={{ lg: 6, xs: 2 }} px={{ lg: 8, xs: 2 }} rowGap={2}>
         <Grid container item xs={12} rowGap={2}>
           <Grid item xs={12} display="flex" justifyContent="space-between">
             <Typography variant="h5">Mis incidencias</Typography>
-            <Button onClick={handleAgregarClick}>Reportar</Button>
+            {(usuario?.tipoUsuario as TipoUsuario)?.id ===
+              TiposUsuario.Academico && (
+              <Button onClick={handleAgregarClick}>Reportar</Button>
+            )}
           </Grid>
           <Grid item xs={12}>
             <SliderIncidencias
@@ -95,6 +112,11 @@ const MiTrabajo: FC = () => {
         open={modalIncidenciaAbierto}
         incidencia={incidencia}
         onCerrar={handleCerrarModalIncidencia}
+        accion={
+          esTecnico && (
+            <Diagnostico onClick={handleDiagnostico} incidencia={incidencia} />
+          )
+        }
       />
     </>
   );

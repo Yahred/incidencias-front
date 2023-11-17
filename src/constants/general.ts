@@ -6,6 +6,7 @@ export const MensajesToast = {
   EXITO: 'Recursos creados correctamente',
   EXITO_ACTUALIZACION: 'Recursos actualizados correctamente',
   EXITO_ELIMINACION: 'Recursos eliminados correctamente',
+  NOTIFICACION_EXITO: 'Listo, ahora recibirás notificaciones',
   CAMPO_DUPLICADO: (campo: string) => `El ${campo} ya existe`,
 }
 

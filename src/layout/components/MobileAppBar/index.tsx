@@ -18,6 +18,7 @@ import NavMenu from '../NavMenu';
 import useSesion from '../../../stores/hooks/useSesion';
 import useStore from '../../../stores/store';
 import { Usuario } from '@interfaces/Usuario';
+import { AppbarItem } from '@interfaces/AppbarItem';
 
 interface MobileAppBarProps {
   onOpenUserMenu?: () => void;
@@ -25,6 +26,7 @@ interface MobileAppBarProps {
   settings?: string[];
   moduloSeleccionado: string;
   onNavMenuClick?: (ruta: string) => void;
+  modulos: AppbarItem[]
 }
 
 const MobileAppBar: FC<MobileAppBarProps> = ({
@@ -32,6 +34,7 @@ const MobileAppBar: FC<MobileAppBarProps> = ({
   onNavMenuClick,
   settings,
   moduloSeleccionado,
+  modulos,
 }) => {
   const usuario = useSesion() as Usuario;
   const [toggleSidebar, existSidebar] = useStore(
@@ -117,6 +120,7 @@ const MobileAppBar: FC<MobileAppBarProps> = ({
           <NavMenu
             moduloSeleccionado={moduloSeleccionado}
             onClick={onNavMenuClick!}
+            modulos={modulos}
           />
         </Stack>
       </Toolbar>

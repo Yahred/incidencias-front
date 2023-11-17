@@ -1,10 +1,18 @@
-import { ISidebarItem } from "../interfaces/SidebarItem";
+import { AppbarItem } from '@interfaces/AppbarItem';
+import { ISidebarItem } from '../interfaces/SidebarItem';
+
+export enum AppbarItems {
+  MiTrabajo = 'mi_trabajo',
+  Incidencias = 'incidencias',
+  Catalogos = 'catalogos',
+  Reportes = 'reportes',
+}
 
 export const SIDEBAR_CATALOGOS: ISidebarItem[] = [
   {
     nombre: 'Usuarios',
     ruta: '/',
-    icono: 'person'
+    icono: 'person',
   },
   {
     divider: true,
@@ -12,17 +20,17 @@ export const SIDEBAR_CATALOGOS: ISidebarItem[] = [
   {
     nombre: 'Departamentos',
     ruta: '/departamentos',
-    icono: 'apartment'
+    icono: 'apartment',
   },
   {
     nombre: 'Edificios',
     ruta: '/edificios',
-    icono: 'domain'
+    icono: 'domain',
   },
   {
     nombre: 'Salones',
     ruta: '/salones',
-    icono: 'class'
+    icono: 'class',
   },
   {
     divider: true,
@@ -30,57 +38,51 @@ export const SIDEBAR_CATALOGOS: ISidebarItem[] = [
   {
     nombre: 'Recursos',
     ruta: '/recursos',
-    icono: 'devices'
+    icono: 'devices',
   },
   {
     nombre: 'Modelos',
     ruta: '/modelos',
-    icono: 'settings'
+    icono: 'settings',
   },
   {
     nombre: 'Servicios',
     ruta: '/servicios',
-    icono: 'construction'
+    icono: 'construction',
   },
   {
     nombre: 'Categorías',
     ruta: '/categorias',
-    icono: 'subject'
+    icono: 'subject',
   },
   {
     nombre: 'Áreas',
     ruta: '/areas',
-    icono: 'category'
+    icono: 'category',
   },
-]
+];
 
-
-export const APPBAR_MENU_ITEMS = [
+export const APPBAR_MENU_ITEMS: AppbarItem[] = [
   {
     nombre: 'Mí trabajo',
     ruta: '/',
-    clave: 'mi_trabajo',
+    clave: AppbarItems.MiTrabajo,
   },
   {
     nombre: 'Incidencias',
     ruta: '/incidencias',
-    clave: 'incidencias',
-  },
-  {
-    nombre: 'Tablero',
-    ruta: '/tablero',
-    clave: 'tablero',
+    clave: AppbarItems.Incidencias,
   },
   {
     nombre: 'Catalógos',
     ruta: '/catalogos',
-    clave: 'catalogos',
+    clave: AppbarItems.Catalogos,
     submodulos: SIDEBAR_CATALOGOS,
   },
   {
     nombre: 'Reportes',
     ruta: '/reportes',
-    clave: 'reportes',
+    clave: AppbarItems.Reportes,
   },
 ];
 
@@ -95,4 +97,4 @@ export const TABS_REPORTES = [
     nombre: 'Incidencias',
     ruta: '/configuraciones',
   },
-]
+];

@@ -62,6 +62,11 @@ let theme = createTheme({
       defaultProps: {
         fullWidth: true,
         size: 'medium',
+        MenuProps: {
+          sx: {
+            zIndex: 1501,
+          },
+        },
       },
       styleOverrides: {
         root: {
@@ -88,6 +93,13 @@ let theme = createTheme({
           textTransform: 'capitalize',
           fontWeight: 'bold',
         },
+      },
+    },
+    MuiDrawer: {
+      defaultProps: {
+        anchor: 'right',
+        hideBackdrop: true,
+        sx: { zIndex: 1500 },
       },
     },
   },
