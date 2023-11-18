@@ -3,17 +3,12 @@ import { useCallback } from 'react';
 import { useMutation } from 'react-query';
 
 import { suscribirUsuario } from '@services';
-import useStore from '../../stores/store';
 
 const useNotificaciones = () => {
   const { mutate: suscribir } = useMutation({
     mutationKey: ['sub'],
     mutationFn: suscribirUsuario,
   });
-
-  const setSwSubscription = useStore(
-    ({ setSwSubscription }) => setSwSubscription
-  );
 
   const crearSuscripcion = useCallback(async () => {
     const worker = await navigator.serviceWorker.register('/sw.js', {
@@ -24,9 +19,8 @@ const useNotificaciones = () => {
       applicationServerKey: import.meta.env.VITE_VAPID_PUBLIC_KEY,
     });
 
-    setSwSubscription(sub);
     suscribir(sub);
-  }, [suscribir, setSwSubscription]);
+  }, [suscribir]);
 
   const pedirPermiso = useCallback(async () => {
     if (!('Notification' in window)) return;
@@ -37,8 +31,7 @@ const useNotificaciones = () => {
     const sub = await swRegistration.pushManager.getSubscription();
 
     if (!sub) crearSuscripcion();
-    else setSwSubscription(sub);
-  }, [crearSuscripcion, setSwSubscription]);
+  }, [crearSuscripcion]);
 
   return {
     pedirPermiso,
