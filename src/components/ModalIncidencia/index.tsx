@@ -113,14 +113,16 @@ const ModalIncidencia: FC<ModalIncidenciaProps> = ({
             item
             lg={4}
             xs={12}
-            sx={{ borderLeft: 4, borderColor: 'primary.main' }}
+            sx={{ borderLeft: { md: 4, xs: 0 }, borderColor: 'primary.main' }}
           >
-            <Stack px={2} rowGap={2}>
-              {incidencia?.atiende && <Stack direction="row" gap={2} alignItems="center">
-                <Typography fontWeight="bold">Atiende: </Typography>
-                <Typography>{`${incidencia?.atiende?.nombres} ${incidencia?.atiende?.apellidoPat} ${incidencia?.atiende?.apellidoMat}`}</Typography>
-                <Avatar src={incidencia?.atiende?.avatar} />
-              </Stack>}
+            <Stack px={{ md: 2, xs: 0 }} rowGap={2}>
+              {incidencia?.atiende && (
+                <Stack direction="row" gap={2} alignItems="center">
+                  <Typography fontWeight="bold">Atiende: </Typography>
+                  <Typography>{`${incidencia?.atiende?.nombres} ${incidencia?.atiende?.apellidoPat} ${incidencia?.atiende?.apellidoMat}`}</Typography>
+                  <Avatar src={incidencia?.atiende?.avatar} />
+                </Stack>
+              )}
               <TextField
                 value={incidencia?.folio || 'SIN FOLIO'}
                 title="Folio"

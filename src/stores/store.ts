@@ -18,7 +18,7 @@ interface IStore {
   setIsSidebarOpen: (open: boolean) => void;
   toggleSidebar: () => void;
   swSubscription: PushSubscription | null;
-  setSwSubscription: (sub: PushSubscription) => void;
+  setSwSubscription: (sub: PushSubscription | null) => void;
 }
 
 const useStore = create(

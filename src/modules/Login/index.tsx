@@ -13,10 +13,12 @@ import autenticarUsuario from '../../utils/functions/autenticarUsuario';
 import useStore from '../../stores/store';
 import { LoginForm, LoginResponse } from './interfaces';
 import { iniciarSesion } from './services';
+import useNotificaciones from '../../utils/hooks/useNotificaciones';
 
 function Login() {
   const navigate = useNavigate();
   const setUsuario = useStore(({ setUsuario }) => setUsuario);
+  const { pedirPermiso } = useNotificaciones()
 
   const loginExitoso = useCallback((data: LoginResponse, form: LoginForm) => {
     const { token, usuario } = data;
@@ -27,9 +29,10 @@ function Login() {
       sessionStorage.setItem('token', JSON.stringify(token!));
     }
 
+    pedirPermiso();
     setUsuario(usuario);
     navigate('/');
-  }, [setUsuario, navigate]);
+  }, [setUsuario, navigate, pedirPermiso]);
 
   const { mutate: login } = useMutation({
     mutationKey: 'login',

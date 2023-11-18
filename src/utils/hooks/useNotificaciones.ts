@@ -11,19 +11,19 @@ const useNotificaciones = () => {
     mutationFn: suscribirUsuario,
   });
 
-  const setSwSubscription = useStore(({ setSwSubscription }) => setSwSubscription);
+  const setSwSubscription = useStore(
+    ({ setSwSubscription }) => setSwSubscription
+  );
 
   const crearSuscripcion = useCallback(async () => {
-    const worker = await navigator.serviceWorker.register(
-      '/sw.js',
-      {
-        scope: '/',
-      }
-    );
+    const worker = await navigator.serviceWorker.register('/sw.js', {
+      scope: '/',
+    });
     const sub = await worker.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: import.meta.env.VITE_VAPID_PUBLIC_KEY,
     });
+
     setSwSubscription(sub);
     suscribir(sub);
   }, [suscribir, setSwSubscription]);
@@ -32,8 +32,13 @@ const useNotificaciones = () => {
     if (!('Notification' in window)) return;
     const permiso = await Notification.requestPermission();
     if (permiso !== 'granted') return;
-    crearSuscripcion()
-  }, [crearSuscripcion]);
+
+    const swRegistration = await navigator.serviceWorker.ready;
+    const sub = await swRegistration.pushManager.getSubscription();
+
+    if (!sub) crearSuscripcion();
+    else setSwSubscription(sub);
+  }, [crearSuscripcion, setSwSubscription]);
 
   return {
     pedirPermiso,

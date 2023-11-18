@@ -16,15 +16,15 @@ import { SxProps } from '@mui/material';
 
 import NavMenu from '../NavMenu';
 import MobileAppBar from '../MobileAppBar';
+import Notifications from '../Notifications';
 
 import useSesion from '../../../stores/hooks/useSesion';
 import useSmallScreen from '@hooks/useSmallScreen';
+import useCerrarSesion from '../../../utils/hooks/useCerrarSesion';
 import { Usuario } from '@interfaces/Usuario';
 import { APPBAR_MENU_ITEMS, AppbarItems } from '@constants/menu';
 import { TipoUsuario } from '@interfaces/TipoUsuario';
 import { TiposUsuario } from '@constants/tiposUsuario';
-import Notifications from '../Notifications';
-import useStore from '../../../stores/store';
 
 const settings = ['Perfil', 'Dashboard', 'Cerrar sesión'];
 
@@ -34,7 +34,7 @@ interface AppbarProps {
 
 const Appbar: FC<AppbarProps> = ({ sx }) => {
   const usuario = useSesion() as Usuario;
-  const swSubscription = useStore(({ swSubscription }) => swSubscription);
+  const { cerrarSesion } = useCerrarSesion();
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -77,23 +77,21 @@ const Appbar: FC<AppbarProps> = ({ sx }) => {
     [navigate]
   );
 
-  const cerrarSesion = useCallback(() => {
-    localStorage.removeItem('token');
-    sessionStorage.removeItem('token');
-    swSubscription?.unsubscribe();
+  const handleCerrarSesion = useCallback(async () => {
+    await cerrarSesion();
     navigate('/login');
-  }, [navigate, swSubscription]);
+  }, [navigate, cerrarSesion]);
 
   const handleMenuClick = useCallback(
     (opcion: string) => {
       setAnchorElUser(null);
       const opciones = {
-        'Cerrar sesión': cerrarSesion,
+        'Cerrar sesión': handleCerrarSesion,
       };
       const accion = opciones[opcion];
       if (accion) accion();
     },
-    [cerrarSesion]
+    [handleCerrarSesion]
   );
 
   if (isSmallScreen) {
