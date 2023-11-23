@@ -1,25 +1,13 @@
-import { useMutation } from 'react-query';
 import { useCallback } from 'react';
 
-import { eliminarSuscripcion } from '../../services';
+import OneSignal from 'react-onesignal';
 
 const useCerrarSesion = () => {
-  const { mutateAsync: eliminarSuscripcionMut } = useMutation({
-    mutationKey: 'desuscribir-notificaciones',
-    mutationFn: eliminarSuscripcion,
-  });
-
   const cerrarSesion = useCallback(async () => {
-    const swRegistration = await navigator.serviceWorker.ready;
-    const sub = await swRegistration.pushManager.getSubscription();
-    if (sub) {
-      await eliminarSuscripcionMut(sub.endpoint);
-      sub.unsubscribe();
-    }
-
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');
-  }, [eliminarSuscripcionMut]);
+    await OneSignal.logout();
+  }, []);
 
   return {
     cerrarSesion,

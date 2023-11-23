@@ -11,9 +11,9 @@ import Landscape from './components/Landscape';
 
 import autenticarUsuario from '../../utils/functions/autenticarUsuario';
 import useStore from '../../stores/store';
+import useNotificaciones from '../../utils/hooks/useNotificaciones';
 import { LoginForm, LoginResponse } from './interfaces';
 import { iniciarSesion } from './services';
-import useNotificaciones from '../../utils/hooks/useNotificaciones';
 
 function Login() {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ function Login() {
       sessionStorage.setItem('token', JSON.stringify(token!));
     }
 
-    pedirPermiso();
+    pedirPermiso(usuario.id!);
     setUsuario(usuario);
     navigate('/');
   }, [setUsuario, navigate, pedirPermiso]);

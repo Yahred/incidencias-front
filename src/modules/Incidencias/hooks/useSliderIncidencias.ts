@@ -10,6 +10,7 @@ const useSliderIncidencias = (departamento: string) => {
     queryKey: ['incidencias', departamento],
     queryFn: obtenerIncidencias,
     initialData: [],
+    refetchInterval: 3000,
   });
 
   const incidenciasPorDepartamento = useMemo(
