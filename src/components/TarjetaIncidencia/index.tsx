@@ -60,7 +60,7 @@ const TarjetaIncidencia: FC<TarjetaIncidenciaProps> = ({
   }
 
   return (
-    <FadeIn sx={{ width: fullWidth ? '100%' : 380  }}>
+    <FadeIn sx={{ width: fullWidth ? '100%' : 380 }}>
       <Paper
         onClick={() => onClick!(incidencia!)}
         elevation={2}
@@ -75,16 +75,21 @@ const TarjetaIncidencia: FC<TarjetaIncidenciaProps> = ({
           },
         }}
       >
-        <IndicadorEstatus color={incidencia?.estatus.color} />
-        {incidencia?.atiende && <Avatar
-          sx={{
-            position: 'absolute',
-            bottom: 20,
-            right: 20,
-            cursor: 'pointer',
-          }}
-          src={incidencia?.atiende?.avatar}
-        />}
+        <IndicadorEstatus
+          estatus={incidencia?.estatus}
+          sx={{ position: 'absolute', right: 10, top: 20 }}
+        />
+        {incidencia?.atiende && (
+          <Avatar
+            sx={{
+              position: 'absolute',
+              bottom: 20,
+              right: 20,
+              cursor: 'pointer',
+            }}
+            src={incidencia?.atiende?.avatar}
+          />
+        )}
         <Grid container p={3} rowGap={2} width={fullWidth ? '100%' : 380}>
           <Grid item xs={12}>
             <Typography
@@ -95,14 +100,12 @@ const TarjetaIncidencia: FC<TarjetaIncidenciaProps> = ({
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
-                width: '320px',
+                width: '220px',
               }}
             >
               {incidencia?.titulo}
             </Typography>
-            <Typography
-              variant="caption"
-            >
+            <Typography variant="caption">
               {incidencia?.folio || 'Sin folio'}
             </Typography>
           </Grid>
@@ -126,7 +129,7 @@ const TarjetaIncidencia: FC<TarjetaIncidenciaProps> = ({
 };
 
 TarjetaIncidencia.defaultProps = {
-  onClick: () => {}
-}
+  onClick: () => {},
+};
 
 export default TarjetaIncidencia;

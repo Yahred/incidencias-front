@@ -1,16 +1,21 @@
 import { useMemo } from 'react';
 
+import { useMutation } from 'react-query';
+
 import SubmitButton from '@components/SubmitButton';
 
 import useAsignarTecnico from './useAsignarTecnico';
 import { EstatusEnum } from '@constants/estatus';
 import { Incidencia } from '@interfaces/Incidencia';
-import { useMutation } from 'react-query';
 import { aprobarIncidenciaPorId, asignarTecnicoPorId } from '../../../services';
 import { Usuario } from '@interfaces/index';
 
 const useAccionIncidencia = (incidencia: Incidencia | null, onChange: () => void) => {
-  const { isDrawerOpen: isAsignarTecnicoOpen, abrirDrawer, cerrarDrawer: cerrarAsignarTecnico } = useAsignarTecnico();
+  const {
+    isDrawerOpen: isAsignarTecnicoOpen,
+    cerrarDrawer: cerrarAsignarTecnico,
+    abrirDrawer,
+  } = useAsignarTecnico();
 
   const { mutate: aprobar } = useMutation({
     mutationKey: ['aprobar', incidencia?.id],

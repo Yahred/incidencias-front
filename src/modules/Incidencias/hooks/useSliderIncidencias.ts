@@ -1,16 +1,21 @@
-import { useMemo } from 'react';
-import { useQuery } from 'react-query';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useQuery, useQueryClient } from 'react-query';
 
+import useSocketStore from '../../../stores/socket/socket.store';
 import groupBy from '@functions/groupBy';
 import { obtenerIncidencias } from '@services';
 import { EstatusEnum } from '@constants/estatus';
+import { EventosSocket } from '@constants/eventosSocket';
+import { Incidencia } from '@interfaces/Incidencia';
 
-const useSliderIncidencias = (departamento: string) => {
+const useSliderIncidencias = () => {
+  const socket = useSocketStore(({ socket }) => socket);
+  const queryClient = useQueryClient();
+
   const { data: incidencias, isFetching, refetch } = useQuery({
-    queryKey: ['incidencias', departamento],
+    queryKey: ['incidencias'],
     queryFn: obtenerIncidencias,
     initialData: [],
-    refetchInterval: 3000,
   });
 
   const incidenciasPorDepartamento = useMemo(
@@ -37,6 +42,19 @@ const useSliderIncidencias = (departamento: string) => {
   );
 
   const estatus = useMemo(() => Object.values(EstatusEnum), []);
+
+  const agregarIncidenciaEntrante = useCallback((incidencia: Incidencia) => {
+    queryClient.setQueryData(['incidencias'], [incidencia, ...incidencias!])
+  }, [queryClient, incidencias]);
+
+  useEffect(() => {
+    socket?.on(EventosSocket.NuevaIncidencia, agregarIncidenciaEntrante);
+
+    return () => {
+      socket?.off(EventosSocket.NuevaIncidencia);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket]);
 
   return {
     sliders: incidenciasPorDepartamento,

@@ -4,6 +4,7 @@ export enum EstatusEnum {
   EnProceso = 'EN_PROCESO',
   Terminada = 'TERMINADA',
   Validado = 'VALIDADO',
+  Rechazada = 'RECHAZADA',
 }
 
 export const ESTATUS_NOMBRES = {
@@ -12,4 +13,5 @@ export const ESTATUS_NOMBRES = {
   [EstatusEnum.Pendiente]: 'Pendientes',
   [EstatusEnum.Terminada]: 'Terminadas',
   [EstatusEnum.Validado]: 'Validadas',
+  [EstatusEnum.Rechazada]: 'Rechazadas',
 };

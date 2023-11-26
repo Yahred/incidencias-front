@@ -1,16 +1,25 @@
-import Box from '@mui/material/Box';
+import { FC } from 'react';
 
-const IndicadorEstatus = ({ color }) => {
+import Chip from '@mui/material/Chip';
+
+import { SxProps } from '@mui/material';
+
+import { Estatus } from '@interfaces/Estatus';
+
+interface IndicadorEstatusProps {
+  estatus?: Estatus;
+  sx?: SxProps;
+}
+
+const IndicadorEstatus: FC<IndicadorEstatusProps> = ({ estatus, sx }) => {
   return (
-    <Box
+    <Chip
+      label={estatus?.nombre}
       sx={{
-        width: 16,
-        backgroundColor: color,
-        position: 'absolute',
-        left: 0,
-        height: '100%',
+        ...sx,
+        backgroundColor: estatus?.color,
       }}
-    ></Box>
+    />
   );
 };
 

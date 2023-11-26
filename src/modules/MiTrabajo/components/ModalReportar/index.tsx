@@ -6,7 +6,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
@@ -16,8 +15,9 @@ import FormField from '@components/FormField';
 import Form from '@components/Form';
 import FormSelect from '@components/FormSelect';
 import ListaImagenes from '@components/ListaImagenes';
-import TextField from '../../../../components/TextField';
+import TextField from '@components/TextField';
 import SubmitButton from '@components/SubmitButton';
+import BotonCerrar from '@components/BotonCerrar';
 
 import useSesion from '../../../../stores/hooks/useSesion';
 import { obtenerEdicios, obtenerRecursos, obtenerSalones } from '@services';
@@ -155,15 +155,9 @@ const ModalReportar: FC<ModalReportarProps> = ({ open, onCancel, onSave }) => {
                   }}
                 />
               </Box>
-              <Box display="flex" gap={2} order={{ xs: 1, md: 2 }}>
-                <Button
-                  onClick={handleCancelar}
-                  sx={{ height: 40 }}
-                  variant="outlined"
-                >
-                  Cancelar
-                </Button>
+              <Box display="flex" gap={2} order={{ xs: 1, md: 2 }} justifyContent="space-between">
                 <SubmitButton sx={{ height: 40 }}>Guardar</SubmitButton>
+                <BotonCerrar onClick={handleCancelar} />
               </Box>
             </Box>
             <Grid container spacing={2}>

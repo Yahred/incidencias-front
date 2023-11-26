@@ -31,11 +31,12 @@ const SliderIncidenciasC: FC<SliderIncidenciasProps> = ({
       </Typography>
       <Stack
         direction={{ xs: 'column', md: 'row' }}
-        sx={{ ...scrollbarMixin }}
+        sx={{ ...scrollbarMixin, overflowY: 'visible' }}
         overflow="auto"
         maxHeight={420}
         gap={2}
-        py={2}
+        py={3}
+        px={2}
       >
         {incidencias.map((incidencia, index) => (
           <TarjetaIncidencia

@@ -10,8 +10,10 @@ import {
   Typography,
 } from '@mui/material';
 
-import { Usuario } from '@interfaces/Usuario';
 import FadeIn from '@components/FadeIn';
+
+import useStore from '../../../../stores/store';
+import { Usuario } from '@interfaces/Usuario';
 
 interface ListaTecnicosProps {
   tecnicos?: Usuario[];
@@ -24,6 +26,8 @@ const ListaTecnicos: FC<ListaTecnicosProps> = ({
   onClick,
   isLoading,
 }) => {
+  const isMutating = useStore(({ isMutating }) => isMutating);
+
   const handleClick = useCallback(
     (tecnico: Usuario) => {
       return () => {
@@ -53,7 +57,7 @@ const ListaTecnicos: FC<ListaTecnicosProps> = ({
       <List>
         {tecnicos?.map((tecnico) => (
           <ListItem key={tecnico.id}>
-            <ListItemButton onClick={handleClick(tecnico)}>
+            <ListItemButton onClick={handleClick(tecnico)} disabled={isMutating}>
               <Stack direction="row" gap={2} alignItems="center">
                 <Avatar src={tecnico.avatar} />
                 <Typography>{`${tecnico.nombres} ${tecnico.apellidoPat} ${tecnico.apellidoMat}`}</Typography>

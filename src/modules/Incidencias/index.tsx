@@ -9,25 +9,31 @@ import ModalIncidencia from '@components/ModalIncidencia';
 import AsignacionTecnico from './components/AsignacionTecnico';
 import FadeIn from '@components/FadeIn';
 
-import useStore from '../../stores/store';
 import useSliderIncidencias from './hooks/useSliderIncidencias';
-import useManejarIncidencia from './hooks/useManejarIncidencia';
 import useAccionIncidencia from './hooks/useAccionIncidencia';
+import useModalIncidencia from '@hooks/useModalIncidencia';
 import { ESTATUS_NOMBRES, EstatusEnum } from '@constants/estatus';
 import { Typography } from '@mui/material';
 
 const Incidencias = () => {
-  const usuario = useStore(({ usuario }) => usuario);
-
   const [estatusSelecccionado, setEstatusSeleccionado] = useState<EstatusEnum>(
     EstatusEnum.Pendiente
   );
 
-  const { sliders, estatus, isFetching, departamentos, refetch } =
-    useSliderIncidencias(usuario?.departamento?.id || '');
+  const {
+    sliders,
+    estatus,
+    isFetching,
+    departamentos,
+    refetch,
+  } = useSliderIncidencias();
 
-  const { modalAbierto, abrirModal, cerrarModal, incidenciaSeleccionada } =
-    useManejarIncidencia();
+  const {
+    modalAbierto,
+    abrirModal,
+    cerrarModal,
+    incidenciaSeleccionada
+  } = useModalIncidencia();
 
   const handleIncidenciaAccion = useCallback(() => {
     cerrarModal();
@@ -41,20 +47,16 @@ const Incidencias = () => {
     cerrarAsignarTecnico,
   } = useAccionIncidencia(incidenciaSeleccionada, handleIncidenciaAccion);
 
-  const incidenciasPorEstatus = useCallback(
-    (estatus: EstatusEnum, departamento: string) =>
-      sliders[departamento].filter(({ estatus: { id } }) => id === estatus),
-    [sliders]
-  );
+  const incidenciasPorEstatus = useCallback((estatus: EstatusEnum, departamento: string) =>
+    sliders[departamento].filter(({ estatus: { id } }) => id === estatus)
+  , [sliders]);
 
-  const estatusSinIncidencias = useMemo(
-    () =>
-      departamentos?.every(
-        (departamento) =>
-          !incidenciasPorEstatus(estatusSelecccionado, departamento.id!).length
-      ),
-    [departamentos, estatusSelecccionado, incidenciasPorEstatus]
-  );
+  const estatusSinIncidencias = useMemo(() =>
+    departamentos?.every(
+      (departamento) =>
+        !incidenciasPorEstatus(estatusSelecccionado, departamento.id!).length
+    ),
+  [departamentos, estatusSelecccionado, incidenciasPorEstatus]);
 
   return (
     <>

@@ -72,6 +72,7 @@ const FormularioLogin: FC<FormularioLoginProps> = ({
               <FormCheckbox
                 name='recordar'
                 label="Mantener sesión"
+                defaultValue={true}
               />
             </Box>
           </Box>

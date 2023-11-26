@@ -4,10 +4,12 @@ import {
   USUARIOS,
   obtenerPaginado,
   endpoint,
-} from '../constants/uris';
-import { Paginado } from '../interfaces/Paginado';
-import { TipoUsuario } from '../interfaces/TipoUsuario';
-import { Usuario } from '../interfaces/Usuario';
+  INFO,
+} from '@constants/uris';
+import { Paginado } from '@interfaces/Paginado';
+import { TipoUsuario } from '@interfaces/TipoUsuario';
+import { Usuario } from '@interfaces/Usuario';
+import { Area } from '../interfaces';
 
 export const obtenerUsuariosPaginado = (q: string, pagina?: string) =>
   axios.get<unknown, Paginado<Usuario>>(obtenerPaginado(USUARIOS), {
@@ -28,6 +30,11 @@ export const registrarUsuario = (usuario: FormData, id?: string) =>
     : axios.post(USUARIOS, usuario, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
+
+export const obtenerInfoTecnico = (id: string) =>
+  axios.get<never, { evaluacion: number; areas: Area[] }>(
+    endpoint(USUARIOS, id, INFO)
+  );
 
 export const obtenerTiposUsuario = () =>
   axios.get<unknown, TipoUsuario[]>(TIPOS_USUARIO);

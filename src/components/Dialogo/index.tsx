@@ -2,7 +2,10 @@ import { FC, ReactNode } from 'react';
 
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
-import { SxProps } from '@mui/material';
+
+import { Stack, SxProps } from '@mui/material';
+
+import BotonCerrar from '../BotonCerrar';
 
 interface DialogoProps {
   title?: string | ReactNode;
@@ -13,6 +16,8 @@ interface DialogoProps {
   sx?: SxProps;
   fullWidth?: boolean;
   maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  botonCerrar?: boolean;
+  onClickBotonCerrar?: () => void;
 }
 
 const Dialogo: FC<DialogoProps> = ({
@@ -24,6 +29,8 @@ const Dialogo: FC<DialogoProps> = ({
   fullWidth,
   maxWidth,
   onClick,
+  botonCerrar,
+  onClickBotonCerrar,
 }) => {
   return (
     <Dialog
@@ -34,6 +41,11 @@ const Dialogo: FC<DialogoProps> = ({
       fullWidth={fullWidth}
       maxWidth={maxWidth}
     >
+      {botonCerrar && (
+        <Stack direction="row" justifyContent="flex-end" p={1}>
+          <BotonCerrar onClick={onClickBotonCerrar} />
+        </Stack>
+      )}
       <DialogTitle>{title}</DialogTitle>
       {children}
     </Dialog>

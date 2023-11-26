@@ -6,8 +6,8 @@ import Drawer from '@mui/material/Drawer';
 import CloseIcon from '@mui/icons-material/Close';
 import { Grid, IconButton, Stack, Typography } from '@mui/material';
 
-import { obtenerTecnicosPorArea } from '@services';
 import ListaTecnicos from '../ListaTecnicos';
+import { obtenerTecnicosPorArea } from '@services';
 import { Usuario } from '@interfaces/index';
 
 interface AsignacionTecnicoProps {

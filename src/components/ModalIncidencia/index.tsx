@@ -2,7 +2,6 @@ import { FC, ReactNode, useCallback, useRef, useState } from 'react';
 
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
@@ -14,10 +13,11 @@ import Dialogo from '../Dialogo';
 import DialogoConfirmacion from '../DialogoConfirmacion';
 import InfoRecurso from '../InfoRecurso';
 import SubmitButton from '../SubmitButton';
+import BotonCerrar from '../BotonCerrar';
+import InfoTecnico from '../InfoTecnico';
 
 import { MensajesConfirmacion } from '@constants/general';
 import { Incidencia } from '@interfaces/Incidencia';
-import { Avatar } from '@mui/material';
 
 interface ModalIncidenciaProps {
   incidencia: Incidencia | null;
@@ -86,9 +86,7 @@ const ModalIncidencia: FC<ModalIncidenciaProps> = ({
                 </SubmitButton>
               )}
               {accion}
-              <Button onClick={onCerrar} variant="outlined">
-                Cerrar
-              </Button>
+              <BotonCerrar onClick={onCerrar} />
             </Stack>
           </Stack>
         }
@@ -120,7 +118,7 @@ const ModalIncidencia: FC<ModalIncidenciaProps> = ({
                 <Stack direction="row" gap={2} alignItems="center">
                   <Typography fontWeight="bold">Atiende: </Typography>
                   <Typography>{`${incidencia?.atiende?.nombres} ${incidencia?.atiende?.apellidoPat} ${incidencia?.atiende?.apellidoMat}`}</Typography>
-                  <Avatar src={incidencia?.atiende?.avatar} />
+                  <InfoTecnico tecnico={incidencia.atiende} />
                 </Stack>
               )}
               <TextField

@@ -1,123 +1,197 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useMemo } from 'react';
 
-import sub from 'date-fns/sub';
-import { useMutation, useQuery } from 'react-query';
-
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import Fab  from '@mui/material/Fab';
 
 import ModalIncidencia from '@components/ModalIncidencia';
 import SliderIncidencias from '@components/SliderIncidencias';
+import SubmitButton from '@components/SubmitButton';
 import TabsIncidencias from './components/TabsIncidencias';
 import ModalReportar from './components/ModalReportar';
 import Diagnostico from './components/Diagnostico';
+import ModalCalificarTecnico from './components/ModalCalificarTecnico';
 
-import objectToFormData from '@functions/objectToFormData';
 import useSesion from '../../stores/hooks/useSesion';
-import { obtenerIncidenciasDelUsuario, registrarIncidencia } from '@services';
+import useEvaluarTecnico from './hooks/useEvaluarTecnico';
+import useReportarIncidencia from './hooks/useReportarIncidencia';
+import useModalIncidencia from '@hooks/useModalIncidencia';
+import useMisIncidencias from './hooks/useMisIncidencias';
+import useFinalizarIncidencia from './hooks/useFinalizarIncidencia';
 import { Incidencia } from '@interfaces/Incidencia';
+import { Evaluacion } from '@interfaces/Evaluacion';
 import { TipoUsuario } from '@interfaces/TipoUsuario';
 import { TiposUsuario } from '@constants/tiposUsuario';
+import { EstatusEnum } from '@constants/estatus';
 
 const MiTrabajo: FC = () => {
   const usuario = useSesion();
 
-  const esTecnico = useMemo(() =>
-    (usuario?.tipoUsuario as TipoUsuario)?.id === TiposUsuario.Tecnico
-  , [usuario]);
-
-  const [modalAbierto, setModalAbierto] = useState<boolean>(false);
-  const [incidencia, setIncidencia] = useState<Incidencia | null>(null);
-  const [modalIncidenciaAbierto, setModalIncidenciaAbierto] =
-    useState<boolean>(false);
-
-  const fechaInicio = useMemo(() => sub(new Date(), { days: 30 }), []);
-
-  const handleAgregarClick = useCallback(() => {
-    setModalAbierto(true);
-  }, []);
-
-  const handleCancelarRegistro = useCallback(() => {
-    setModalAbierto(false);
-  }, []);
-
-  const { mutateAsync } = useMutation({
-    mutationKey: 'incidencia',
-    mutationFn: (incidencia: FormData) => registrarIncidencia(incidencia),
-  });
-
-  const { data: incidencias, refetch } = useQuery({
-    queryKey: ['incidencias', esTecnico],
-    queryFn: () => obtenerIncidenciasDelUsuario(fechaInicio, Number(esTecnico)),
-    initialData: [],
-    staleTime: 0,
-  });
-
-  const guardarIncidencia = useCallback(
-    async (form: Incidencia) => {
-      const { evidencias, ...incidencia } = form;
-      const formData = objectToFormData(incidencia);
-      evidencias?.forEach((evidencia) =>
-        formData.append('evidencias', evidencia)
-      );
-      await mutateAsync(formData);
-      refetch();
-      setModalAbierto(false);
-    },
-    [mutateAsync, refetch]
+  const esTecnico = useMemo(
+    () => (usuario?.tipoUsuario as TipoUsuario)?.id === TiposUsuario.Tecnico,
+    [usuario]
   );
 
-  const handleIncidenciaClick = useCallback((incidencia: Incidencia) => {
-    setIncidencia(incidencia);
-    setModalIncidenciaAbierto(true);
-  }, []);
+  const {
+    modalAbierto: modalIncidenciaAbierto,
+    abrirModal: abrirModalIncidencia,
+    cerrarModal: cerrarModalIncidencia,
+    incidenciaSeleccionada,
+    setIncidenciaSeleccionada,
+  } = useModalIncidencia();
 
-  const handleCerrarModalIncidencia = useCallback(() => {
-    setModalIncidenciaAbierto(false);
-  }, []);
+  const {
+    validarIncidenciaMut,
+    modalCalificarAbierto,
+    cerrarModalCalificar,
+    abrirModalCalificar,
+  } = useEvaluarTecnico(incidenciaSeleccionada);
 
-  const handleDiagnostico = useCallback(() => {
-    console.log('dando diagnotiso');
-  }, []);
+  const {
+    modalReportarAbierto,
+    abrirModalReportar,
+    cerrarModalReportar,
+    reportarIncidenciaMut,
+  } = useReportarIncidencia();
+
+  const { finalizarIncidenciaMut } = useFinalizarIncidencia(
+    incidenciaSeleccionada
+  );
+
+  const {
+    incidenciasSlider,
+    refetch,
+    incidenciasTerminadas,
+    incidenciasValidadas,
+  } = useMisIncidencias(esTecnico);
+
+  const handleFinalizarIncidencia = useCallback(async () => {
+    const response = await finalizarIncidenciaMut();
+    if (response) {
+      refetch();
+      setIncidenciaSeleccionada((prev) => ({
+        ...prev!,
+        estatus: response.estatus,
+      }));
+    }
+  }, [finalizarIncidenciaMut, setIncidenciaSeleccionada, refetch]);
+
+  const handleDiagnostico = useCallback(
+    (data: Incidencia) => {
+      setIncidenciaSeleccionada((prev) => ({
+        ...data,
+        ...prev,
+      }));
+      refetch();
+    },
+    [refetch, setIncidenciaSeleccionada]
+  );
+
+  const guardarIncidencia = useCallback(
+    async (data: Incidencia) => {
+      await reportarIncidenciaMut(data);
+      cerrarModalReportar()
+      refetch();
+    },
+    [reportarIncidenciaMut, refetch, cerrarModalReportar]
+  );
+
+  const handleValidarIncidencia = useCallback(
+    async (evaluacion: Evaluacion) => {
+      const response = await validarIncidenciaMut(evaluacion);
+      if (response.incidencia) {
+        const { incidencia } = response;
+        refetch();
+        setIncidenciaSeleccionada((prev) => ({
+          ...prev!,
+          estatus: incidencia.estatus,
+        }));
+      }
+    },
+    [validarIncidenciaMut, setIncidenciaSeleccionada, refetch]
+  );
+
+  const handleItemIncidenciaClick = useCallback((incidencia: Incidencia) => {
+    abrirModalIncidencia(incidencia)
+  }, [abrirModalIncidencia]);
 
   return (
     <>
-      <Grid container py={{ lg: 6, xs: 2 }} px={{ lg: 8, xs: 2 }} rowGap={2}>
-        <Grid container item xs={12} rowGap={2}>
+      <Grid container py={{ lg: 6, xs: 4 }} px={{ lg: 8, xs: 4 }} rowGap={2}>
+        <Grid container item xs={12}>
           <Grid item xs={12} display="flex" justifyContent="space-between">
             <Typography variant="h5">Mis incidencias</Typography>
             {(usuario?.tipoUsuario as TipoUsuario)?.id ===
               TiposUsuario.Academico && (
-              <Button onClick={handleAgregarClick}>Reportar</Button>
+              <Fab
+                onClick={abrirModalReportar}
+                color="primary"
+                variant="extended"
+              >
+                Reportar
+              </Fab>
             )}
           </Grid>
           <Grid item xs={12}>
             <SliderIncidencias
-              incidencias={incidencias!}
-              onClick={handleIncidenciaClick}
+              incidencias={incidenciasSlider!}
+              onClick={abrirModalIncidencia}
             />
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <TabsIncidencias />
+          <TabsIncidencias
+            incidenciasTerminadas={incidenciasTerminadas}
+            incidenciasValidadas={incidenciasValidadas}
+            onClick={handleItemIncidenciaClick}
+          />
         </Grid>
       </Grid>
       <ModalReportar
-        open={modalAbierto}
-        onCancel={handleCancelarRegistro}
+        open={modalReportarAbierto}
+        onCancel={cerrarModalReportar}
         onSave={guardarIncidencia}
       />
       <ModalIncidencia
         open={modalIncidenciaAbierto}
-        incidencia={incidencia}
-        onCerrar={handleCerrarModalIncidencia}
+        incidencia={incidenciaSeleccionada}
+        onCerrar={cerrarModalIncidencia}
         accion={
-          esTecnico && (
-            <Diagnostico onClick={handleDiagnostico} incidencia={incidencia} />
-          )
+          <>
+            {incidenciaSeleccionada?.diagnostico &&
+              incidenciaSeleccionada.estatus.id === EstatusEnum.EnProceso && (
+                <SubmitButton
+                  onClick={handleFinalizarIncidencia}
+                  color="success"
+                >
+                  Finalizar incidencia
+                </SubmitButton>
+              )}
+            {esTecnico && (
+              <Diagnostico
+                incidencia={incidenciaSeleccionada}
+                onDiagnosticoAsignado={handleDiagnostico}
+                soloConsulta={!!incidenciaSeleccionada?.diagnostico}
+              />
+            )}
+            {!esTecnico &&
+              incidenciaSeleccionada?.estatus.id === EstatusEnum.Terminada && (
+                <SubmitButton onClick={abrirModalCalificar}>
+                  Validar incidencia
+                </SubmitButton>
+              )}
+          </>
         }
       />
+      {!esTecnico &&
+        incidenciaSeleccionada?.estatus.id === EstatusEnum.Terminada && (
+          <ModalCalificarTecnico
+            open={modalCalificarAbierto}
+            tecnico={incidenciaSeleccionada.atiende}
+            onSubmit={handleValidarIncidencia}
+            onClose={cerrarModalCalificar}
+          />
+        )}
     </>
   );
 };

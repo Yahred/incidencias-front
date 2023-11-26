@@ -10,12 +10,14 @@ import autenticarUsuario from './utils/functions/autenticarUsuario';
 import useRenovarSesion from './utils/hooks/useVerificarSesion';
 import validarPermiso from '@functions/validarPermiso';
 import useSesion from './stores/hooks/useSesion';
+import useSocketStore from './stores/socket/socket.store';
 import { TipoUsuario } from './interfaces';
 import { TiposUsuario } from '@constants/tiposUsuario';
 
 function App() {
   const usuario = useSesion();
   const navigate = useNavigate();
+  const conectarSocket = useSocketStore(({ conectarSocket }) => conectarSocket);
   const { pathname } = useLocation();
   const { renovarSesion } = useRenovarSesion();
 
@@ -38,6 +40,10 @@ function App() {
   useEffect(() => {
     renovarSesion();
   }, [renovarSesion]);
+
+  useEffect(() => {
+    if (usuario) conectarSocket(usuario)
+  }, [conectarSocket, usuario])
 
   if (!usuario) return <Fragment />;
 
