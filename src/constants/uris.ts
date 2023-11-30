@@ -24,6 +24,8 @@ export const NOTIFICACIONES = '/notificaciones';
 export const DIAGNOSTICO = '/diagnostico';
 export const VALIDAR = '/validar';
 export const INFO = '/info';
+export const RECOMENDACION = '/recomendacion';
+export const AREA = '/area';
 
 export const obtenerPaginado = (uri: string) =>
   `${uri}${PAGINADO}?itemsPorPagina=${ITEMS_POR_PAGINA}`;

@@ -1,19 +1,12 @@
 import { FC, useCallback } from 'react';
 
-import {
-  Avatar,
-  List,
-  ListItem,
-  ListItemButton,
-  Skeleton,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { List, ListItem, Skeleton, Stack } from '@mui/material';
 
 import FadeIn from '@components/FadeIn';
 
 import useStore from '../../../../stores/store';
 import { Usuario } from '@interfaces/Usuario';
+import ItemListaTecnicos from '../ItemListaTecnicos';
 
 interface ListaTecnicosProps {
   tecnicos?: Usuario[];
@@ -56,14 +49,12 @@ const ListaTecnicos: FC<ListaTecnicosProps> = ({
     <FadeIn>
       <List>
         {tecnicos?.map((tecnico) => (
-          <ListItem key={tecnico.id}>
-            <ListItemButton onClick={handleClick(tecnico)} disabled={isMutating}>
-              <Stack direction="row" gap={2} alignItems="center">
-                <Avatar src={tecnico.avatar} />
-                <Typography>{`${tecnico.nombres} ${tecnico.apellidoPat} ${tecnico.apellidoMat}`}</Typography>
-              </Stack>
-            </ListItemButton>
-          </ListItem>
+          <ItemListaTecnicos
+            key={tecnico.id}
+            tecnico={tecnico}
+            onClick={handleClick(tecnico)}
+            disabled={isMutating}
+          />
         ))}
       </List>
     </FadeIn>

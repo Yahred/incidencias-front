@@ -97,7 +97,6 @@ let theme = createTheme({
     },
     MuiDrawer: {
       defaultProps: {
-        anchor: 'right',
         hideBackdrop: true,
         sx: { zIndex: 1500 },
       },

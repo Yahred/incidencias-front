@@ -11,3 +11,4 @@ export * from './sesion';
 export * from './reportes';
 export * from './servicios';
 export * from './notificaciones';
+export * from './tecnicos';
