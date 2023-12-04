@@ -3,8 +3,9 @@ import { FC } from 'react';
 import Box from '@mui/material/Box';
 import { Typography, styled } from '@mui/material';
 
-import { NOT_FOUND } from '../../constants/imagenes';
 import Layout from '../../layout';
+
+import { NOT_FOUND } from '../../constants/imagenes';
 
 const NotFoundImage = styled('img')(() => ({}));
 

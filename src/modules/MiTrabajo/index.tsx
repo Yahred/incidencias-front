@@ -2,15 +2,16 @@ import { FC, useCallback, useMemo } from 'react';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import Fab  from '@mui/material/Fab';
+import Fab from '@mui/material/Fab';
 
 import ModalIncidencia from '@components/ModalIncidencia';
 import SliderIncidencias from '@components/SliderIncidencias';
 import SubmitButton from '@components/SubmitButton';
 import TabsIncidencias from './components/TabsIncidencias';
 import ModalReportar from './components/ModalReportar';
-import Diagnostico from './components/Diagnostico';
+import Diagnostico from '../../components/Diagnostico';
 import ModalCalificarTecnico from './components/ModalCalificarTecnico';
+import SolicitudCambio from '../../components/SolicitudCambio';
 
 import useSesion from '../../stores/hooks/useSesion';
 import useEvaluarTecnico from './hooks/useEvaluarTecnico';
@@ -23,12 +24,16 @@ import { Evaluacion } from '@interfaces/Evaluacion';
 import { TipoUsuario } from '@interfaces/TipoUsuario';
 import { TiposUsuario } from '@constants/tiposUsuario';
 import { EstatusEnum } from '@constants/estatus';
+import { CambioRecurso } from '../../interfaces';
 
 const MiTrabajo: FC = () => {
   const usuario = useSesion();
 
-  const esTecnico = useMemo(
-    () => (usuario?.tipoUsuario as TipoUsuario)?.id === TiposUsuario.Tecnico,
+  const esTecnicoOJefe = useMemo(
+    () =>
+      [TiposUsuario.Tecnico, TiposUsuario.JefeDeTaller].includes(
+        (usuario?.tipoUsuario as TipoUsuario)?.id
+      ),
     [usuario]
   );
 
@@ -63,7 +68,7 @@ const MiTrabajo: FC = () => {
     refetch,
     incidenciasTerminadas,
     incidenciasValidadas,
-  } = useMisIncidencias(esTecnico);
+  } = useMisIncidencias(esTecnicoOJefe);
 
   const handleFinalizarIncidencia = useCallback(async () => {
     const response = await finalizarIncidenciaMut();
@@ -87,10 +92,18 @@ const MiTrabajo: FC = () => {
     [refetch, setIncidenciaSeleccionada]
   );
 
+  const handleSolicitarCambio = useCallback(
+    (cambio: CambioRecurso) => {
+      setIncidenciaSeleccionada((prev) => ({ ...prev!, cambio }));
+      refetch();
+    },
+    [refetch, setIncidenciaSeleccionada]
+  );
+
   const guardarIncidencia = useCallback(
     async (data: Incidencia) => {
       await reportarIncidenciaMut(data);
-      cerrarModalReportar()
+      cerrarModalReportar();
       refetch();
     },
     [reportarIncidenciaMut, refetch, cerrarModalReportar]
@@ -111,9 +124,12 @@ const MiTrabajo: FC = () => {
     [validarIncidenciaMut, setIncidenciaSeleccionada, refetch]
   );
 
-  const handleItemIncidenciaClick = useCallback((incidencia: Incidencia) => {
-    abrirModalIncidencia(incidencia)
-  }, [abrirModalIncidencia]);
+  const handleItemIncidenciaClick = useCallback(
+    (incidencia: Incidencia) => {
+      abrirModalIncidencia(incidencia);
+    },
+    [abrirModalIncidencia]
+  );
 
   return (
     <>
@@ -158,8 +174,24 @@ const MiTrabajo: FC = () => {
         onCerrar={cerrarModalIncidencia}
         accion={
           <>
+            {esTecnicoOJefe && (
+              <>
+                <SolicitudCambio
+                  incidencia={incidenciaSeleccionada!}
+                  onSolicitarCambio={handleSolicitarCambio}
+                  soloConsulta={!!incidenciaSeleccionada?.cambio}
+                />
+                {!incidenciaSeleccionada?.cambio && (
+                  <Diagnostico
+                    incidencia={incidenciaSeleccionada}
+                    onDiagnosticoAsignado={handleDiagnostico}
+                    soloConsulta={!!incidenciaSeleccionada?.diagnostico}
+                  />
+                )}
+              </>
+            )}
             {incidenciaSeleccionada?.diagnostico &&
-              incidenciaSeleccionada.estatus.id === EstatusEnum.EnProceso && (
+              incidenciaSeleccionada.estatus.id === EstatusEnum.EnProceso && !incidenciaSeleccionada.cambio && (
                 <SubmitButton
                   onClick={handleFinalizarIncidencia}
                   color="success"
@@ -167,14 +199,7 @@ const MiTrabajo: FC = () => {
                   Finalizar incidencia
                 </SubmitButton>
               )}
-            {esTecnico && (
-              <Diagnostico
-                incidencia={incidenciaSeleccionada}
-                onDiagnosticoAsignado={handleDiagnostico}
-                soloConsulta={!!incidenciaSeleccionada?.diagnostico}
-              />
-            )}
-            {!esTecnico &&
+            {!esTecnicoOJefe &&
               incidenciaSeleccionada?.estatus.id === EstatusEnum.Terminada && (
                 <SubmitButton onClick={abrirModalCalificar}>
                   Validar incidencia
@@ -183,7 +208,7 @@ const MiTrabajo: FC = () => {
           </>
         }
       />
-      {!esTecnico &&
+      {!esTecnicoOJefe &&
         incidenciaSeleccionada?.estatus.id === EstatusEnum.Terminada && (
           <ModalCalificarTecnico
             open={modalCalificarAbierto}

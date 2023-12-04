@@ -24,7 +24,7 @@ import { asignarDiagnostico, obtenerServiciosPorRecurso } from '@services';
 interface DiagnosticoProps {
   incidencia: Incidencia | null;
   soloConsulta: boolean;
-  onDiagnosticoAsignado: (incidencia: Incidencia) => void;
+  onDiagnosticoAsignado?: (incidencia: Incidencia) => void;
 }
 
 const diagnosticoSchema = yup.object({
@@ -76,7 +76,7 @@ const Diagnostico: FC<DiagnosticoProps> = ({
     onSuccess(incidencia: Incidencia) {
       setIsDrawerOpen(false);
       form.reset();
-      onDiagnosticoAsignado(incidencia);
+      onDiagnosticoAsignado!(incidencia);
     },
   });
 
@@ -88,6 +88,8 @@ const Diagnostico: FC<DiagnosticoProps> = ({
     setIsDrawerOpen(false);
     form.reset();
   }, [form]);
+
+  console.log('0INCIDENCAS', incidencia)
 
   return (
     <>
@@ -135,7 +137,7 @@ const Diagnostico: FC<DiagnosticoProps> = ({
                 disabled={soloConsulta}
               />
             </Grid>
-            <Grid xs={12}>
+            <Grid item xs={12}>
               {horaFinalizacionEstimada && <Stack direction="row" alignItems="flex-end" gap={1}>
                   <Typography variant='body1'>Fecha de finalización estimada:</Typography>
                   <Typography variant='caption'>{format(horaFinalizacionEstimada, 'MMM-dd hh:mm a')}</Typography>
@@ -150,5 +152,9 @@ const Diagnostico: FC<DiagnosticoProps> = ({
     </>
   );
 };
+
+Diagnostico.defaultProps = {
+  onDiagnosticoAsignado: () => {}
+}
 
 export default Diagnostico;

@@ -12,3 +12,4 @@ export * from './Reportes';
 export * from './TipoUsuario';
 export * from './Salon';
 export * from './SidebarItem';
+export * from './CambioRecurso';

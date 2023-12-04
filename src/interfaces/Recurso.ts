@@ -9,6 +9,7 @@ export interface Recurso  {
   modelo: Modelo | string;
   foto?: string;
   salon?: Salon | string;
+  costo: number;
   edificio?: Edificio | string;
   area?: string;
 }

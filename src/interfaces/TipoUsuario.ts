@@ -1,5 +1,7 @@
+import { TiposUsuario } from "../constants/tiposUsuario";
+
 export interface TipoUsuario {
-  id: string;
+  id: TiposUsuario;
   nombre: string;
   clave?: string;
   modulos?: string[];

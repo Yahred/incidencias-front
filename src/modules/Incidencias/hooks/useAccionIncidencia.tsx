@@ -3,6 +3,8 @@ import { useMemo } from 'react';
 import { useMutation } from 'react-query';
 
 import SubmitButton from '@components/SubmitButton';
+import Diagnostico from '../../../components/Diagnostico';
+import SolicitudCambio from '../../../components/SolicitudCambio';
 
 import useAsignarTecnico from './useAsignarTecnico';
 import { EstatusEnum } from '@constants/estatus';
@@ -10,7 +12,10 @@ import { Incidencia } from '@interfaces/Incidencia';
 import { aprobarIncidenciaPorId, asignarTecnicoPorId } from '../../../services';
 import { Usuario } from '@interfaces/index';
 
-const useAccionIncidencia = (incidencia: Incidencia | null, onChange: () => void) => {
+const useAccionIncidencia = (
+  incidencia: Incidencia | null,
+  onChange: () => void
+) => {
   const {
     isDrawerOpen: isAsignarTecnicoOpen,
     cerrarDrawer: cerrarAsignarTecnico,
@@ -25,19 +30,42 @@ const useAccionIncidencia = (incidencia: Incidencia | null, onChange: () => void
 
   const { mutate: asignarTecnico } = useMutation({
     mutationKey: ['asignarTecnico', incidencia?.id],
-    mutationFn: (tecnico: Usuario) => asignarTecnicoPorId(incidencia!.id!, tecnico.id!),
+    mutationFn: (tecnico: Usuario) =>
+      asignarTecnicoPorId(incidencia!.id!, tecnico.id!),
     onSuccess: () => {
-      cerrarAsignarTecnico()
-      onChange()
+      cerrarAsignarTecnico();
+      onChange();
     },
-  })
+  });
 
-  const accionPorEstatus = useMemo(() => ({
-    [EstatusEnum.Pendiente]: <SubmitButton onClick={aprobar}>Aprobar Incidencia</SubmitButton>,
-    [EstatusEnum.Aprobada] : <SubmitButton onClick={abrirDrawer}>Asignar técnico</SubmitButton>,
-    [EstatusEnum.EnProceso]: <SubmitButton>Finalizar</SubmitButton>,
-    [EstatusEnum.Terminada]: <SubmitButton>Validar</SubmitButton>,
-  }), [aprobar, abrirDrawer]);
+  const accionPorEstatus = useMemo(
+    () => ({
+      [EstatusEnum.Pendiente]: (
+        <SubmitButton onClick={aprobar}>Aprobar Incidencia</SubmitButton>
+      ),
+      [EstatusEnum.Aprobada]: (
+        <SubmitButton onClick={abrirDrawer}>Asignar técnico</SubmitButton>
+      ),
+      [EstatusEnum.EnProceso]: (
+        <>
+          {incidencia?.cambio && (
+            <SolicitudCambio
+              incidencia={incidencia!}
+              aprobarSolicitud={
+                incidencia?.cambio?.estatus === EstatusEnum.Solicitado
+              }
+              soloConsulta
+            />
+          )}
+          {incidencia?.diagnostico && (
+            <Diagnostico incidencia={incidencia} soloConsulta />
+          )}
+        </>
+      ),
+      [EstatusEnum.Terminada]: <SubmitButton>Validar</SubmitButton>,
+    }),
+    [aprobar, abrirDrawer, incidencia]
+  );
 
   return {
     accionPorEstatus,

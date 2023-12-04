@@ -12,3 +12,4 @@ export * from './reportes';
 export * from './servicios';
 export * from './notificaciones';
 export * from './tecnicos';
+export * from './cambios';

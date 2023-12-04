@@ -5,6 +5,10 @@ export enum EstatusEnum {
   Terminada = 'TERMINADA',
   Validado = 'VALIDADO',
   Rechazada = 'RECHAZADA',
+  Solicitado = 'SOLICITADO',
+  Aprobado = 'APROBADO',
+  Realizado = 'REALIZADO',
+  Rechazado = 'RECHAZADO',
 }
 
 export const ESTATUS_NOMBRES = {

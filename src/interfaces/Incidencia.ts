@@ -1,4 +1,4 @@
-import { Departamento } from '.';
+import { CambioRecurso, Departamento } from '.';
 import { Edificio } from './Edificio';
 import { Estatus } from './Estatus';
 import { Recurso } from './Recurso';
@@ -21,4 +21,5 @@ export interface Incidencia {
   atiende?: Usuario;
   estatus: Estatus;
   usuarioCreacion: Usuario;
+  cambio?: CambioRecurso
 }

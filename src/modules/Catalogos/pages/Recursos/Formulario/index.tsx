@@ -33,6 +33,7 @@ const recursoSchema = yup.object({
   categoria: yup.string().required(CAMPO_REQUERIDO),
   modelo: yup.string().required(CAMPO_REQUERIDO),
   foto: yup.mixed(),
+  costo: yup.number().required(CAMPO_REQUERIDO),
   edificio: yup.string().required(CAMPO_REQUERIDO),
   salon: yup.string().required(CAMPO_REQUERIDO),
 });
@@ -130,6 +131,11 @@ const RecursoFormulario: FC = () => {
         name="foto"
         title="Foto"
         subtitle="Fotografía del recurso"
+      />
+      <FormField
+        name="costo"
+        title="Costo"
+        subtitle="Costo del recurso (MXN)"
       />
       <FormSelect
         name="edificio"
