@@ -73,13 +73,19 @@ const MiTrabajo: FC = () => {
   const handleFinalizarIncidencia = useCallback(async () => {
     const response = await finalizarIncidenciaMut();
     if (response) {
-      refetch();
       setIncidenciaSeleccionada((prev) => ({
         ...prev!,
         estatus: response.estatus,
       }));
+      refetch();
+      cerrarModalIncidencia();
     }
-  }, [finalizarIncidenciaMut, setIncidenciaSeleccionada, refetch]);
+  }, [
+    finalizarIncidenciaMut,
+    setIncidenciaSeleccionada,
+    refetch,
+    cerrarModalIncidencia,
+  ]);
 
   const handleDiagnostico = useCallback(
     (data: Incidencia) => {
@@ -119,9 +125,15 @@ const MiTrabajo: FC = () => {
           ...prev!,
           estatus: incidencia.estatus,
         }));
+        cerrarModalIncidencia();
       }
     },
-    [validarIncidenciaMut, setIncidenciaSeleccionada, refetch]
+    [
+      validarIncidenciaMut,
+      setIncidenciaSeleccionada,
+      refetch,
+      cerrarModalIncidencia,
+    ]
   );
 
   const handleItemIncidenciaClick = useCallback(
@@ -130,6 +142,30 @@ const MiTrabajo: FC = () => {
     },
     [abrirModalIncidencia]
   );
+
+  const sePuedeFinalizarIncidencia = useMemo<boolean>(() => {
+    if (!esTecnicoOJefe) return false;
+
+    if (incidenciaSeleccionada?.estatus.id === EstatusEnum.Terminada)
+      return false;
+
+    if (incidenciaSeleccionada?.cambio?.estatus !== EstatusEnum.Aprobado)
+      return false;
+
+    if (!incidenciaSeleccionada.diagnostico && !incidenciaSeleccionada.cambio)
+      return false;
+
+    return true;
+  }, [incidenciaSeleccionada, esTecnicoOJefe]);
+
+  const sePuedeSolicitarCambio = useMemo<boolean>(() => {
+    if (
+      incidenciaSeleccionada?.estatus.id !== EstatusEnum.EnProceso &&
+      !incidenciaSeleccionada?.cambio
+    )
+      return false;
+    return true;
+  }, [incidenciaSeleccionada]);
 
   return (
     <>
@@ -176,12 +212,14 @@ const MiTrabajo: FC = () => {
           <>
             {esTecnicoOJefe && (
               <>
-                <SolicitudCambio
-                  incidencia={incidenciaSeleccionada!}
-                  onSolicitarCambio={handleSolicitarCambio}
-                  soloConsulta={!!incidenciaSeleccionada?.cambio}
-                />
-                {!incidenciaSeleccionada?.cambio && (
+                {sePuedeSolicitarCambio && (
+                  <SolicitudCambio
+                    incidencia={incidenciaSeleccionada!}
+                    onSolicitarCambio={handleSolicitarCambio}
+                    soloConsulta={!!incidenciaSeleccionada?.cambio}
+                  />
+                )}
+                {(!incidenciaSeleccionada?.cambio || incidenciaSeleccionada.diagnostico) && (
                   <Diagnostico
                     incidencia={incidenciaSeleccionada}
                     onDiagnosticoAsignado={handleDiagnostico}
@@ -190,15 +228,11 @@ const MiTrabajo: FC = () => {
                 )}
               </>
             )}
-            {incidenciaSeleccionada?.diagnostico &&
-              incidenciaSeleccionada.estatus.id === EstatusEnum.EnProceso && !incidenciaSeleccionada.cambio && (
-                <SubmitButton
-                  onClick={handleFinalizarIncidencia}
-                  color="success"
-                >
-                  Finalizar incidencia
-                </SubmitButton>
-              )}
+            {sePuedeFinalizarIncidencia && (
+              <SubmitButton onClick={handleFinalizarIncidencia} color="success">
+                Finalizar incidencia
+              </SubmitButton>
+            )}
             {!esTecnicoOJefe &&
               incidenciaSeleccionada?.estatus.id === EstatusEnum.Terminada && (
                 <SubmitButton onClick={abrirModalCalificar}>

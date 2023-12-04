@@ -83,7 +83,7 @@ const SolicitudCambio: FC<SolicitudCambioProps> = ({
       </Button>
       <Drawer open={isDrawerOpen} anchor="right">
         <Form methods={form} onSubmit={handleSubmit}>
-          <Stack p={2} maxWidth={520} minWidth={420} gap={4}>
+          <Stack px={4} py={2} maxWidth={520} minWidth={420} gap={4}>
             <Stack direction="row-reverse">
               <BotonCerrar onClick={cerrarDrawer} />
             </Stack>

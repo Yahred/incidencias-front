@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 
 import * as yup from 'yup';
 import addHours from 'date-fns/addHours';
@@ -89,7 +89,12 @@ const Diagnostico: FC<DiagnosticoProps> = ({
     form.reset();
   }, [form]);
 
-  console.log('0INCIDENCAS', incidencia)
+  useEffect(() => {
+    if (incidencia) {
+      form.setValue('diagnostico', incidencia.diagnostico);
+      form.setValue('servicio', incidencia.servicio as string)
+    }
+  }, [incidencia, form])
 
   return (
     <>
