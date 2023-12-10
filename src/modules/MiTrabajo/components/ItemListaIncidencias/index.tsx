@@ -9,10 +9,10 @@ import {
   Typography,
 } from '@mui/material';
 
-import IndicadorEstatus from '@components/IndicadorEstatus';
+import IndicadorEstatus from '@components/incidencias/IndicadorEstatus';
 
 import { Incidencia } from '@interfaces/Incidencia';
-import InfoTecnico from '../../../../components/InfoTecnico';
+import InfoTecnico from '@components/incidencias/InfoTecnico';
 
 interface ItemListaIncidenciasProps {
   incidencia: Incidencia;

@@ -36,6 +36,19 @@ export const SIDEBAR_CATALOGOS: ISidebarItem[] = [
     divider: true,
   },
   {
+    nombre: 'Servicios',
+    ruta: '/servicios',
+    icono: 'construction',
+  },
+  {
+    nombre: 'Errores conocidos',
+    ruta: '/errores-conocidos',
+    icono: 'error',
+  },
+  {
+    divider: true,
+  },
+  {
     nombre: 'Recursos',
     ruta: '/recursos',
     icono: 'devices',
@@ -44,11 +57,6 @@ export const SIDEBAR_CATALOGOS: ISidebarItem[] = [
     nombre: 'Modelos',
     ruta: '/modelos',
     icono: 'settings',
-  },
-  {
-    nombre: 'Servicios',
-    ruta: '/servicios',
-    icono: 'construction',
   },
   {
     nombre: 'Categorías',

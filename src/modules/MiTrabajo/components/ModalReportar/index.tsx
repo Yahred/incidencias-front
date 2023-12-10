@@ -9,15 +9,15 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-import Dialogo from '@components/Dialogo';
-import DialogoConfirmacion from '@components/DialogoConfirmacion';
-import FormField from '@components/FormField';
-import Form from '@components/Form';
-import FormSelect from '@components/FormSelect';
-import ListaImagenes from '@components/ListaImagenes';
-import TextField from '@components/TextField';
-import SubmitButton from '@components/SubmitButton';
-import BotonCerrar from '@components/BotonCerrar';
+import Dialogo from '@components/contenedores/Dialogo';
+import DialogoConfirmacion from '@components/generales/DialogoConfirmacion';
+import FormField from '@components/formularios/FormField';
+import Form from '@components/formularios/Form';
+import FormSelect from '@components/formularios/FormSelect';
+import ListaImagenes from '@components/generales/ListaImagenes';
+import TextField from '@components/formularios/TextField';
+import SubmitButton from '@components/formularios/SubmitButton';
+import BotonCerrar from '@components/generales/BotonCerrar';
 
 import useSesion from '../../../../stores/hooks/useSesion';
 import { obtenerEdicios, obtenerRecursos, obtenerSalones } from '@services';

@@ -8,9 +8,9 @@ import * as yup from 'yup';
 import Box from '@mui/material/Box';
 
 import ContenedorFormulario from '../../../components/ContenedorFormulario';
-import FormField from '../../../../../components/FormField';
-import FormSelect from '../../../../../components/FormSelect';
-import FormFile from '../../../../../components/FormFile';
+import FormField from '@components/formularios/FormField';
+import FormSelect from '../../../../../components/formularios/FormSelect';
+import FormFile from '@components/formularios/FormFile';
 import FormularioCaracteristicasModelo from '../../../components/FormularioCaracteristicasModelo';
 
 import objectToFormData from '../../../../../utils/functions/objectToFormData';

@@ -1,5 +1,8 @@
 import { FC, useCallback, useMemo, useRef, useState } from 'react';
 
+import { useMutation, useQuery } from 'react-query';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Icon from '@mui/material/Icon';
@@ -9,14 +12,11 @@ import Grid from '@mui/material/Grid';
 import Search from '@mui/icons-material/Search';
 import Typography from '@mui/material/Typography';
 
-import { useMutation, useQuery } from 'react-query';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-
-import FadeIn from '@components/FadeIn';
-import Table, { Cabeceros } from '@components/Table';
-import TextField from '@components/TextField';
-import Paginador from '@components/Paginador';
-import DialogoConfirmacion from '@components/DialogoConfirmacion';
+import FadeIn from '@components/animaciones/FadeIn';
+import Table, { Cabeceros } from '@components/generales/Table';
+import TextField from '@components/formularios/TextField';
+import Paginador from '@components/generales/Paginador';
+import DialogoConfirmacion from '@components/generales/DialogoConfirmacion';
 
 import useDebounce from '@hooks/useDebounce';
 import usePagination from '@hooks/usePagination';

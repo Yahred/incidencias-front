@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import { Pie } from 'react-chartjs-2';
 
-import Tabla, { Cabeceros } from '@components/Table';
+import Tabla, { Cabeceros } from '@components/generales/Table';
 import FiltrosConfiguracion from '../../components/FiltrosConfiguracion';
 import Tarjeta from '../../components/Tarjeta';
 
@@ -17,7 +17,7 @@ import { TARJETAS_REPORTE_CONFIGURACIONES } from '@constants/reportes';
 import { PASTEL_REPORTE_CONFIGURACIONES } from '@constants/graficas';
 
 import usePagination from '@hooks/usePagination';
-import Paginador from '@components/Paginador';
+import Paginador from '@components/generales/Paginador';
 import { Recurso } from '@interfaces/Recurso';
 import { Edificio } from '@interfaces/Edificio';
 import { Modelo } from '@interfaces/Modelo';

@@ -13,3 +13,5 @@ export * from './servicios';
 export * from './notificaciones';
 export * from './tecnicos';
 export * from './cambios';
+export * from './erroresConocidos';
+export * from './prioridades';

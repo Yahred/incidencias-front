@@ -13,6 +13,7 @@ const Areas = lazy(() => import('./pages/Areas/Catalogo'));
 const Categorias = lazy(() => import('./pages/Categorias/Catalogo'));
 const Departamentos = lazy(() => import('./pages/Departamentos/Catalogo'));
 const Servicios = lazy(() => import('./pages/Servicios/Catalogo'));
+const ErroresConocidos = lazy(() => import('./pages/ErroresConocidos/Catalogo'));
 
 const AreaFormulario = lazy(() => import('./pages/Areas/Formulario'));
 const EdificioFormulario = lazy(() => import('./pages/Edificios/Formulario'));
@@ -23,6 +24,7 @@ const ModeloFormulario = lazy(() => import('./pages/Modelos/Formulario'));
 const CategoriaFormulario = lazy(() => import('./pages/Categorias/Formulario'));
 const DepartamentoFormulario = lazy(() => import('./pages/Departamentos/Formulario'));
 const ServicioFormulario = lazy(() => import('./pages/Servicios/Formulario'));
+const ErrorConocidoFormulario = lazy(() => import('./pages/ErroresConocidos/Formulario'));
 
 const router = {
   path: 'catalogos',
@@ -187,6 +189,24 @@ const router = {
         {
           path: ':id',
           Component: ServicioFormulario,
+        },
+      ]
+    },
+    {
+      path: 'errores-conocidos',
+      Component: Outlet,
+      children: [
+        {
+          path: '',
+          Component: ErroresConocidos,
+        },
+        {
+          path: 'formulario',
+          Component: ErrorConocidoFormulario,
+        },
+        {
+          path: ':id',
+          Component: ErrorConocidoFormulario,
         },
       ]
     }

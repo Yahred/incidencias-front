@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 
 import Stack from '@mui/material/Stack';
 
-import Select from '@components/Select';
+import Select from '@components/formularios/Select';
 
 import {
   obtenerEdicios,

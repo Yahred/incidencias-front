@@ -2,11 +2,11 @@ import { FC, useCallback } from 'react';
 
 import { List, ListItem, Skeleton, Stack } from '@mui/material';
 
-import FadeIn from '@components/FadeIn';
+import FadeIn from '@components/animaciones/FadeIn';
+import ItemListaTecnicos from '../ItemListaTecnicos';
 
 import useStore from '../../../../stores/store';
 import { Usuario } from '@interfaces/Usuario';
-import ItemListaTecnicos from '../ItemListaTecnicos';
 
 interface ListaTecnicosProps {
   tecnicos?: Usuario[];

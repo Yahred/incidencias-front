@@ -1,6 +1,6 @@
 import { Box, Button } from '@mui/material';
 import { FC, useCallback, useEffect, useRef } from 'react';
-import AnimatedBar from '../../../components/AnimatedBar';
+import AnimatedBar from '../../../components/animaciones/AnimatedBar';
 import { AppbarItem } from '@interfaces/AppbarItem';
 
 interface NavMenuProps {

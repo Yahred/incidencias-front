@@ -1,6 +1,11 @@
 import { useMutation, useQuery } from 'react-query';
 
-import { aprobarCambio, obtenerCambioPorId, solicitarCambio } from '@services';
+import {
+  aprobarCambio,
+  obtenerCambioPorId,
+  rechazarCambio,
+  solicitarCambio,
+} from '@services';
 import { useCallback, useState } from 'react';
 
 const useCambioRecurso = (cambioId?: string) => {
@@ -13,8 +18,13 @@ const useCambioRecurso = (cambioId?: string) => {
 
   const { mutateAsync: aprobarCambioMut } = useMutation({
     mutationFn: aprobarCambio,
-    mutationKey: 'aprobar-cambio'
-  })
+    mutationKey: 'aprobar-cambio',
+  });
+
+  const { mutateAsync: rechazarCambioMut } = useMutation({
+    mutationFn: rechazarCambio,
+    mutationKey: 'rechazar-cambio',
+  });
 
   const { data: cambio } = useQuery({
     queryFn: () => obtenerCambioPorId(cambioId!),
@@ -28,16 +38,17 @@ const useCambioRecurso = (cambioId?: string) => {
   }, []);
 
   const cerrarDrawer = useCallback(() => {
-    setIsDrawerOpen(false)
+    setIsDrawerOpen(false);
   }, []);
 
   return {
-    solicitarCambio: solicitarCambioMut,
     isDrawerOpen,
     abrirDrawer,
     cerrarDrawer,
     cambio,
-    aprobarCambio: aprobarCambioMut
+    solicitarCambio: solicitarCambioMut,
+    aprobarCambio: aprobarCambioMut,
+    rechazarCambio: rechazarCambioMut,
   };
 };
 

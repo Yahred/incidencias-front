@@ -1,6 +1,7 @@
 import { CambioRecurso, Departamento } from '.';
 import { Edificio } from './Edificio';
 import { Estatus } from './Estatus';
+import { Prioridad } from './Prioridad';
 import { Recurso } from './Recurso';
 import { Salon } from './Salon';
 import { Servicio } from './Servicio';
@@ -13,7 +14,7 @@ export interface Incidencia {
   departamento: Departamento;
   descripcion: string;
   diagnostico: string;
-  servicio: Servicio | string;
+  servicios: Servicio[] | string[];
   edificio: Edificio;
   salon: Salon;
   recurso: Recurso;
@@ -21,5 +22,6 @@ export interface Incidencia {
   atiende?: Usuario;
   estatus: Estatus;
   usuarioCreacion: Usuario;
-  cambio?: CambioRecurso
+  cambio?: CambioRecurso;
+  prioridad?: string | Prioridad;
 }

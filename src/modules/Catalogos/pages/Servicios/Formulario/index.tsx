@@ -9,9 +9,9 @@ import * as yup from 'yup';
 import Stack from '@mui/material/Stack';
 
 import ContenedorFormulario from '../../../components/ContenedorFormulario';
-import FormField from '@components/FormField';
-import FormSelect from '@components/FormSelect';
-import FormSlider from '@components/FormSlider';
+import FormField from '@components/formularios/FormField';
+import FormSelect from '@components/formularios/FormSelect';
+import FormSlider from '@components/formularios/FormSlider';
 
 import useFormSetEffect from '@hooks/useSetForm';
 import { CAMPO_REQUERIDO } from '@constants/validaciones';

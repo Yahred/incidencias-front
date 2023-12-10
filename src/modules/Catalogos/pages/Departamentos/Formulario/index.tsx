@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import ContenedorFormularioC from '../../../components/ContenedorFormulario';
-import FormField from '../../../../../components/FormField';
+import FormField from '@components/formularios/FormField';
 
 import { CAMPO_REQUERIDO } from '../../../../../constants/validaciones';
 

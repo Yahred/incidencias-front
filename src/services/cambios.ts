@@ -10,10 +10,10 @@ export const solicitarCambio = (cambio: CambioRecurso) =>
   axios.post<never, CambioRecurso>(CAMBIOS, cambio);
 
 export const aprobarCambio = (id: string) =>
-  axios.put(endpoint(CAMBIOS, id, ESTATUS, EstatusEnum.Aprobado));
+  axios.put<never, CambioRecurso>(endpoint(CAMBIOS, id, ESTATUS, EstatusEnum.Aprobado));
 
 export const realizarCambio = (id: string) =>
-  axios.put(endpoint(CAMBIOS, id, ESTATUS, EstatusEnum.Realizado));
+  axios.put<never, CambioRecurso>(endpoint(CAMBIOS, id, ESTATUS, EstatusEnum.Realizado));
 
 export const rechazarCambio = (id: string) =>
-  axios.put(endpoint(CAMBIOS, id, ESTATUS, EstatusEnum.Rechazado));
+  axios.put<never, CambioRecurso>(endpoint(CAMBIOS, id, ESTATUS, EstatusEnum.Rechazado));

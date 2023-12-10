@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import TextField from '@components/TextField';
+import TextField from '@components/formularios/TextField';
 
 import { Caracteristica } from '../../../../interfaces/Categoria';
 import { CaracteristicaModelo } from '../../../../interfaces/Modelo';

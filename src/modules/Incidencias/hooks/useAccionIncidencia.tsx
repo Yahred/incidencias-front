@@ -2,15 +2,17 @@ import { useMemo } from 'react';
 
 import { useMutation } from 'react-query';
 
-import SubmitButton from '@components/SubmitButton';
-import Diagnostico from '../../../components/Diagnostico';
-import SolicitudCambio from '../../../components/SolicitudCambio';
+import AsignacionPrioridad from '../components/AsignacionPrioridad';
+import Diagnostico from '@components/incidencias/Diagnostico';
+import SolicitudCambio from '@components/incidencias/SolicitudCambio';
+import SubmitButton from '@components/formularios/SubmitButton';
 
 import useAsignarTecnico from './useAsignarTecnico';
 import { EstatusEnum } from '@constants/estatus';
 import { Incidencia } from '@interfaces/Incidencia';
-import { aprobarIncidenciaPorId, asignarTecnicoPorId } from '../../../services';
-import { Usuario } from '@interfaces/index';
+import { aprobarIncidenciaPorId, asignarTecnicoPorId } from '@services';
+import { Usuario } from '@interfaces/Usuario';
+import { PrioridadesEnum } from '@constants/prioridades';
 
 const useAccionIncidencia = (
   incidencia: Incidencia | null,
@@ -24,7 +26,8 @@ const useAccionIncidencia = (
 
   const { mutate: aprobar } = useMutation({
     mutationKey: ['aprobar', incidencia?.id],
-    mutationFn: () => aprobarIncidenciaPorId(incidencia!.id!),
+    mutationFn: (prioridad: PrioridadesEnum) =>
+      aprobarIncidenciaPorId(incidencia!.id!, prioridad),
     onSuccess: onChange,
   });
 
@@ -41,7 +44,7 @@ const useAccionIncidencia = (
   const accionPorEstatus = useMemo(
     () => ({
       [EstatusEnum.Pendiente]: (
-        <SubmitButton onClick={aprobar}>Aprobar Incidencia</SubmitButton>
+        <AsignacionPrioridad onAsignarPrioridad={aprobar} />
       ),
       [EstatusEnum.Aprobada]: (
         <SubmitButton onClick={abrirDrawer}>Asignar técnico</SubmitButton>
@@ -51,9 +54,8 @@ const useAccionIncidencia = (
           {incidencia?.cambio && (
             <SolicitudCambio
               incidencia={incidencia!}
-              aprobarSolicitud={
-                incidencia?.cambio?.estatus === EstatusEnum.Solicitado
-              }
+              accion={incidencia?.cambio?.estatus === EstatusEnum.Solicitado}
+              onAprobarCambio={onChange}
               soloConsulta
             />
           )}
@@ -62,9 +64,8 @@ const useAccionIncidencia = (
           )}
         </>
       ),
-      [EstatusEnum.Terminada]: <SubmitButton>Validar</SubmitButton>,
     }),
-    [aprobar, abrirDrawer, incidencia]
+    [aprobar, abrirDrawer, incidencia, onChange]
   );
 
   return {

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { Cabeceros } from '../../../../../components/Table';
+import { Cabeceros } from '../../../../../components/generales/Table';
 
 import Catalogo from '../../../components/Catalogo';
 import { Modelo } from '../../../../../interfaces/Modelo';

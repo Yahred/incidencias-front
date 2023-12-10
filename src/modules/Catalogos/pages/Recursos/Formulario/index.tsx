@@ -7,13 +7,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import ContenedorFormulario from '../../../components/ContenedorFormulario';
-import FormField from '@components/FormField';
-import FormFile from '@components/FormFile';
-import FormSelect from '@components/FormSelect';
+import FormField from '@components/formularios/FormField';
+import FormFile from '@components/formularios/FormFile';
+import FormSelect from '@components/formularios/FormSelect';
+import Table from '@components/generales/Table';
 
 import objectToFormData from '@functions/objectToFormData';
 import useFormSetEffect from '@hooks/useSetForm';
-import { CAMPO_REQUERIDO } from '@constants/validaciones';
+import { CAMPO_REQUERIDO, CAMPO_NUMERICO } from '@constants/validaciones';
 import { Recurso } from '@interfaces/Recurso';
 import {
   obtenerAreas,
@@ -22,8 +23,16 @@ import {
   obtenerSalones,
   obtenerRecursoPorId,
   registrarRecurso,
-  obtenerModelos
+  obtenerModelos,
+  obtenerCambiosPorRecursoId,
 } from '@services';
+import { Cabeceros } from '@components/generales/Table';
+import { CambioRecurso } from '@interfaces/CambioRecurso';
+import { format, parseISO } from 'date-fns';
+import { Incidencia } from '../../../../../interfaces';
+import { Box } from '@mui/material';
+import IndicadorEstatus from '../../../../../components/incidencias/IndicadorEstatus';
+import { Estatus } from '../../../../../interfaces/Estatus';
 
 const recursoSchema = yup.object({
   folio: yup.string().required(CAMPO_REQUERIDO),
@@ -33,21 +42,41 @@ const recursoSchema = yup.object({
   categoria: yup.string().required(CAMPO_REQUERIDO),
   modelo: yup.string().required(CAMPO_REQUERIDO),
   foto: yup.mixed(),
-  costo: yup.number().required(CAMPO_REQUERIDO),
+  costo: yup.number().typeError(CAMPO_NUMERICO).required(CAMPO_REQUERIDO),
   edificio: yup.string().required(CAMPO_REQUERIDO),
   salon: yup.string().required(CAMPO_REQUERIDO),
 });
 
+const cabecerosCambio: Cabeceros<CambioRecurso>[] = [
+  {
+    label: 'Fecha',
+    transform: ({ fechaCreacion }) =>
+      format(parseISO(fechaCreacion), 'yyyy-MM-dd'),
+  },
+  {
+    label: 'Incidencia',
+    transform: ({ incidencia }) => (incidencia as Incidencia)?.folio,
+  },
+  {
+    label: 'Motivo',
+    key: 'motivo',
+  },
+  {
+    label: 'Estatus',
+    transform: ({ estatus }) => <IndicadorEstatus estatus={estatus as Estatus} />
+  }
+];
+
 const RecursoFormulario: FC = () => {
   const { id } = useParams();
 
-  const methods = useForm({
+  const form = useForm({
     resolver: yupResolver(recursoSchema),
   });
 
-  const areaSeleccionada = methods.watch('area');
-  const edificioSeleccionado = methods.watch('edificio');
-  const categoriaSeleccionada = methods.watch('categoria');
+  const areaSeleccionada = form.watch('area');
+  const edificioSeleccionado = form.watch('edificio');
+  const categoriaSeleccionada = form.watch('categoria');
 
   const { mutateAsync } = useMutation({
     mutationKey: 'recurso',
@@ -93,6 +122,13 @@ const RecursoFormulario: FC = () => {
     initialData: [],
   });
 
+  const { data: cambios } = useQuery({
+    queryKey: ['cambios-por-recurso', id],
+    queryFn: () => obtenerCambiosPorRecursoId(id!),
+    enabled: !!id,
+    initialData: [],
+  });
+
   const guardar = useCallback(
     async (recurso: Recurso) => {
       const formData = objectToFormData(recurso);
@@ -101,13 +137,13 @@ const RecursoFormulario: FC = () => {
     [mutateAsync]
   );
 
-  useFormSetEffect(modelo, methods.setValue);
+  useFormSetEffect(modelo, form.setValue);
 
   return (
     <ContenedorFormulario
       title="Registro de recursos"
       subtitle="Da de alta un nuevo recurso en el sistema"
-      methods={methods}
+      methods={form}
       onSubmit={guardar}
     >
       <FormField
@@ -124,14 +160,10 @@ const RecursoFormulario: FC = () => {
       />
       <FormField
         name="descripcion"
-        title="Descripcion"
-        subtitle="Descripcion sobre el recurso"
+        title="Descripción"
+        subtitle="Descripción sobre el recurso"
       />
-      <FormFile
-        name="foto"
-        title="Foto"
-        subtitle="Fotografía del recurso"
-      />
+      <FormFile name="foto" title="Foto" subtitle="Fotografía del recurso" />
       <FormField
         name="costo"
         title="Costo"
@@ -175,6 +207,17 @@ const RecursoFormulario: FC = () => {
         disabled={!categoriaSeleccionada}
         required
       />
+      {!!cambios?.length && (
+        <Box
+          gridColumn={{
+            lg: 'span 2 / span 2',
+            xs: 'span 1 / span 1'
+          }}
+          width="100%"
+        >
+          <Table cabeceros={cabecerosCambio} rows={cambios} />
+        </Box>
+      )}
     </ContenedorFormulario>
   );
 };

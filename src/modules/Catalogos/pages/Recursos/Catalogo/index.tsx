@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import Catalogo from '../../../components/Catalogo';
 
-import { Cabeceros } from '../../../../../components/Table';
+import { Cabeceros } from '../../../../../components/generales/Table';
 
 import { eliminarRecurso, obtenerRecursosPaginado } from '../../../../../services/recursos';
 import { Recurso } from '../../../../../interfaces/Recurso';

@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Skeleton from '@mui/material/Skeleton';
 
-import FadeIn from '../../../../components/FadeIn';
+import FadeIn from '../../../../components/animaciones/FadeIn';
 
 interface TarjetaProps {
   title?: string;

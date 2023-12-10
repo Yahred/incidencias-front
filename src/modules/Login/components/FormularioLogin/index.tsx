@@ -7,13 +7,13 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import Form from '../../../../components/Form';
-import FormField from '../../../../components/FormField';
-import SubmitButton from '../../../../components/SubmitButton';
+import Form from '@components/formularios/Form';
+import FormField from '@components/formularios/FormField';
+import SubmitButton from '@components/formularios/SubmitButton';
+import FormCheckbox from '@components/formularios/FormCheckbox';
 
-import { CAMPO_REQUERIDO } from '../../../../constants/validaciones';
+import { CAMPO_REQUERIDO } from '@constants/validaciones';
 import { LoginForm } from '../../interfaces';
-import FormCheckbox from '../../../../components/FormCheckbox';
 
 interface FormularioLoginProps {
   onSubmit: (data: LoginForm) => void;

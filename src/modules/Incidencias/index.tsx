@@ -4,10 +4,10 @@ import Stack from '@mui/material/Stack';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
-import SliderIncidencias from '@components/SliderIncidencias';
-import ModalIncidencia from '@components/ModalIncidencia';
+import SliderIncidencias from '@components/incidencias/SliderIncidencias';
+import ModalIncidencia from '@components/incidencias/ModalIncidencia';
 import AsignacionTecnico from './components/AsignacionTecnico';
-import FadeIn from '@components/FadeIn';
+import FadeIn from '@components/animaciones/FadeIn';
 
 import useSliderIncidencias from './hooks/useSliderIncidencias';
 import useAccionIncidencia from './hooks/useAccionIncidencia';

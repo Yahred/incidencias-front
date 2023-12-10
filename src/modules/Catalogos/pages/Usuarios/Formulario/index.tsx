@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect } from 'react';
+import { FC, useCallback, useEffect, useMemo } from 'react';
 
 import { useForm } from 'react-hook-form';
 import { useMutation, useQueries, useQuery } from 'react-query';
@@ -7,9 +7,9 @@ import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
 
 import ContenedorFormularioC from '../../../components/ContenedorFormulario';
-import FormField from '@components/FormField';
-import FormSelect from '@components/FormSelect';
-import FormFile from '@components/FormFile';
+import FormField from '@components/formularios/FormField';
+import FormSelect from '@components/formularios/FormSelect';
+import FormFile from '@components/formularios/FormFile';
 
 import useFormSetEffect from '@hooks/useSetForm';
 import objectToFormData from '@functions/objectToFormData';
@@ -21,10 +21,7 @@ import {
   obtenerDepartamentos,
 } from '@services';
 import { Usuario } from '@interfaces/Usuario';
-import {
-  CAMPO_REQUERIDO,
-  EMAIL_INVALIDO,
-} from '@constants/validaciones';
+import { CAMPO_REQUERIDO, EMAIL_INVALIDO } from '@constants/validaciones';
 import { TiposUsuario } from '@constants/tiposUsuario';
 
 const usuarioSchema = yup.object({
@@ -59,29 +56,37 @@ const UsuarioFormulario: FC = () => {
 
   const tipoUsuarioSeleccionado = methods.watch('tipoUsuario');
 
-  const [{ data: usuario }, { data: tiposUsuario }, { data: departamentos }] = useQueries([
-    {
-      queryKey: ['usuario', id],
-      queryFn: () => obtenerUsuarioPorId(id!),
-      enabled: !!id,
-      staleTime: 0,
-    },
-    {
-      queryKey: 'tipos-usuario',
-      queryFn: obtenerTiposUsuario,
-      staleTime: Infinity,
-    },
-    {
-      queryKey: 'departamentos',
-      queryFn: obtenerDepartamentos,
-      staleTime: Infinity,
-    }
-  ]);
+  const requiereArea = useMemo(
+    () =>
+      tipoUsuarioSeleccionado === TiposUsuario.Tecnico ||
+      tipoUsuarioSeleccionado === TiposUsuario.Especialista,
+    [tipoUsuarioSeleccionado]
+  );
+
+  const [{ data: usuario }, { data: tiposUsuario }, { data: departamentos }] =
+    useQueries([
+      {
+        queryKey: ['usuario', id],
+        queryFn: () => obtenerUsuarioPorId(id!),
+        enabled: !!id,
+        staleTime: 0,
+      },
+      {
+        queryKey: 'tipos-usuario',
+        queryFn: obtenerTiposUsuario,
+        staleTime: Infinity,
+      },
+      {
+        queryKey: 'departamentos',
+        queryFn: obtenerDepartamentos,
+        staleTime: Infinity,
+      },
+    ]);
 
   const { data: areas } = useQuery({
     queryFn: obtenerAreas,
     queryKey: 'areas',
-    enabled: tipoUsuarioSeleccionado === TiposUsuario.Tecnico,
+    enabled: requiereArea,
     staleTime: Infinity,
   });
 
@@ -90,10 +95,13 @@ const UsuarioFormulario: FC = () => {
     mutationFn: (usuario: FormData) => registrarUsuario(usuario, id),
   });
 
-  const guardar = useCallback(async (usuario: Usuario) => {
-    const formData = objectToFormData(usuario);
-    await mutateAsync(formData);
-  }, [mutateAsync]);
+  const guardar = useCallback(
+    async (usuario: Usuario) => {
+      const formData = objectToFormData(usuario);
+      await mutateAsync(formData);
+    },
+    [mutateAsync]
+  );
 
   useEffect(() => {
     if (!id) methods.setValue('areas', []);
@@ -161,21 +169,25 @@ const UsuarioFormulario: FC = () => {
         previewSrc={usuario?.avatar}
         showPreview
       />
-      {tipoUsuarioSeleccionado === TiposUsuario.Tecnico && <FormSelect
-        name='areas'
-        options={areas!}
-        title='Áreas'
-        subtitle='Áreas las cuales puede atender el técnico'
-        required
-        multi
-      />}
-      {tipoUsuarioSeleccionado === TiposUsuario.Academico &&<FormSelect
-        name="departamento"
-        options={departamentos!}
-        title="Departamento"
-        subtitle="Seleccione el departamento del usuario"
-        required
-      />}
+      {requiereArea && (
+        <FormSelect
+          name="areas"
+          options={areas!}
+          title="Áreas"
+          subtitle="Áreas las cuales puede atender el técnico"
+          required
+          multi
+        />
+      )}
+      {tipoUsuarioSeleccionado === TiposUsuario.Academico && (
+        <FormSelect
+          name="departamento"
+          options={departamentos!}
+          title="Departamento"
+          subtitle="Seleccione el departamento del usuario"
+          required
+        />
+      )}
     </ContenedorFormularioC>
   );
 };

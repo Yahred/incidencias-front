@@ -17,7 +17,7 @@ export const RENOVAR = '/renovar';
 export const REPORTES = '/reportes';
 export const CONFIGURACIONES = '/configuraciones';
 export const ESTATUS = '/estatus';
-export const TECNICOS = '/tecnicos'
+export const TECNICOS = '/tecnicos';
 export const TECNICO = '/tecnico';
 export const SERVICIOS = '/servicios';
 export const NOTIFICACIONES = '/notificaciones';
@@ -27,6 +27,8 @@ export const INFO = '/info';
 export const RECOMENDACION = '/recomendacion';
 export const AREA = '/area';
 export const CAMBIOS = '/cambios';
+export const ERRORES_CONOCIDOS = '/errores-conocidos';
+export const PRIORIDADES = '/prioridades';
 
 export const obtenerPaginado = (uri: string) =>
   `${uri}${PAGINADO}?itemsPorPagina=${ITEMS_POR_PAGINA}`;

@@ -101,6 +101,13 @@ let theme = createTheme({
         sx: { zIndex: 1500 },
       },
     },
+    MuiMenu: {
+      styleOverrides: {
+        root: {
+          zIndex: 1501,
+        },
+      },
+    },
   },
 });
 

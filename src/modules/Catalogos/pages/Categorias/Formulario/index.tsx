@@ -9,10 +9,10 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import ContenedorFormularioC from '../../../components/ContenedorFormulario';
-import Form from '../../../../../components/Form';
-import FormField from '../../../../../components/FormField';
-import FormSelect from '../../../../../components/FormSelect';
-import Table, { Cabeceros } from '../../../../../components/Table';
+import Form from '../../../../../components/formularios/Form';
+import FormField from '@components/formularios/FormField';
+import FormSelect from '../../../../../components/formularios/FormSelect';
+import Table, { Cabeceros } from '../../../../../components/generales/Table';
 
 import {
   CAMPO_REQUERIDO,

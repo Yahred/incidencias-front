@@ -8,10 +8,10 @@ import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import Dialogo from '@components/Dialogo';
-import Form from '@components/Form';
-import FormRating from '@components/FormRating';
-import SubmitButton from '@components/SubmitButton';
+import Dialogo from '@components/contenedores/Dialogo';
+import Form from '@components/formularios/Form';
+import FormRating from '@components/formularios/FormRating';
+import SubmitButton from '@components/formularios/SubmitButton';
 
 import { Usuario } from '@interfaces/Usuario';
 import { CAMPO_REQUERIDO } from '@constants/validaciones';

@@ -4,6 +4,7 @@ import { Salon } from "./Salon";
 
 export interface Recurso  {
   id: string;
+  folio: string;
   nombre: string;
   descripcion?: string;
   modelo: Modelo | string;

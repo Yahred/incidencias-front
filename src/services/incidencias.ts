@@ -10,6 +10,7 @@ import {
 } from '@constants/uris';
 import { Evaluacion } from '@interfaces/Evaluacion';
 import { Incidencia } from '@interfaces/Incidencia';
+import { PrioridadesEnum } from '../constants/prioridades';
 
 export const registrarIncidencia = (incidencia: FormData) =>
   axios.post(INCIDENCIAS, incidencia, {
@@ -45,8 +46,8 @@ export const asignarDiagnostico = (
     diagnostico
   );
 
-export const aprobarIncidenciaPorId = (id: string) =>
-  axios.put(endpoint(INCIDENCIAS, id, ESTATUS, EstatusEnum.Aprobada));
+export const aprobarIncidenciaPorId = (id: string, prioridad: PrioridadesEnum) =>
+  axios.put(endpoint(INCIDENCIAS, id, ESTATUS, EstatusEnum.Aprobada), { prioridad });
 
 export const asignarTecnicoPorId = (id: string, tecnico: string) =>
   axios.put(endpoint(INCIDENCIAS, id, TECNICO, tecnico));

@@ -6,7 +6,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 
 import ListaIncidencias from '../ListaIncidencias';
-import FadeIn from '@components/FadeIn';
+import FadeIn from '@components/animaciones/FadeIn';
 
 import useTabsIncidencias from '../../hooks/useTabsIncidencias';
 import { Incidencia } from '../../../../interfaces';

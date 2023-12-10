@@ -6,8 +6,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import ContenedorFormularioC from '../../../components/ContenedorFormulario';
-import FormField from '../../../../../components/FormField';
-import FormSelect from '../../../../../components/FormSelect';
+import FormField from '@components/formularios/FormField';
+import FormSelect from '../../../../../components/formularios/FormSelect';
 
 import { CAMPO_REQUERIDO } from '../../../../../constants/validaciones';
 import { obtenerSalonPorId, registrarSalon } from '../../../../../services/salones';

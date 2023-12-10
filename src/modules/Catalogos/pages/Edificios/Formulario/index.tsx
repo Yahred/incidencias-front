@@ -6,13 +6,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import ContenedorFormularioC from '../../../components/ContenedorFormulario';
-import FormField from '../../../../../components/FormField';
+import FormField from '@components/formularios/FormField';
+import FormSelect from '@components/formularios/FormSelect';
 
 import { CAMPO_REQUERIDO } from '../../../../../constants/validaciones';
 import { registrarEdificio } from '../../../../../services/edificios';
 import { Edificio } from '../../../../../interfaces/Edificio';
 import { obtenerDepartamentos } from '@services';
-import FormSelect from '@components/FormSelect';
 
 const edificioSchema = yup.object({
   nombre: yup.string().required(CAMPO_REQUERIDO),

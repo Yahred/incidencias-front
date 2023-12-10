@@ -4,8 +4,9 @@ import {
   RECURSOS,
   obtenerPaginado,
   endpoint,
+  CAMBIOS,
 } from '../constants/uris';
-import { Modelo } from '../interfaces';
+import { CambioRecurso, Modelo } from '../interfaces';
 import { Paginado } from '../interfaces/Paginado';
 import { Recurso } from '../interfaces/Recurso';
 
@@ -26,6 +27,9 @@ export const obtenerRecursos = (salon?: string) =>
 
 export const obtenerModeloPorRecursoId = (id: string) =>
   axios.get<unknown, Modelo>(endpoint(RECURSOS, id, MODELO));
+
+export const obtenerCambiosPorRecursoId = (id: string) =>
+  axios.get<never, CambioRecurso[]>(endpoint(RECURSOS, id, CAMBIOS));
 
 export const obtenerRecursoPorId = (id: string) =>
   axios.get<unknown, Recurso>(endpoint(RECURSOS, id));

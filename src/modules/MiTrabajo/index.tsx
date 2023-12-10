@@ -4,14 +4,14 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Fab from '@mui/material/Fab';
 
-import ModalIncidencia from '@components/ModalIncidencia';
-import SliderIncidencias from '@components/SliderIncidencias';
-import SubmitButton from '@components/SubmitButton';
+import ModalIncidencia from '@components/incidencias/ModalIncidencia';
+import SliderIncidencias from '@components/incidencias/SliderIncidencias';
+import SubmitButton from '@components/formularios/SubmitButton';
 import TabsIncidencias from './components/TabsIncidencias';
 import ModalReportar from './components/ModalReportar';
-import Diagnostico from '../../components/Diagnostico';
+import Diagnostico from '../../components/incidencias/Diagnostico';
 import ModalCalificarTecnico from './components/ModalCalificarTecnico';
-import SolicitudCambio from '../../components/SolicitudCambio';
+import SolicitudCambio from '../../components/incidencias/SolicitudCambio';
 
 import useSesion from '../../stores/hooks/useSesion';
 import useEvaluarTecnico from './hooks/useEvaluarTecnico';
@@ -90,8 +90,8 @@ const MiTrabajo: FC = () => {
   const handleDiagnostico = useCallback(
     (data: Incidencia) => {
       setIncidenciaSeleccionada((prev) => ({
-        ...data,
         ...prev,
+        ...data,
       }));
       refetch();
     },
@@ -160,8 +160,8 @@ const MiTrabajo: FC = () => {
 
   const sePuedeSolicitarCambio = useMemo<boolean>(() => {
     if (
-      incidenciaSeleccionada?.estatus.id !== EstatusEnum.EnProceso &&
-      !incidenciaSeleccionada?.cambio
+      (incidenciaSeleccionada?.estatus.id !== EstatusEnum.EnProceso &&
+      !incidenciaSeleccionada?.cambio) || !incidenciaSeleccionada?.diagnostico
     )
       return false;
     return true;
