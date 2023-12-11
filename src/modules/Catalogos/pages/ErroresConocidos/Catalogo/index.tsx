@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import Catalogo from '../../../components/Catalogo';
-import { Cabeceros } from '@components/Table';
+import { Cabeceros } from '@components/generales/Table';
 
 import { ErrorConocido } from '@interfaces/ErrorConocido';
 import { eliminarErrorConocido, obtenerErroresConocidosPaginado } from '@services';

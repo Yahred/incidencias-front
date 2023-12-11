@@ -149,10 +149,10 @@ const MiTrabajo: FC = () => {
     if (incidenciaSeleccionada?.estatus.id === EstatusEnum.Terminada)
       return false;
 
-    if (incidenciaSeleccionada?.cambio?.estatus !== EstatusEnum.Aprobado)
+    if (incidenciaSeleccionada?.cambio && incidenciaSeleccionada?.cambio?.estatus !== EstatusEnum.Aprobado)
       return false;
 
-    if (!incidenciaSeleccionada.diagnostico && !incidenciaSeleccionada.cambio)
+    if (!incidenciaSeleccionada?.diagnostico && !incidenciaSeleccionada?.cambio)
       return false;
 
     return true;

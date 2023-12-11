@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import Catalogo from '../../../components/Catalogo';
-import { Cabeceros } from '@components/Table';
+import { Cabeceros } from '@components/generales/Table';
 
 import { Area } from '@interfaces/Area';
 import { eliminarArea, obtenerAreasPaginado } from '@services';
